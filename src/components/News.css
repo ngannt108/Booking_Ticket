@@ -1,0 +1,146 @@
+.news {
+    background-image: url('../components/news//img/back-news.png');
+    height: auto;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-top: 50px;
+}
+
+.news i {
+    cursor: pointer;
+}
+
+.news-button {
+    padding-top: 50px;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.button span {
+    font-size: 20px;
+    line-height: 24px;
+    height: 24px;
+    color: #000;
+    font-weight: 300;
+}
+
+.newsImg {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.newsItem p {
+    height: 20px;
+    overflow: hidden;
+}
+
+.newsImgSmall {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 5px;
+}
+
+.p-md10 {
+    margin: 0;
+    font-size: 15px;
+    height: 40px;
+    overflow: hidden;
+}
+
+.news-dien-anh a {
+    text-decoration: none;
+    
+    color: #000;
+    font-weight: bold;
+}
+
+.news-dien-anh p:hover {
+    color: #fb4226;
+}
+
+.news-dien-anh p {
+    color: #4a4a4a;
+    transition: all 0.2s ease-in-out;
+}
+
+.btnShowMore {
+    margin-top: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+}
+
+.btnShowMore button {
+    font-size: 14px;
+    color: #949494;
+    border: 1px solid #949494;
+    border-radius: 4px;
+    text-align: center;
+    background: 0 0;
+    padding: 7px 25px;
+    transition: all .2s;
+    margin: auto;
+    margin-top: 35px;
+    margin-bottom: 20px;
+    display: block;
+    cursor: pointer;
+}
+
+.btnShowMore  button:hover {
+    background-color: #fb4226;
+    border-color: #fb4226;
+    color: #fff!important;
+}
+
+.news-button button {
+    margin-bottom: 30px;
+    border: none;
+    color: #000;
+    background: none;
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: bold;
+    transition: all .2;
+}
+
+.news-button button:focus {
+    color: #fb4226;
+}
+
+.news-button button:hover {
+    font-size: 30px;
+}
+
+.news .MuiTypography-h6 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+@media screen and (max-width: 960px) {
+    .news-dien-anh p {
+        text-align: center;
+        font-size: 15px;
+    }
+    .news-dien-anh a {
+        text-align: center;
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .news-button button {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .md2 {
+        margin: auto !important;
+    }
+}

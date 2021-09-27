@@ -1,0 +1,98 @@
+.blockApp {
+    background-image: url('./BlockAppImg/img/backapp.jpg');
+    width: 100%;
+    height: auto;
+    padding-bottom: 30px;
+}
+
+
+.text {
+    color: #fff;
+    font-weight: 700;
+    font-size: xx-large;
+}
+
+.blockAppBtn {
+    background-color: #fb4226 !important;
+    padding: 10px 20px !important;
+    color: #fff !important;
+    font-size: medium !important;
+    font-weight: 700 !important;
+    border: none !important;
+    border-radius: 4px !important;
+}
+
+.blockApp .slick-arrow {
+    display: none !important;
+
+}
+
+.blockAppGrid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 50px !important;
+}
+
+.blockAppGridImg {
+    border: 10px solid grey;
+    border-radius: 20px;
+}
+
+@media screen and (max-width: 960px) {  
+    .text {
+        font-size: 20px;
+    }
+    .blockAppImg {
+        width: 100%;
+        height: auto;
+    }
+    .slick-arrow {
+        display: none !important;
+    }
+    .text {
+        align-items: center;
+        text-align: center;
+    }
+    .blockApp {
+        background-image: url('./BlockAppImg/img/backapp.jpg');
+        width: 100%;
+        height: auto;
+    }
+    .blockAppGrid {
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 762px) {
+    .blockAppImg {
+        height: auto;
+    }
+    .blockApp {
+        background-image: url('./BlockAppImg/img/backapp.jpg');
+        width: 100%;
+        height: auto;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .blockAppImg {
+        height: auto !important;
+    }
+    .blockApp {
+        background-image: url('./BlockAppImg/img/backapp.jpg');
+        width: 100%;
+        height: auto;
+    }
+}
+
+@media screen and (max-width: 367px) {  
+    .blockAppImg {
+        height: auto !important;
+    }
+    .blockApp {
+        background-image: url('./BlockAppImg/img/backapp.jpg');
+        width: 100%;
+        height: auto;
+    }
+}

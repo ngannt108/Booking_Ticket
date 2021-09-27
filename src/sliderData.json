@@ -1,0 +1,20 @@
+[
+    {
+        "maPhim": 1329,
+        "tenPhim": "Bàn tay diệt quỷ",
+        "url": "./images/ban-tay-diet-quy.png",
+        "trailer": "https://www.youtube.com/embed/uqJ9u7GSaYM"
+    },
+    {
+        "maPhim": 1344,
+        "tenPhim": "Lật mặt 48h",
+        "url": "./images/lat-mat-48h.png",
+        "trailer": "https://www.youtube.com/embed/kBY2k3G6LsM"
+    },
+    {
+        "maPhim": 1404,
+        "tenPhim": "Trạng tí",
+        "url": "./images/trang-ti.jpg",
+        "trailer": "https://www.youtube.com/embed/l2XBzUZidig"
+    }
+]
