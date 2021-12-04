@@ -46,13 +46,14 @@ export const getMovieListUpComingAction = () => {
   };
 };
 
-export const getMovieDetailAction = (maPhim) => {
+export const getMovieDetailAction = (biDanh, setMovie) => {
   return async (dispatch) => {
     try {
       const res = await axios({
-        url: `https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/LayThongTinPhim?MaPhim=${maPhim}`,
+        url: `http://localhost:5000/movie/${biDanh}`,
         method: "GET",
       });
+      setMovie(res.data[0])
       dispatch({
         type: GET_MOVIE_DETAIL,
         payload: res.data,
@@ -61,7 +62,7 @@ export const getMovieDetailAction = (maPhim) => {
       console.log(error);
     }
   };
-};
+};  //XONG
 
 export const getMovieDetailClusterAction = (rap) => {
   return {

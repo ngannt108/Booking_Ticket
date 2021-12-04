@@ -2,11 +2,11 @@ import {
   ADD_NEW_MOVIE,
   ADD_NEW_USER,
   CHANGE_MOVIE,
-  DELETE_MOVIE,
+  DELETE_MOVIE, //
   DELETE_USER,
   GET_CUM_RAP_CHIEU,
   GET_GIO_CHIEU_ADMIN,
-  GET_LIST_MOVIE_PAGE,
+  GET_LIST_MOVIE_PAGE, //
   GET_LIST_SEARCH_USER_PAGE,
   GET_LIST_USER_PAGE,
   GET_NGAY_CHIEU,
@@ -91,14 +91,14 @@ export const adminReducer = (state = initialState, { type, payload }) => {
     }
     case DELETE_MOVIE: {
       const listMovieDelete = [...state.listMovie.items];
-      const index = listMovieDelete.findIndex(
-        (movieDelete) => movieDelete.maPhim === payload
-      );
-      if (index !== -1) {
-        listMovieDelete.splice(index, 1);
-        state.listUser.items = listMovieDelete;
-      }
-      return { ...state };
+      // const index = listMovieDelete.findIndex(
+      //   (movieDelete) => movieDelete.maPhim === payload
+      // );
+      // if (index !== -1) {
+      //   listMovieDelete.splice(index, 1);
+      //   state.listUser.items = listMovieDelete;
+      // }
+      return { ...state }; //
     }
     case UPDATE_MOVIE: {
       const listMovieUpdate = [...state.listUser.items];
@@ -111,7 +111,8 @@ export const adminReducer = (state = initialState, { type, payload }) => {
       return { ...state };
     }
     case ADD_NEW_MOVIE: {
-      return { ...state };
+      state.listMovie = payload;
+      return { ...state }; //
     }
     case GET_RAP_CHIEU_ADMIN: {
       state.listRapChieu = payload;

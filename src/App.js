@@ -10,7 +10,7 @@ import GuardBooking from './components/HOC/GuardBooking';
 import GuardAdminPage from './components/HOC/GuardAdminPage';
 import AdminPage from './pages/AdminPage';
 import CinemaMobilePage from './pages/CinemaMobilePage';
-
+import { ToastContainer } from "react-toastify";
 function App() {
   return (
     <>
@@ -52,6 +52,7 @@ function App() {
           </Route>
         </Switch>
       </BrowserRouter>
+      <ToastContainer />
     </>
   );
 }

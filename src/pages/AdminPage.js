@@ -21,6 +21,7 @@ import clsx from "clsx";
 import AdminQuanLyUser from "../components/AdminQuanLyUser";
 import AdminQuanLyMovie from "../components/AdminQuanLyMovie";
 import AdminTaoLichChieuPhim from "../components/AdminTaoLichChieuPhim";
+import Movie from "../components/Admin/Movie";
 
 const drawerWidth = 240;
 
@@ -130,6 +131,7 @@ export default function AdminPage() {
             </IconButton>
             <Typography variant="h6" noWrap>
               Quản lý
+              {/* //Typography */}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -195,7 +197,7 @@ export default function AdminPage() {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           {option === 1 ? <AdminQuanLyUser /> : ""}
-          {option === 2 ? <AdminQuanLyMovie /> : ""}
+          {option === 2 ? <Movie /> : ""}
           {option === 3 ? <AdminTaoLichChieuPhim /> : ""}
         </main>
       </div>

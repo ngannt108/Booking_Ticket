@@ -17,7 +17,8 @@ import {
   UPDATE_MOVIE,
   UPDATE_USER,
 } from "../const/adminConst";
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export const getListUserPageAction = (maNhom, soTrang, soPhanTuTrenTrang) => {
   return async (dispatch) => {
     try {
@@ -163,14 +164,14 @@ export const addNewUserAction = (
 };
 
 // --------------------MOVIE-------------
-export const getListMoviePageAction = (maNhom, soTrang, soPhanTuTrenTrang) => {
+export const getListMoviePageAction = () => {
   return async (dispatch) => {
     try {
       const res = await axios({
-        url: `https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/LayDanhSachPhimPhanTrang?maNhom=${maNhom}&soTrang=${soTrang}&soPhanTuTrenTrang=${soPhanTuTrenTrang}`,
+        url: `http://localhost:5000/movie`,
         method: "GET",
       });
-      //   console.log(res.data);
+      console.log('phim', res.data);
       dispatch({
         type: GET_LIST_MOVIE_PAGE,
         payload: res.data,
@@ -179,102 +180,109 @@ export const getListMoviePageAction = (maNhom, soTrang, soPhanTuTrenTrang) => {
       console.log(error);
     }
   };
-};
+}; //XONG
+
 
 export const deleteMovieAction = (
-  maPhim,
-  maNhom,
-  soTrang,
-  soPhanTuTrenTrang
+  biDanh, setIsOpen
 ) => {
   return async (dispatch) => {
     try {
       const token = JSON.parse(localStorage.getItem("token"));
       const res = await axios({
-        url: `https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/XoaPhim?MaPhim=${maPhim}`,
+        url: `http://localhost:5000/admin/movie/${biDanh}`,
         method: "DELETE",
-        data: maPhim,
+        data: biDanh,
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      toast.success('Xóa thành công ', { autoClose: 2000 });
       console.log(res.data);
+      setIsOpen(false)
       dispatch(
-        await getListMoviePageAction(maNhom, soTrang, soPhanTuTrenTrang)
+        await getListMoviePageAction()
       );
       dispatch({
         type: DELETE_MOVIE,
-        payload: maPhim,
+        payload: biDanh,
       });
     } catch (error) {
-      alert(error.response.data);
+      //alert(error.response.data);
       console.log(error);
     }
   };
-};
+}; //XONG
 
 export const updateMovieAction = (
-  form_data,
-  index,
-  maNhom,
-  soTrang,
-  soPhanTuTrenTrang
+  biDanh, form_data, fd, setError, setIsEdit
 ) => {
   return async (dispatch) => {
     try {
       const token = JSON.parse(localStorage.getItem("token"));
       const res = await axios({
-        url: "https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/CapNhatPhimUpload",
-        method: "POST",
+        url: `http://localhost:5000/admin/movie/${biDanh}`,
+        method: "PUT",
         data: form_data,
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      toast.success('Đã chỉnh sửa thông tin phim', { autoClose: 2000 });
+      setIsEdit(false)
       dispatch({
         type: UPDATE_MOVIE,
-        payload: [res.data, index],
+        payload: [res.data],
       });
       dispatch(
-        await getListMoviePageAction(maNhom, soTrang, soPhanTuTrenTrang)
+        await getListMoviePageAction()
       );
     } catch (error) {
-      console.log(error.response.data);
+      setError(error.response.data.error)
+      //console.log(error.response.data);
     }
   };
-};
+}; //XONG
 
 export const addNewMovieAction = (
-  form_data,
-  maNhom,
-  soTrang,
-  soPhanTuTrenTrang
+  form_data, fd, setError, settIsAdd
 ) => {
   return async (dispatch) => {
     try {
       const token = JSON.parse(localStorage.getItem("token"));
       const res = await axios({
-        url: "https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/ThemPhimUploadHinh",
+        url: "http://localhost:5000/admin/movie",
         method: "POST",
         data: form_data,
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      alert("thêm phim thành công");
+      toast.success('Tạo phim mới thành công', { autoClose: 2000 });
       dispatch(
-        await getListMoviePageAction(maNhom, soTrang, soPhanTuTrenTrang)
+        await getListMoviePageAction()
       );
       dispatch({
         type: ADD_NEW_MOVIE,
         payload: res.data,
       });
+      await axios({
+        url: "http://localhost:5000/admin/upload",
+        method: "POST",
+        data: fd,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      settIsAdd(false)
+
     } catch (error) {
-      alert(error.response.data);
+      setError(error.response.data.error)
+      // alert(error.response.data);
       console.log(error);
     }
   };
-};
+};////XONG
 
 // TAO_LICH_CHIEU
 export const getRapChieuAdminAction = (maPhim) => {

@@ -1,0 +1,21 @@
+.list {
+    max-width: 1050px;
+    border: 1px solid #00bcd4;
+    background-color: #efefef33;
+    padding: 15px;
+    overflow: auto;
+    margin-left: 40px;
+    border-radius: 4px;
+}
+.modal{
+    margin-top: 40px;
+}
+.list .button{
+    background-color: plum;
+    width: 100%;
+    height: fit-content;
+    border-radius: 4px;
+}
+textarea{
+    width: 100%;
+}
