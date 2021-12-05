@@ -1,6 +1,7 @@
 const Movie = require('../models/Movie');
 const ShowTime = require('../models/Showtime');
 const Room = require('../models/Room');
+const Movietheater = require('../models/Movietheater');
 
 class ShowTimeController {
     //THỬ
@@ -24,23 +25,21 @@ class ShowTimeController {
     async add(req, res, next) {
         //req.body.ngayChieu = req.body.ngayChieu.toLocaleString("en-AU")
         // console.log(req.body.ngayChieu)
-        let showtime = new ShowTime({ ...req.body, gioKetThuc: req.body.ngayChieu })
-        let ngaychieu = new Date(req.body.ngayChieu) //= new Date
-        console.log('ngày chiếu', req.body.ngayChieu)
-        const hour = ngaychieu.getHours() + (showtime.thoiLuong / 60)
-        const minute = ngaychieu.getMinutes() + (showtime.thoiLuong % 60)
-        console.log(hour)
-        showtime.gioKetThuc.setHours(hour)
-        showtime.gioKetThuc.setMinutes(minute)
 
-        //console.log(showtime.gioKetThuc.toLocaleString("en-AU"))
+        let ngaychieu = new Date(req.body.ngayChieu)
+        let showtime = new ShowTime({ ...req.body, gioKetThuc: new Date(req.body.ngayChieu) })
+        // let ngaychieu = new Date(req.body.ngayChieu) //= new Date
+        const movie = await Movie.findOne({ biDanh: req.params.bidanh })//
 
-        // dateFormat(showtime.ngayChieu,"dddd s mmmm yyyy")
-        // const gioKetThuc = req.body.ngayChieu//.getHours() + (req.body.thoiLuong / 60)        
-        // console.log(showtime.ngayChieu.toLocaleString("en-AU"))
-        // console.log(showtime.gioKetThuc.toLocaleString("en-AU"))
-        const id = showtime._id
-        //console.log(showtime.ngayChieu)//
+        // console.log('ngày chiếu từ form', req.body.ngayChieu)
+        // console.log('ngày chiếu ', new Date(req.body.ngayChieu))
+        if (movie) {
+            const hour = ngaychieu.getHours() + (movie.thoiLuong / 60)  //
+            const minute = ngaychieu.getMinutes() + (movie.thoiLuong % 60)//    
+            showtime.gioKetThuc.setHours(hour)
+            showtime.gioKetThuc.setMinutes(minute)
+        }
+
         const dupShowtime = await ShowTime.findOne({ $and: [{ "ngayChieu": showtime.ngayChieu }, { "tenRap": showtime.tenRap }, { "tenCumRap": showtime.tenCumRap }] })
         if (dupShowtime) {
             res.status(400).json({ error: 'Không thể tạo lịch chiếu cho phim do rạp đang có lịch chiếu khác' })
@@ -51,6 +50,8 @@ class ShowTimeController {
         else {
             const newShowtime = await showtime.save()
             if (newShowtime) {
+                const id = newShowtime._id
+                console.log(id, 'id của lịch chiếu')
                 const addShowtimeToMovie = await Movie.findOne({ biDanh: req.params.bidanh })
                 const LichChieu = addShowtimeToMovie.lichChieu;
                 addShowtimeToMovie.lichChieu = [...LichChieu, id];
@@ -72,6 +73,18 @@ class ShowTimeController {
                 // return next(err)
             }
         }
+
+
+
+        //console.log(showtime.gioKetThuc.toLocaleString("en-AU"))
+
+        // dateFormat(showtime.ngayChieu,"dddd s mmmm yyyy")
+        // const gioKetThuc = req.body.ngayChieu//.getHours() + (req.body.thoiLuong / 60)        
+        // console.log(showtime.ngayChieu.toLocaleString("en-AU"))
+        // console.log(showtime.gioKetThuc.toLocaleString("en-AU"))
+        //const id = showtime._id
+        //console.log(showtime.ngayChieu)//
+
 
     }
 
@@ -96,6 +109,30 @@ class ShowTimeController {
 
             })
     }
+    //GET movie/movietheater
+    getMovieTheater(req, res) {
+        Movietheater.find()
+            .then(data => {
+                if (data.length > 0) {
+                    res.status(200).json(data)
+                }
+                else res.status(404).json({ error: 'Không tìm thấy cụm rạp chiếu' })
+            })
+            .catch(err => res.status(500).json({ error: 'Hệ thống lỗi, vui lòng chờ' }))
+    }
+
+    //GET movie/room
+    getRoom(req, res) {
+        Room.find()
+            .then(data => {
+                if (data.length > 0) {
+                    res.status(200).json(data)
+                }
+                else res.status(404).json({ error: 'Không tìm thấy các rạp chiếu' })
+            })
+            .catch(err => res.status(500).json({ error: 'Hệ thống lỗi, vui lòng chờ' }))
+    }
+
 
 }
 module.exports = new ShowTimeController;

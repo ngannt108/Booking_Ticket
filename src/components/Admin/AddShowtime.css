@@ -1,0 +1,51 @@
+.formWrap{
+    width: "100%";
+    height: "80px";
+    position: "relative";
+    zIndex: 4;
+  }
+.formBlock{
+    display: "block";
+    position: "absolute";
+    boxShadow: "0 0 10px rgb(0 0 0 / 30%)";
+    borderRadius: 4;
+    width: "90%";
+    maxWidth: 940;
+    height: "100%";
+    left: "50%";
+    transform: "translate(-50%; -55%)";
+    backgroundColor: "white";
+  }
+.formPhim {
+    width: "30%";
+    margin-top: "6px";
+    padding: "0 10px";
+  }
+.formOther {
+    width: "calc(70% / 4)";
+    marginTop: 6;
+    padding: "0 10px";
+  };
+.buttonWrap {
+    width: "calc(70% / 4)";
+    margin: 0;
+    float: "right";
+    height: "100%";
+    position: "relative";
+  };
+  button {
+    position: "absolute";
+    top: "calc(50% - 3px)";
+    left: "50%";
+    transform: "translate(-50% ; -50%)";
+    backgroundColor: "#4a4a4a";
+    color: "white";
+    padding: "10px 20px";
+  };
+  fixoverflow {
+    overflow: "auto";
+    height: "60vh";
+  };
+  table {
+    minWidth: 650;
+  };

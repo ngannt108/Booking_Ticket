@@ -13,6 +13,7 @@ const Movie = new Schema({
   trailer: { type: String },
   ngayKhoiChieu: { type: Date, required: true },
   lichChieu: { type: Array, ref: "Showtime", default: [] },//[Showtime],
+  thoiLuong: { type: Number },
   // thoiLuong: { type: Number, required: [true, 'Bạn chưa chọn thời lượng phim'] },
   // tenCumRap: { type: String, required: [true, 'Bạn chưa chọn cụm rạp'] },
   // tenRap: { type: String, required: [true, 'Bạn chưa chọn chỗ rạp chiếu'] },

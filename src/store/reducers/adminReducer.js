@@ -4,14 +4,14 @@ import {
   CHANGE_MOVIE,
   DELETE_MOVIE, //
   DELETE_USER,
-  GET_CUM_RAP_CHIEU,
+  GET_CUM_RAP_CHIEU,//
   GET_GIO_CHIEU_ADMIN,
   GET_LIST_MOVIE_PAGE, //
   GET_LIST_SEARCH_USER_PAGE,
   GET_LIST_USER_PAGE,
   GET_NGAY_CHIEU,
-  GET_RAP_CHIEU_ADMIN,
-  TAO_LICH_CHIEU,
+  GET_RAP_CHIEU, //
+  TAO_LICH_CHIEU,//
   UPDATE_MOVIE,
   UPDATE_USER,
 } from "../const/adminConst";
@@ -109,26 +109,32 @@ export const adminReducer = (state = initialState, { type, payload }) => {
       }
       state.listUser.items = listMovieUpdate;
       return { ...state };
-    }
+    }//
     case ADD_NEW_MOVIE: {
       state.listMovie = payload;
       return { ...state }; //
     }
-    case GET_RAP_CHIEU_ADMIN: {
+
+    case GET_RAP_CHIEU: {
       state.listRapChieu = payload;
       return { ...state };
     }
     case GET_CUM_RAP_CHIEU: {
-      state.ngayChieu = [];
-      state.gioChieu = [];
-      const listRapChieu = [...state.listRapChieu.heThongRapChieu];
-      for (let i = 0; i < listRapChieu.length; i++) {
-        if (listRapChieu[i].maHeThongRap === payload) {
-          state.cumRapChieu = listRapChieu[i];
-        }
-      }
+
+      state.cumRapChieu = payload;
+
       return { ...state };
     }
+    // case GET_CUM_RAP_CHIEU: {
+
+    //   const listRapChieu = [...state.listRapChieu.heThongRapChieu];
+    //   for (let i = 0; i < listRapChieu.length; i++) {
+    //     if (listRapChieu[i].maHeThongRap === payload) {
+    //       state.cumRapChieu = listRapChieu[i];
+    //     }
+    //   }
+    //   return { ...state };
+    // }
     case GET_NGAY_CHIEU: {
       state.gioChieu = [];
       const cumRapChieu = [...state.cumRapChieu.cumRapChieu];

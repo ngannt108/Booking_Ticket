@@ -9,14 +9,15 @@ const Auth = require('../middleware/Auth')
 const multer = require("multer");
 //const shortid = require("shortid");
 const path = require("path");
+const ShowtimeController = require('../controllers/ShowtimeController');
 
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "uploads");
+        cb(null, "public/uploads");
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + "-" + file.originalname);
+        cb(null, file.originalname);
     },
 });
 const upload = multer({ storage: storage });
@@ -24,9 +25,11 @@ const upload = multer({ storage: storage });
 router.post('/upload', Auth.checkPermission, Auth.checkAdmin, upload.single('file'));
 router.post('/movie', Auth.checkPermission, Auth.checkAdmin, validationMovie, isRequestValidated, movieController.adđ);
 
-router.post('/movie/:bidanh/showtime', Auth.checkPermission, Auth.checkAdmin, validationMovie, isRequestValidated, showtimeController.add);
+router.post('/movie/:bidanh/showtime', Auth.checkPermission, Auth.checkAdmin, /*validationMovie, isRequestValidated,*/ showtimeController.add);
 router.get('/movie/topShowtimes', Auth.checkPermission, Auth.checkAdmin, movieController.top20Showtimes);
 router.get('/movie/topMovies', Auth.checkPermission, Auth.checkAdmin, movieController.top20Movies);
+router.get('/movie/movietheater'/*, Auth.checkPermission, Auth.checkAdmin*/, ShowtimeController.getMovieTheater);
+router.get('/movie/room'/*, Auth.checkPermission, Auth.checkAdmin*/, ShowtimeController.getRoom);
 router.delete('/movie/:bidanh', Auth.checkPermission, Auth.checkAdmin, movieController.delete);
 router.put('/movie/:bidanh', Auth.checkPermission, Auth.checkAdmin, validationMovie, isRequestValidated, movieController.edit);
 //User

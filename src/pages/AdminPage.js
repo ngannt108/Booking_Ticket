@@ -19,9 +19,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import clsx from "clsx";
 import AdminQuanLyUser from "../components/AdminQuanLyUser";
-import AdminQuanLyMovie from "../components/AdminQuanLyMovie";
-import AdminTaoLichChieuPhim from "../components/AdminTaoLichChieuPhim";
+// import AdminQuanLyMovie from "../components/AdminQuanLyMovie";
+// import AdminTaoLichChieuPhim from "../components/AdminTaoLichChieuPhim";
 import Movie from "../components/Admin/Movie";
+import AddShowTime from "../components/Admin/AddShowtime";
 
 const drawerWidth = 240;
 
@@ -198,7 +199,7 @@ export default function AdminPage() {
           <div className={classes.toolbar} />
           {option === 1 ? <AdminQuanLyUser /> : ""}
           {option === 2 ? <Movie /> : ""}
-          {option === 3 ? <AdminTaoLichChieuPhim /> : ""}
+          {option === 3 ? <AddShowTime /> : ""}
         </main>
       </div>
     </div>

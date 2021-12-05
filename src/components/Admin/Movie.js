@@ -16,8 +16,8 @@ import { getMovieDetailAction } from "../../store/actions/movieAction";
 export const Movie = () => {
     const formatDate = (date) => {
         if (date) {
-            const d = new Date(date);
-            return d.toLocaleString("en-AU")// `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}:00`;
+            const d = new Date(date); //d.toLocaleString("en-AU")//
+            return `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
         }
         return "";
     };
@@ -58,8 +58,8 @@ export const Movie = () => {
                 customBodyRender: (value, tableMeta, updateValue) => {
                     return (
                         <img
-                            className=""
-                            //src={`http://localhost:3000/images/${tableMeta.rowData[3]}`}
+                            className="image-item"
+                            src={`http://localhost:5000/uploads/${tableMeta.rowData[3]}`}
                             alt="Ảnh bị lỗi hiển thị"
                         />
                     );
@@ -74,7 +74,7 @@ export const Movie = () => {
                 sort: true,
                 customBodyRender: (value) => {
                     return (
-                        <div style={{ width: '380px' }}>{value}</div>
+                        <div style={{ width: '340px' }}>{value}</div>
                     );
                 },
             },
@@ -128,7 +128,7 @@ export const Movie = () => {
     ];
 
     const options = {
-        //filterType: "checkbox",
+        filterType: "checkbox",
         selectableRows: false, // tắt ô checkbox row
     };
     const dispatch = useDispatch();
@@ -147,6 +147,7 @@ export const Movie = () => {
     const [filehinhAnh, setFileHinhAnh] = useState(null);
     const [moTa, setMoTa] = useState('');
     const [trailer, setTrailer] = useState('');
+    const [thoiLuong, setThoiLuong] = useState('');
     const [error, setError] = useState('');
     const [isEdit, setIsEdit] = useState('');
     const getDetail = (biDanh) => {
@@ -157,12 +158,12 @@ export const Movie = () => {
         console.log('chi tiết phim', movieDetail[0])
     }
     useEffect(() => {
-        // dispatch(getAllCategories())
+        dispatch(getListMoviePageAction())
     }, []);
-    const addMovie = async (e) => {
+    const addMovie = (e) => {
         e.preventDefault();
         const newmovie = {
-            tenPhim, hinhAnh, trailer, ngayKhoiChieu, moTa
+            tenPhim, hinhAnh, trailer, ngayKhoiChieu, moTa, thoiLuong
         }
 
         console.log('>>phim mới:', newmovie);
@@ -171,11 +172,11 @@ export const Movie = () => {
         const fd = new FormData();
         if (filehinhAnh != null)
             fd.append('file', filehinhAnh, hinhAnh)
-        await dispatch(addNewMovieAction(newmovie, fd, setError, setIsAdd))
+        dispatch(addNewMovieAction(newmovie, fd, setError, setIsAdd))
 
     }
     const HandleChange = (e) => {
-        setMovie({ ...movie, [e.target.name]: e.target.value })//{
+        setMovie({ ...movieDetail[0], hinhAnh, [e.target.name]: e.target.value })//{
         //     ...book,
         //     [e.target.name]: e.target.value,
         //     //hinhAnh: e.target.name.hinhAnh.files[0].name
@@ -185,18 +186,15 @@ export const Movie = () => {
     const editMovie = async (e) => {
         e.preventDefault();
 
-        const newmovie = {
-            ...movieDetail,
-            tenPhim, hinhAnh, trailer, ngayKhoiChieu, moTa
-        }
+        // const updatemovie = {
+        //     movie
+        // }
 
-        // console.log('>>phim mới:', newmovie);
-        // //const update = JSON.stringify(updatebook)
-        // //await setHinhAnh(ramdom+'_'+hinhAnh)
+        console.log('>>phim sau khi update:', movie);
         const fd = new FormData();
         if (filehinhAnh != null)
             fd.append('file', filehinhAnh, hinhAnh)
-        await dispatch(updateMovieAction(biDanh, newmovie, fd, setError, setIsEdit))
+        await dispatch(updateMovieAction(biDanh, movie, fd, setError, setIsEdit))
 
     }
 
@@ -206,8 +204,8 @@ export const Movie = () => {
         console.log(isOpen);
     }, [isOpen]);
     const confirmDelete = async () => {
-        const id = ID;
-        dispatch(deleteMovieAction(id, setIsOpen));
+        const bidanh = biDanh;
+        dispatch(deleteMovieAction(bidanh, setIsOpen));
 
     };
     const hideModal = () => {
@@ -228,11 +226,7 @@ export const Movie = () => {
                     columns={columns}
                     options={options}
                 />
-                {/* <Pagination
-                        booksPerPage={booksPerPage}
-                        totalBooks={books.length}
-                        paginate={paginate}
-                    /> */}
+
             </div>
             <div className='model' >
                 <Modal show={isOpen} onHide={hideModal}>
@@ -266,7 +260,7 @@ export const Movie = () => {
                         Label="Ngày khởi chiếu"
                         placeholder="Nhập giá tiền"
                         value={ngayKhoiChieu}
-                        type="datetime-local"
+                        type="date"
                         onChange={(e) => setNgayKhoiChieu(e.target.value)}
                     />
                     <div>Mô tả</div>
@@ -298,6 +292,13 @@ export const Movie = () => {
                         type="text"
                         onChange={(e) => setTrailer(e.target.value)}
                     />
+                    <Input
+                        Label="ThoiLuong"
+                        placeholder=""
+                        value={thoiLuong}
+                        type="number"
+                        onChange={(e) => setThoiLuong(e.target.value)}
+                    />
                 </Modal.Body>
                 <p style={{ marginLeft: '20px', color: 'red' }}>{error}</p>
                 <Modal.Footer>
@@ -321,14 +322,17 @@ export const Movie = () => {
                         type="text"
                         onChange={HandleChange}//{(e) => setTenPhim(e.target.value)}
                         name='tenPhim'
+                        disabled='true'
                     />
                     <Input
                         Label="Ngày khởi chiếu"
                         placeholder="Nhập ngày khởi chiếu"
                         value={formatDate(movie.ngayKhoiChieu)}
                         type="text"
-                        onChange={HandleChange}//{(e) => setNgayKhoiChieu(e.target.value)}
-                        name='ngayKhoiChieu'
+                        // onChange={HandleChange}//{(e) => setNgayKhoiChieu(e.target.value)}
+                        //name='ngayKhoiChieu'
+                        disabled='true'
+
                     />
                     <div>Mô tả</div>
                     <textarea
@@ -345,6 +349,7 @@ export const Movie = () => {
                         Label="Hình ảnh"
                         name='file'
                         // value={''}
+                        // onChange={HandleChange}
                         onChange={(event) => {
                             console.log('file  hình:', event.target.files);
                             //setHinhAnh(event.target.files[0].name);

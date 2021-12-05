@@ -18,6 +18,7 @@ export const Input = (props) => {
                 min={props.min}
                 max={props.max}
                 name={props.name}
+                disabled={props.disabled}
 
             />
             <Form.Text className="text-muted">

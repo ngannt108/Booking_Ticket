@@ -140,17 +140,7 @@ class MovieController {
         const ngaykhoichieu = new Date(req.body.ngayKhoiChieu)
         const movie = new Movie(req.body)
         console.log('ngày chiếu', ngaykhoichieu)
-        movie.ngayKhoiChieu = new Date(req.body.ngayKhoiChieu)//.toISOString()
-        // if (req.file) {
-        //     movie.hinhAnh = req.file.filename
-        // }
-        // else {
-        //     const err = new Error('Bạn hãy chọn ảnh cho phim');
-        //     err.statusCode = 500
-        //     return next(err)
-
-        // }
-        //console.log(res.status(200).json(movie))
+        movie.ngayKhoiChieu = ngaykhoichieu//.toISOString()
         movie.save()
             .then(() => res.status(200).json(movie))
             .catch(err => {
@@ -183,6 +173,7 @@ class MovieController {
         res.json(ticket)
         ticket.find({ 'maLichChieu.ngayChieu': { $gt: 'maLichChieu.ngayChieu' } })
     }
+
 
 
 

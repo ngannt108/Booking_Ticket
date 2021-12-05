@@ -54,6 +54,7 @@ export const getMovieDetailAction = (biDanh, setMovie) => {
         method: "GET",
       });
       setMovie(res.data[0])
+      console.log('data', res.data[0])
       dispatch({
         type: GET_MOVIE_DETAIL,
         payload: res.data,

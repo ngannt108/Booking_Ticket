@@ -1,20 +1,20 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import {
-  ADD_NEW_MOVIE,
+  ADD_NEW_MOVIE, //
   ADD_NEW_USER,
   CHANGE_MOVIE,
-  DELETE_MOVIE,
+  DELETE_MOVIE, //
   DELETE_USER,
   GET_CUM_RAP_CHIEU,
   GET_GIO_CHIEU_ADMIN,
-  GET_LIST_MOVIE_PAGE,
+  GET_LIST_MOVIE_PAGE,//
   GET_LIST_SEARCH_USER_PAGE,
   GET_LIST_USER_PAGE,
   GET_NGAY_CHIEU,
-  GET_RAP_CHIEU_ADMIN,
-  TAO_LICH_CHIEU,
-  UPDATE_MOVIE,
+  GET_RAP_CHIEU, //
+  TAO_LICH_CHIEU,//
+  UPDATE_MOVIE, //
   UPDATE_USER,
 } from "../const/adminConst";
 import { toast } from 'react-toastify';
@@ -237,6 +237,14 @@ export const updateMovieAction = (
       dispatch(
         await getListMoviePageAction()
       );
+      await axios({
+        url: "http://localhost:5000/admin/upload",
+        method: "POST",
+        data: fd,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
     } catch (error) {
       setError(error.response.data.error)
       //console.log(error.response.data);
@@ -245,7 +253,7 @@ export const updateMovieAction = (
 }; //XONG
 
 export const addNewMovieAction = (
-  form_data, fd, setError, settIsAdd
+  form_data, fd, setError, setIsAdd
 ) => {
   return async (dispatch) => {
     try {
@@ -274,7 +282,7 @@ export const addNewMovieAction = (
           Authorization: `Bearer ${token}`,
         },
       });
-      settIsAdd(false)
+      setIsAdd(false)
 
     } catch (error) {
       setError(error.response.data.error)
@@ -285,15 +293,32 @@ export const addNewMovieAction = (
 };////XONG
 
 // TAO_LICH_CHIEU
-export const getRapChieuAdminAction = (maPhim) => {
+// export const getRapChieuAdminAction = (maPhim) => {
+//   return async (dispatch) => {
+//     try {
+//       const res = await axios({
+//         url: `https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinLichChieuPhim?MaPhim=${maPhim}`,
+//         method: "GET",
+//       });
+//       dispatch({
+//         type: GET_RAP_CHIEU_ADMIN,
+//         payload: res.data,
+//       });
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// };
+export const getRapChieuAction = () => {
   return async (dispatch) => {
     try {
       const res = await axios({
-        url: `https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinLichChieuPhim?MaPhim=${maPhim}`,
+        url: `http://localhost:5000/admin/movie/room`,
         method: "GET",
       });
+      console.log('rạp chiếu', res.data)
       dispatch({
-        type: GET_RAP_CHIEU_ADMIN,
+        type: GET_RAP_CHIEU,
         payload: res.data,
       });
     } catch (error) {
@@ -302,26 +327,45 @@ export const getRapChieuAdminAction = (maPhim) => {
   };
 };
 
-export const getCumRapChieuAction = (maHeThongRap) => {
-  return {
-    type: GET_CUM_RAP_CHIEU,
-    payload: maHeThongRap,
+export const getCumRapChieuAction = () => {
+  return async (dispatch) => {
+    try {
+      const res = await axios({
+        url: `http://localhost:5000/admin/movie/movietheater`,
+        method: "GET",
+      });
+      console.log('cụm rạp chiếu', res.data)
+
+      dispatch({
+        type: GET_CUM_RAP_CHIEU,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
-export const getNgayChieuAction = (maCumRap) => {
-  return {
-    type: GET_NGAY_CHIEU,
-    payload: maCumRap,
-  };
-};
+// export const getCumRapChieuAction = (maHeThongRap) => {
+//   return {
+//     type: GET_CUM_RAP_CHIEU,
+//     payload: maHeThongRap,
+//   };
+// };
 
-export const getGioChieuAdminAction = (ngay) => {
-  return {
-    type: GET_GIO_CHIEU_ADMIN,
-    payload: ngay,
-  };
-};
+// export const getNgayChieuAction = (maCumRap) => {
+//   return {
+//     type: GET_NGAY_CHIEU,
+//     payload: maCumRap,
+//   };
+// };
+
+// export const getGioChieuAdminAction = (ngay) => {
+//   return {
+//     type: GET_GIO_CHIEU_ADMIN,
+//     payload: ngay,
+//   };
+// };
 
 export const changeMovieAction = () => {
   return {
@@ -329,12 +373,12 @@ export const changeMovieAction = () => {
   };
 };
 
-export const taoLichChieuAction = (lichChieu, maPhim, maHeThongRap) => {
+export const taoLichChieuAction = (lichChieu, biDanh) => {
   return async (dispatch) => {
     try {
       const token = JSON.parse(localStorage.getItem("token"));
       const res = await axios({
-        url: "https://movie0706.cybersoft.edu.vn/api/QuanLyDatVe/TaoLichChieu",
+        url: `http://localhost:5000/admin/movie/${biDanh}/showtime`,
         method: "POST",
         data: lichChieu,
         headers: {
@@ -342,11 +386,12 @@ export const taoLichChieuAction = (lichChieu, maPhim, maHeThongRap) => {
         },
       });
       Swal.fire("Thông báo", "Tạo lịch chiếu thành công", "success");
-      console.log(res.data);
+      console.log('in lịch chiếu', res.data);
       dispatch({
         type: TAO_LICH_CHIEU,
+        payload: res.data,
       });
-      dispatch(await getRapChieuAdminAction(maPhim));
+      // dispatch(await getRapChieuAdminAction(maPhim));
     } catch (error) {
       Swal.fire("Thông báo", error.response.data, "error");
       console.log(error);
