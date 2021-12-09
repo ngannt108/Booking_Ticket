@@ -4,6 +4,14 @@ import SignInPage from "./pages/sign-in/SignInPage";
 import SignUpPage from "./pages/sign-up/SignUpPage";
 import ForgotPassword from "./pages/forgot-password/ForgotPassword";
 
+import MovieDetailPage from './pages/MovieDetailPage';
+import ProfilePage from './pages/ProfilePage';
+import BookingPage from './pages/BookingPage';
+import GuardBooking from './components/HOC/GuardBooking';
+import GuardAdminPage from './components/HOC/GuardAdminPage';
+import AdminPage from './pages/AdminPage';
+import CinemaMobilePage from './pages/CinemaMobilePage';
+import { ToastContainer } from "react-toastify";
 function App() {
   return (
     <>
@@ -24,12 +32,18 @@ function App() {
           <Route path="/forgot-password" exact={true}>
             <ForgotPassword />
           </Route>
+          <Route path="/admin" exact={true}>
+            <GuardAdminPage>
+              <AdminPage />
+            </GuardAdminPage>
+          </Route>
 
           <Route path="/">
             <Redirect to="/" />
           </Route>
         </Switch>
       </BrowserRouter>
+      <ToastContainer />
     </>
   );
 }

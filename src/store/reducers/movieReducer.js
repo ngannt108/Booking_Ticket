@@ -12,8 +12,7 @@ import {
 } from "../const/movieConst";
 
 const initialState = {
-  movieListNowShowing: [],
-  movieListUpComing: [],
+  movieList: [],
   movieDetail: [],
   movieDetailCluster: [],
   rap: [],
@@ -131,7 +130,7 @@ export const movieReducer = (state = initialState, { type, payload }) => {
             new Date(state.layChiTiet[i]?.ngayChieuGioChieu)
           ) === payload[0] &&
           format("hh:mm", new Date(state.layChiTiet[i]?.ngayChieuGioChieu)) ===
-            payload[1]
+          payload[1]
         ) {
           state.phimCanXem = state.layChiTiet[i];
         }
