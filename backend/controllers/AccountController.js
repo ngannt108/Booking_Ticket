@@ -101,10 +101,10 @@ class AccountController {
         //const user = new User(formDta);
         const user = new User({
             tentaiKhoan: formDta.taiKhoan,
-            hoTen: formDta.hoten,
+            hoTen: formDta.hoTen,
             matKhau: hashPassword,
             email: formDta.email,
-            SDT: formDta.soDt,
+            SDT: formDta.SDT,
         })
         user.save()
             .then(() => res.status(200).json('Đăng ký thành công'))

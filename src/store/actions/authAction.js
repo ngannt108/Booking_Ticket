@@ -21,6 +21,10 @@ export const signInAction = (auth, history) => {
         JSON.stringify(data.maLoaiNguoiDung)
       );
       // đẩy userLogin lên store
+      if (JSON.parse(localStorage.getItem("maLoaiNguoiDung")) === '0') {
+        history.push("/admin");
+      }
+      else history.push("/");
       dispatch({
         type: SIGN_IN,
         payload: res.data, //authSignIn,
@@ -29,7 +33,7 @@ export const signInAction = (auth, history) => {
       // if (maLichChieu !== null) {
       // history.push(`/booking/${maLichChieu}`);
       // } else {
-      history.push("/");
+
       //  }
       return res.data;
     } catch (error) {
