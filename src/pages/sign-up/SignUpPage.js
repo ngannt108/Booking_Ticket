@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
 import { signUpAction } from "../../store/actions/authAction";
+import Swal from "sweetalert2";
 
 const useStyles = makeStyles({
   signIn: {
@@ -82,6 +83,7 @@ export default function Signin() {
   const [authSignUp, setAuthSignUp] = useState({
     taiKhoan: "",
     matKhau: "",
+    nhapLaiMatKhau: "",
     email: "",
     soDt: "",
     maLoaiNguoiDung: "1",
@@ -98,7 +100,9 @@ export default function Signin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(signUpAction(authSignUp, history));
+    if (authSignUp.matKhau === authSignUp.nhapLaiMatKhau)
+      dispatch(signUpAction(authSignUp, history));
+    else Swal.fire("Thông báo", "Mật khẩu không trùng khớp", "error");
   };
 
   return (

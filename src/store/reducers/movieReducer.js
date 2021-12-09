@@ -4,7 +4,6 @@ import {
   GET_MOVIE_DETAIL,
   GET_MOVIE_DETAIL_CLUSTER,
   GET_MOVIE_LIST_NOW_SHOWING,
-  GET_MOVIE_LIST_UP_COMING,
   GET_NGAY_XEM,
   GET_RAP,
   LAY_CHI_TIET,
@@ -29,9 +28,6 @@ export const movieReducer = (state = initialState, { type, payload }) => {
     case GET_MOVIE_LIST_NOW_SHOWING:
       state.phimCanXem = [];
       state.movieListNowShowing = payload;
-      return { ...state };
-    case GET_MOVIE_LIST_UP_COMING:
-      state.movieListUpComing = payload;
       return { ...state };
     case GET_MOVIE_DETAIL: {
       state.movieDetail = payload;
@@ -130,7 +126,7 @@ export const movieReducer = (state = initialState, { type, payload }) => {
             new Date(state.layChiTiet[i]?.ngayChieuGioChieu)
           ) === payload[0] &&
           format("hh:mm", new Date(state.layChiTiet[i]?.ngayChieuGioChieu)) ===
-          payload[1]
+            payload[1]
         ) {
           state.phimCanXem = state.layChiTiet[i];
         }

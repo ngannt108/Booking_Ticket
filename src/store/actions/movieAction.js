@@ -4,7 +4,6 @@ import {
   GET_MOVIE_DETAIL,
   GET_MOVIE_DETAIL_CLUSTER,
   GET_MOVIE_LIST_NOW_SHOWING,
-  GET_MOVIE_LIST_UP_COMING,
   GET_NGAY_XEM,
   GET_RAP,
   LAY_CHI_TIET,
@@ -15,29 +14,12 @@ export const getMovieListNowShowingAction = () => {
   return async (dispatch) => {
     try {
       const res = await axios({
-        url: `https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/LayDanhSachPhim?maNhom=GP01`,
+        url: `http://localhost:5000/movie`,
         method: "GET",
       });
       //   console.log(res.data);
       dispatch({
         type: GET_MOVIE_LIST_NOW_SHOWING,
-        payload: res.data,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
-export const getMovieListUpComingAction = () => {
-  return async (dispatch) => {
-    try {
-      const res = await axios({
-        url: `https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/LayDanhSachPhim?maNhom=GP02`,
-        method: "GET",
-      });
-      //   console.log(res.data);
-      dispatch({
-        type: GET_MOVIE_LIST_UP_COMING,
         payload: res.data,
       });
     } catch (error) {
@@ -53,8 +35,8 @@ export const getMovieDetailAction = (biDanh, setMovie) => {
         url: `http://localhost:5000/movie/${biDanh}`,
         method: "GET",
       });
-      setMovie(res.data[0])
-      console.log('data', res.data[0])
+      setMovie(res.data[0]);
+      console.log("data", res.data[0]);
       dispatch({
         type: GET_MOVIE_DETAIL,
         payload: res.data[0],
@@ -63,7 +45,7 @@ export const getMovieDetailAction = (biDanh, setMovie) => {
       console.log(error);
     }
   };
-};  //XONG
+}; //XONG
 
 export const getMovieDetailClusterAction = (rap) => {
   return {

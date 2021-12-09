@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
-import { getProfileAction } from "../store/actions/profileAction";
+import { getProfileAction } from "../../store/actions/profileAction";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -18,8 +18,8 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import clsx from "clsx";
-import ProfileUser from "../components/ProfileUser";
-import ProfileBookTickets from "../components/ProfileBookTickets";
+import ProfileUser from "../../components/profile/ProfileUser";
+import ProfileBookTickets from "../../components/profile/ProfileBookTickets";
 
 const drawerWidth = 240;
 

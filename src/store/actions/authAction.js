@@ -20,11 +20,11 @@ export const signInAction = (auth, history) => {
         "maLoaiNguoiDung",
         JSON.stringify(data.maLoaiNguoiDung)
       );
+      localStorage.setItem("taiKhoan", JSON.stringify(data.tentaiKhoan));
       // đẩy userLogin lên store
-      if (JSON.parse(localStorage.getItem("maLoaiNguoiDung")) === '0') {
+      if (JSON.parse(localStorage.getItem("maLoaiNguoiDung")) === "0") {
         history.push("/admin");
-      }
-      else history.push("/");
+      } else history.push("/");
       dispatch({
         type: SIGN_IN,
         payload: res.data, //authSignIn,
