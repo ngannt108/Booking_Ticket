@@ -4,29 +4,13 @@ const Room = require('../models/Room');
 const Movietheater = require('../models/Movietheater');
 
 class ShowTimeController {
-    //THỬ
-    //[GET] /movie/:bidanh/showtime   SỬA LẠI  SHOW LỊCH THEO TỪNG NGÀY TƯƠNG ỨNG
-    getShowtime(req, res, next) {
-        //     Movie.findOne({ biDanh: req.params.bidanh })
-        //         .populate('lichChieu')
-        //         .then((data) => {
-        //             data.lichChieu.map((item) => {
-        //                 const ngayChieu = item.ngayChieu.toLocaleString("en-AU")
-        //                 const gioKetThuc = item.gioKetThuc.toLocaleString("en-AU")                   
-        //             })
-        //             res.status(200).json() //data.lichChieu[0].ngayChieu.toLocaleString("en-AU")
-        //         })
-        //         .catch(err => {
-        //             err.statusCode = 400
-        //             next(err)
-        //         })
-    }
+
     //[POST] /movie/:bidanh/showtime
     async add(req, res, next) {
         //req.body.ngayChieu = req.body.ngayChieu.toLocaleString("en-AU")
         // console.log(req.body.ngayChieu)
-
         let ngaychieu = new Date(req.body.ngayChieu)
+        console.log('ngày chiếu phim', ngaychieu)
         let showtime = new ShowTime({ ...req.body, gioKetThuc: new Date(req.body.ngayChieu) })
         // let ngaychieu = new Date(req.body.ngayChieu) //= new Date
         const movie = await Movie.findOne({ biDanh: req.params.bidanh })//
@@ -39,41 +23,55 @@ class ShowTimeController {
             showtime.gioKetThuc.setHours(hour)
             showtime.gioKetThuc.setMinutes(minute)
         }
-
-        const dupShowtime = await ShowTime.findOne({ $and: [{ "ngayChieu": showtime.ngayChieu }, { "tenRap": showtime.tenRap }, { "tenCumRap": showtime.tenCumRap }] })
-        if (dupShowtime) {
-            res.status(400).json({ error: 'Không thể tạo lịch chiếu cho phim do rạp đang có lịch chiếu khác' })
-            // const err = new Error('Không thể tạo lịch chiếu cho phim do rạp đang có lịch chiếu khác');
-            // err.statusCode = 400
-            // return next(err)
-        }
+        if (movie.ngayKhoiChieu > ngaychieu)
+            return res.status(400).json({ error: 'Không thể tạo ngày chiếu sớm hơn ngày khởi chiếu' })
         else {
-            const newShowtime = await showtime.save()
-            if (newShowtime) {
-                const id = newShowtime._id
-                console.log(id, 'id của lịch chiếu')
-                const addShowtimeToMovie = await Movie.findOne({ biDanh: req.params.bidanh })
-                const LichChieu = addShowtimeToMovie.lichChieu;
-                addShowtimeToMovie.lichChieu = [...LichChieu, id];
-                //  addShowtimeToMovie.soLuongBan = addShowtimeToMovie.soLuongBan + 1;
-                const Sucessful = await addShowtimeToMovie.save()
-                if (Sucessful) res.status(200).json("Tạo lịch chiếu thành công")
+            const dupShowtime = await ShowTime.find({ "tenRap": showtime.tenRap, "tenCumRap": showtime.tenCumRap })
+            var count = 0
+            dupShowtime.forEach((st) => {
+                if (st.ngayChieu <= showtime.gioKetThuc && st.gioKetThuc >= showtime.gioKetThuc) {
+                    count++
+                    console.log('đếm', count)
+                    return res.status(400).json({ error: 'Không thể tạo lịch chiếu cho phim do rạp đang có lịch chiếu khác' })
+                }
+            })
+            if (count == 0) {
+                const newShowtime = await showtime.save()
+                if (newShowtime) {
+                    const id = newShowtime._id
+                    console.log(id, 'id của lịch chiếu')
+                    const addShowtimeToMovie = await Movie.findOne({ biDanh: req.params.bidanh })
+                    const LichChieu = addShowtimeToMovie.lichChieu;
+                    addShowtimeToMovie.lichChieu = [...LichChieu, id];
+                    //  addShowtimeToMovie.soLuongBan = addShowtimeToMovie.soLuongBan + 1;
+                    const Sucessful = await addShowtimeToMovie.save()
+                    if (Sucessful) res.status(200).json("Tạo lịch chiếu thành công")
+                    else {
+                        res.status(400).json({ error: 'Tạo lịch chiếu thất bại' })
+                        // const err = new Error('Tạo lịch chiếu thất bại');
+                        // err.statusCode = 400
+                        // return next(err)
+                    }
+
+                }
                 else {
-                    res.status(400).json({ error: 'Tạo lịch chiếu thất bại' })
-                    // const err = new Error('Tạo lịch chiếu thất bại');
+                    res.status(400).json({ error: 'Không thể tạo lịch chiếu cho phim' })
+                    // const err = new Error('Không thể tạo lịch chiếu cho phim');
                     // err.statusCode = 400
                     // return next(err)
                 }
+            }
 
-            }
-            else {
-                res.status(400).json({ error: 'Không thể tạo lịch chiếu cho phim' })
-                // const err = new Error('Không thể tạo lịch chiếu cho phim');
-                // err.statusCode = 400
-                // return next(err)
-            }
         }
+        // const dupShowtime = await ShowTime.findOne({ $and: [{ "ngayChieu": showtime.ngayChieu }, { "tenRap": showtime.tenRap }, { "tenCumRap": showtime.tenCumRap }] })
 
+        // if (dupShowtime.ngayChieu <= ngaychieu) {
+        //     res.status(400).json({ error: 'Không thể tạo lịch chiếu cho phim do rạp đang có lịch chiếu khác' })
+        //     // const err = new Error('Không thể tạo lịch chiếu cho phim do rạp đang có lịch chiếu khác');
+        //     // err.statusCode = 400
+        //     // return next(err)
+        // }
+        // else {
 
 
         //console.log(showtime.gioKetThuc.toLocaleString("en-AU"))

@@ -85,7 +85,7 @@ export default function Signin() {
   const [errorText, setErrorText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [authSignIn, setAuthSignIn] = useState({
-    tentaiKhoan: "",
+    taiKhoan: "",
     matKhau: "",
   });
 
@@ -125,7 +125,7 @@ export default function Signin() {
             <CssTextField
               fullWidth
               required
-              name="tentaiKhoan"
+              name="taiKhoan"
               onChange={handleChange}
             ></CssTextField>
           </div>

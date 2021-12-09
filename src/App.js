@@ -25,6 +25,12 @@ function App() {
             <ForgotPassword />
           </Route>
 
+          <Route path="/admin" exact={true}>
+            <GuardAdminPage>
+              <AdminPage />
+            </GuardAdminPage>
+          </Route>
+
           <Route path="/">
             <Redirect to="/" />
           </Route>

@@ -1,4 +1,4 @@
-const { DATETIME_FORMAT, ISO8601_FORMAT } = require('date-format');
+
 const { NativeDate } = require('mongoose');
 const Movie = require('../models/Movie');
 const ShowTime = require('../models/Showtime');
@@ -135,7 +135,7 @@ class MovieController {
     }
 
     //[POST] /movie
-    adđ(req, res, next) {
+    add(req, res, next) {
 
         const ngaykhoichieu = new Date(req.body.ngayKhoiChieu)
         const movie = new Movie(req.body)
@@ -144,7 +144,7 @@ class MovieController {
         movie.save()
             .then(() => res.status(200).json(movie))
             .catch(err => {
-                res.status(500).json({ error: 'Thêm phim thất bại' })
+                res.status(500).json({ message: 'Thêm phim thất bại' })
                 // err = new Error('Việc thêm phim thất bại');
                 // err.statusCode = 404
                 // return next(err)

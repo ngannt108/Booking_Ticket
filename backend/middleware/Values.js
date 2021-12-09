@@ -12,9 +12,29 @@ exports.validationMovie = [
         .withMessage('Nhập ngày chiếu của phim'),
     check('hinhAnh')
         .notEmpty()
-        .withMessage('Vui lòng chọn hình ảnh cho phim')
+        .withMessage('Vui lòng chọn hình ảnh cho phim'),
+    check('thoiLuong')
+        .notEmpty()
+        .withMessage('Chưa chọn thời lượng cho phim'),
+    check('thoiLuong')
+        .isFloat({ min: 0 })
+        .withMessage('Thời lượng không được bé hơn 0')
 
 ]
+exports.validationShowTime = [
+
+    check('tenCumRap')
+        .notEmpty()
+        .withMessage('Thiếu thông tin cụm rạp'),
+    check('tenRap')
+        .notEmpty()
+        .withMessage('Thiếu tên rạp chiếu phim'),
+    check('ngayChieu')
+        .notEmpty()
+        .withMessage('Vui lòng chọn ngày và khung giờ chiếu')
+
+]
+
 exports.validationUser = [
     check('tenTaiKhoan')
         .notEmpty()

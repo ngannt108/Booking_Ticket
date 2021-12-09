@@ -40,7 +40,7 @@ class AccountController {
                     //     ...data,
                     //     token: token
                     // }
-                    // res.cookie('token', token);
+                    res.cookie('token', token);
                     return res.status(200).json({
                         data: data,
                         token: token

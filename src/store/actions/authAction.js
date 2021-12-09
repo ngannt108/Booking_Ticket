@@ -7,27 +7,30 @@ export const signInAction = (auth, history) => {
     try {
       const res = await axios({
         method: "POST",
-        url: "http://localhost:5000/sign/signin",
+        url: "http://localhost:5000/account/signin",
         data: auth,
       });
-      const { accessToken, tentaiKhoan, maLoaiNguoiDung, ...authSignIn } =
+      const { token, data /*taiKhoan, maLoaiNguoiDung, ...authSignIn*/ } =
         res.data;
       // set localStorage
-      // const maLichChieu = JSON.parse(localStorage.getItem("maLichChieu"));
-      localStorage.setItem("token", JSON.stringify(accessToken));
-      localStorage.setItem("tentaiKhoan", JSON.stringify(tentaiKhoan));
-      localStorage.setItem("maLoaiNguoiDung", JSON.stringify(maLoaiNguoiDung));
+      //const maLichChieu = JSON.parse(localStorage.getItem("maLichChieu"));
+      localStorage.setItem("token", JSON.stringify(token));
+      //localStorage.setItem("taiKhoan", JSON.stringify(taiKhoan));
+      localStorage.setItem(
+        "maLoaiNguoiDung",
+        JSON.stringify(data.maLoaiNguoiDung)
+      );
       // đẩy userLogin lên store
       dispatch({
         type: SIGN_IN,
-        payload: authSignIn,
+        payload: res.data, //authSignIn,
       });
-      // // chuyển trang
+      // chuyển trang
       // if (maLichChieu !== null) {
-      //   history.push(`/booking/${maLichChieu}`);
+      // history.push(`/booking/${maLichChieu}`);
       // } else {
-      //   history.push("/");
-      // }
+      history.push("/");
+      //  }
       return res.data;
     } catch (error) {
       // console.log(error);
@@ -40,7 +43,7 @@ export const signUpAction = (auth, history) => {
   return async (dispatch) => {
     try {
       const res = await axios({
-        url: "http://localhost:5000/sign/signUp",
+        url: "http://localhost:5000/account/signUp",
         method: "POST",
         data: auth,
       });

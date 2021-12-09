@@ -83,7 +83,7 @@ export default function Signin() {
     taiKhoan: "",
     matKhau: "",
     email: "",
-    // soDt: "",
+    soDt: "",
     maLoaiNguoiDung: "1",
     hoTen: "",
   });
@@ -146,7 +146,7 @@ export default function Signin() {
               onChange={handleChange}
             ></CssTextField>
           </div>
-          {/* <div style={inputStyle}>
+          <div style={inputStyle}>
             <FormLabel style={{ color: "white" }}>Số điện thoại:</FormLabel>
             <CssTextField
               fullWidth
@@ -154,7 +154,7 @@ export default function Signin() {
               name="soDt"
               onChange={handleChange}
             ></CssTextField>
-          </div> */}
+          </div>
           <div style={inputStyle}>
             <FormLabel style={{ color: "white" }}>Họ tên:</FormLabel>
             <CssTextField
