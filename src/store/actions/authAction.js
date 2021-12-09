@@ -7,27 +7,27 @@ export const signInAction = (auth, history) => {
     try {
       const res = await axios({
         method: "POST",
-        url: "https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/DangNhap",
+        url: "http://localhost:5000/sign/signin",
         data: auth,
       });
-      const { accessToken, taiKhoan, maLoaiNguoiDung, ...authSignIn } =
+      const { accessToken, tentaiKhoan, maLoaiNguoiDung, ...authSignIn } =
         res.data;
       // set localStorage
-      const maLichChieu = JSON.parse(localStorage.getItem("maLichChieu"));
+      // const maLichChieu = JSON.parse(localStorage.getItem("maLichChieu"));
       localStorage.setItem("token", JSON.stringify(accessToken));
-      localStorage.setItem("taiKhoan", JSON.stringify(taiKhoan));
+      localStorage.setItem("tentaiKhoan", JSON.stringify(tentaiKhoan));
       localStorage.setItem("maLoaiNguoiDung", JSON.stringify(maLoaiNguoiDung));
       // đẩy userLogin lên store
       dispatch({
         type: SIGN_IN,
         payload: authSignIn,
       });
-      // chuyển trang
-      if (maLichChieu !== null) {
-        history.push(`/booking/${maLichChieu}`);
-      } else {
-        history.push("/");
-      }
+      // // chuyển trang
+      // if (maLichChieu !== null) {
+      //   history.push(`/booking/${maLichChieu}`);
+      // } else {
+      //   history.push("/");
+      // }
       return res.data;
     } catch (error) {
       // console.log(error);
@@ -40,7 +40,7 @@ export const signUpAction = (auth, history) => {
   return async (dispatch) => {
     try {
       const res = await axios({
-        url: "https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/DangKy",
+        url: "http://localhost:5000/sign/signUp",
         method: "POST",
         data: auth,
       });
