@@ -57,7 +57,7 @@ export const getMovieDetailAction = (biDanh, setMovie) => {
       console.log('data', res.data[0])
       dispatch({
         type: GET_MOVIE_DETAIL,
-        payload: res.data,
+        payload: res.data[0],
       });
     } catch (error) {
       console.log(error);

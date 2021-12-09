@@ -16,13 +16,16 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import { AddBox, Cancel, EditRounded, Face, InsertChart, MovieCreation } from "@material-ui/icons";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import clsx from "clsx";
 import AdminQuanLyUser from "../components/AdminQuanLyUser";
 // import AdminQuanLyMovie from "../components/AdminQuanLyMovie";
 // import AdminTaoLichChieuPhim from "../components/AdminTaoLichChieuPhim";
-import Movie from "../components/Admin/Movie";
+import { Movie } from "../components/Admin/Movie";
 import AddShowTime from "../components/Admin/AddShowtime";
+import { User } from "../components/Admin/User";
+import { ChartAdmin } from "../components/Admin/Chart";
 
 const drawerWidth = 240;
 
@@ -167,7 +170,7 @@ export default function AdminPage() {
               }}
             >
               <ListItemIcon>
-                <InboxIcon />
+                <Face />
               </ListItemIcon>
               <ListItemText primary="Quản lý người dùng" />
             </ListItem>
@@ -178,7 +181,7 @@ export default function AdminPage() {
               }}
             >
               <ListItemIcon>
-                <InboxIcon />
+                <MovieCreation />
               </ListItemIcon>
               <ListItemText primary="Quản lý phim" />
             </ListItem>
@@ -189,17 +192,29 @@ export default function AdminPage() {
               }}
             >
               <ListItemIcon>
-                <InboxIcon />
+                <AddBox />
               </ListItemIcon>
               <ListItemText primary="Tạo lịch chiếu phim" />
+            </ListItem>
+            <ListItem
+              button
+              onClick={() => {
+                setOption(4);
+              }}
+            >
+              <ListItemIcon>
+                <InsertChart />
+              </ListItemIcon>
+              <ListItemText primary="Thống kê" />
             </ListItem>
           </List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          {option === 1 ? <AdminQuanLyUser /> : ""}
+          {option === 1 ? <User /> : ""}
           {option === 2 ? <Movie /> : ""}
           {option === 3 ? <AddShowTime /> : ""}
+          {option === 4 ? <ChartAdmin /> : ""}
         </main>
       </div>
     </div>

@@ -11,12 +11,12 @@ class Auth {
                 // console.log('1')
                 const token = req.headers.authorization.split(" ")[1];
                 const user = jwt.verify(token, 'user'); //_id, maLoaiNguoiDung
-                //console.log(user)
+                console.log('người dùng khi đăng nhập', user)
                 req.data = user;
                 next()
             }
             else {
-                res.status(500).json({ error: 'Vui lòng thực hiện đăng nhập' })
+                return res.status(500).json({ error: 'Vui lòng thực hiện đăng nhập' })
                 //     const err = new Error('Vui lòng thực hiện đăng nhập');
                 //     err.statusCode = 404
                 //     return next(err)

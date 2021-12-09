@@ -18,25 +18,33 @@ import Select from "@material-ui/core/Select";
 import { MenuItem } from "@material-ui/core";
 import format from "date-format";
 import { Input } from '../../components/Input';
-
+import MUIDataTable from "mui-datatables";
 import Paper from "@material-ui/core/Paper";
 
 import "./AddShowtime.css"
-import { getCumRapChieuAction, getListMoviePageAction, getRapChieuAction, taoLichChieuAction } from "../../store/actions/adminAction";
+import { getCumRapChieuAction, getDetailBySlugAction, getListMoviePageAction, getRapChieuAction, taoLichChieuAction } from "../../store/actions/adminAction";
 import { getMovieDetailAction } from "../../store/actions/movieAction";
+// import { getMovieDetailAction } from "../../store/actions/movieAction";
 
 function AddShowTime() {
     const dispatch = useDispatch();
-    const [movieDetail, setMovieDetail] = useState('')
+    const moviedetail = useSelector(state => state.movieList.movieDetail)
+    //const [movieDetail, setMovieDetail] = useState("")
     const [maPhim, setMaPhim] = useState("");
     const [biDanh, setBiDanh] = useState("");//
     const [ngayChieuPhim, setNgayChieuPhim] = useState("")//
+    const [movieDetail, setMovieDetail] = useState("")
+    const [showTime, setShowTime] = useState("")
     useEffect(() => {
         dispatch(getRapChieuAction())
         dispatch(getListMoviePageAction())
         dispatch(getCumRapChieuAction())
-        //  dispatch(getMovieListNowShowingAction("GP01"));
+
     }, []);//dispatch
+    useEffect(() => {
+        if (biDanh)
+            dispatch(getMovieDetailAction(biDanh, setMovieDetail))
+    }, [movieDetail]);//dispatch
 
     const movieList = useSelector(state => state.admin.listMovie);
 
@@ -51,14 +59,15 @@ function AddShowTime() {
     };
     const handleChangePhim = async (e) => {
         setBiDanh(e.target.value)
+        dispatch(getMovieDetailAction(e.target.value, setMovieDetail))
+        //dispatch(getMovieDetailAction(biDanh, setMovieDetail))
 
-        dispatch(getMovieDetailAction(biDanh, setMovieDetail))
-        // console.log('chi tiết phim', movieDetail)
         // setThoiLuong(movieDetail.thoiLuong)
         // console.log('thời lượng', thoiLuong)
 
 
     };
+
 
     const listRapChieu = useSelector(state => state.admin.listRapChieu);
     const renderRapChieu = () => {
@@ -69,6 +78,16 @@ function AddShowTime() {
                 </MenuItem>
             );
         });
+    };
+
+    const [maRap, setMaRap] = useState();
+    const handleChangeMaRap = (e) => {
+        setMaRap(e.target.value);
+        console.log('mã rạp', maRap)
+        // setLichChieu({
+        //     ...lichChieu,
+        //     maRap: e.target.value,
+        // });
     };
 
 
@@ -83,83 +102,13 @@ function AddShowTime() {
         });
     };
 
-
-    const gioChieu = useSelector((state) => {
-        return state.admin?.gioChieu;
-    });
-
-
-    useEffect(() => {
-        //  dispatch(getCinemaListAction());
-    }, [dispatch]);
-    const cinemaList = useSelector((state) => {
-        return state.cinema?.cinemaList;
-    });
-
-
-    const cinemaCluster = useSelector((state) => {
-        return state.cinema?.cinemaCluster;
-    });
-
-    const renderCumRap = () => {
-        return cinemaCluster.map((cluster, index) => {
-            return (
-                <MenuItem key={index} value={cluster.maCumRap}>
-                    {cluster.tenCumRap}
-                </MenuItem>
-            );
-        });
-    };
-    const [maCumRap, setMaCumRap] = useState();
-    const handleChangeCumRap = (e) => {
+    const [maCumRap, setMaCumRap] = useState("");
+    const handleChangeCumRapChieu = (e) => {
         setMaCumRap(e.target.value);
         console.log('mã cụm rạp', maCumRap)
         //  dispatch(getDanhSachRapAction(maHeThongRap, e.target.value));
     };
 
-    const danhSachRap = useSelector((state) => {
-        return state.cinema?.danhSachRap?.danhSachRap;
-    });
-    const renderDanhSachRap = () => {
-        return danhSachRap?.map((rap, index) => {
-            return (
-                <MenuItem key={index} value={rap.maRap}>
-                    {rap.tenRap}
-                </MenuItem>
-            );
-        });
-    };
-    const [maRap, setMaRap] = useState();
-    const handleChangeMaRap = (e) => {
-        setMaRap(e.target.value);
-        console.log('mã rạp', maRap)
-        // setLichChieu({
-        //     ...lichChieu,
-        //     maRap: e.target.value,
-        // });
-    };
-
-    const [ngayChieuGioChieu, setNgayChieuGioChieu] = useState("");
-    const handleChangeNgayGio = (e) => {
-        const { name, value } = e.target;
-        setNgayChieuGioChieu({
-            ...ngayChieuGioChieu,
-            [name]: value,
-        });
-        setLichChieu({
-            ...lichChieu,
-            ngayChieuGioChieu: e.target.value,
-        });
-    };
-
-
-
-    const [lichChieu, setLichChieu] = useState({
-        maPhim: "",
-        ngayChieuGioChieu: "",
-        maRap: "",
-        giaVe: "",
-    });
 
     const handleTaoLichChieu = () => {
         // if (
@@ -171,18 +120,38 @@ function AddShowTime() {
         const lichChieuCuaPhim = {
             tenCumRap: maCumRap, tenRap: maRap, ngayChieu: ngayChieuPhim, giaVe: 75000
         }
+
         console.log('--*_____*--')
         console.log('tên cụm rap', maCumRap)
         console.log('tên  rap', maRap)
         console.log('ngày chiếu phim', ngayChieuPhim)
         console.log('bí danh', biDanh)
         dispatch(taoLichChieuAction(lichChieuCuaPhim, biDanh));
+
+        //dispatch(getMovieDetailAction(biDanh, setMovieDetail))
+    };
+    const formatDate = (date) => {
+        if (date) {
+            const d = new Date(date); //d.toLocaleString("en-AU")//
+
+            return d.toLocaleString("en-AU", { day: 'numeric', month: 'numeric', year: 'numeric' })// `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
+        }
+        return "";
+    };
+    const formatTime = (date) => {
+        if (date) {
+            const d = new Date(date); //d.toLocaleString("en-AU")//
+            const time = d.toLocaleString("en-AU", { hour: 'numeric', minute: 'numeric' })
+            return time
+        }
+        return "";
+
     };
 
     return (
         <div>
             <Grid container spacing={3}>
-                <Grid item md={5}>
+                <Grid item md={8}>
                     <Grid container spacing={3}>
                         <Grid item md={6}>
                             <FormControl
@@ -208,7 +177,41 @@ function AddShowTime() {
                                 </Select>
                             </FormControl>
                         </Grid>
+                        <Grid item md={4}>
+                            <FormControl
+                                className='formPhim'
+                                style={{ width: "100%" }}
+                            >
+                                <InputLabel
+                                    style={{
+                                        left: 20,
+                                        color: "rgba(0, 0, 0, 0.54)",
+                                    }}
+                                >
+                                    Cụm rạp
+                                </InputLabel>
+                                <Select
+                                    labelId="phim-select-label"
+                                    disableUnderline
+
+                                    onChange={handleChangeCumRapChieu}
+                                >
+                                    {renderCumRapChieu()}
+                                    {/* {renderCumRap()} */}
+                                </Select>
+                            </FormControl>
+                        </Grid>
                         <Grid item md={6}>
+                            <Input
+                                Label="Khung giờ chiếu"
+                                placeholder="Nhập khung giờ chiếu"
+                                value={ngayChieuPhim}
+                                type="datetime-local"
+                                onChange={(e) => setNgayChieuPhim(e.target.value)}
+
+                            />
+                        </Grid>
+                        <Grid item md={4}>
                             <FormControl
                                 className='formPhim'
                                 style={{ width: "100%" }}
@@ -232,39 +235,8 @@ function AddShowTime() {
                             </FormControl>
                         </Grid>
 
-                        <Grid item md={6}>
-                            <Input
-                                Label="Ngày khởi chiếu"
-                                placeholder="Nhập ngày khởi chiếu"
-                                value={ngayChieuPhim}
-                                type="datetime-local"
-                                onChange={(e) => setNgayChieuPhim(e.target.value)}
 
-                            />
-                        </Grid>
-                        <Grid item md={6}>
-                            <FormControl
-                                className='formPhim'
-                                style={{ width: "100%" }}
-                            >
-                                <InputLabel
-                                    style={{
-                                        left: 20,
-                                        color: "rgba(0, 0, 0, 0.54)",
-                                    }}
-                                >
-                                    Cụm rạp
-                                </InputLabel>
-                                <Select
-                                    labelId="phim-select-label"
-                                    disableUnderline
-                                    onChange={handleChangeCumRap}
-                                >
-                                    {renderCumRapChieu()}
-                                    {/* {renderCumRap()} */}
-                                </Select>
-                            </FormControl>
-                        </Grid>
+
                         {/* <Grid item md={6}>
                             <FormControl
                                 className='formPhim'
@@ -298,7 +270,7 @@ function AddShowTime() {
                             onClick={() => handleTaoLichChieu()}
                             fullWidth
                             disabled={
-                                biDanh !== "" &&
+                                biDanh !== "" && maCumRap !== "" &&
                                     maRap !== "" &&
                                     ngayChieuPhim !== "" ? false
                                     : true
@@ -309,37 +281,54 @@ function AddShowTime() {
                     </Grid>
                 </Grid>
 
-                {/* ĐẺ ĐÂY */}
-                {/* <Grid item md={7}>
+
+
+                {/* ĐỂ ĐÂY */}
+                <h5 style={{ margin: '50px' }}>Ngày chiếu khởi {formatDate(movieDetail.ngayKhoiChieu)}</h5>
+                <Grid item md={7}>
                     <TableContainer component={Paper}>
                         <Table className='table' aria-label="simple table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Hệ thống rạp</TableCell>
-                                    <TableCell>Cụm rạp chiêu</TableCell>
-                                    <TableCell>Ngày chiêu</TableCell>
-                                    <TableCell>Giờ chiêu</TableCell>
+
+                                    <TableCell>Cụm rạp chiếu</TableCell>
+                                    <TableCell>Tên rạp</TableCell>
+                                    <TableCell>Ngày chiếu</TableCell>
+                                    <TableCell>Giờ chiếu</TableCell>
+                                    <TableCell>Giờ kết thúc</TableCell>
                                 </TableRow>
                             </TableHead>
-                            <TableBody>
-                                <TableCell>
-                                    <div className='fixoverflow'>CGV</div>
-                                </TableCell>
-                                <TableCell>
-                                    <div className='fixoverflow'>
-                                        {renderCumRapChieu()}
-                                    </div>
-                                </TableCell>
-                                <TableCell>
-                                    <div className='fixoverflow'>{renderNgayChieu()}</div>
-                                </TableCell>
-                                <TableCell>
-                                    <div className='fixoverflow'>{renderGioChieu()}</div>
-                                </TableCell>
-                            </TableBody>
+                            {Array.isArray(movieDetail.lichChieu) ? movieDetail.lichChieu.map((showtime) =>
+                                <TableBody>
+
+                                    <>
+
+                                        <TableCell>
+                                            <div className='fixoverflow'>{showtime.tenCumRap.tenCumRap}</div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className='fixoverflow'>
+                                                {showtime.tenRap.tenRap}
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className='fixoverflow'>{formatDate(showtime.ngayChieu)}</div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className='fixoverflow'>{formatTime(showtime.ngayChieu)}</div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className='fixoverflow'>{formatTime(showtime.gioKetThuc)}</div>
+                                        </TableCell>
+                                    </>
+
+                                </TableBody>
+                            ) : []}
                         </Table>
                     </TableContainer>
-                </Grid> */}
+                </Grid>
+
+
             </Grid>
         </div>
     );

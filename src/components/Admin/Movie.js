@@ -155,7 +155,7 @@ export const Movie = () => {
         dispatch(getMovieDetailAction(biDanh, setMovie))
         //setMovie(movieDetail[0])
 
-        console.log('chi tiết phim', movieDetail[0])
+        console.log('chi tiết phim', movie)
     }
     useEffect(() => {
         dispatch(getListMoviePageAction())
@@ -175,6 +175,7 @@ export const Movie = () => {
         dispatch(addNewMovieAction(newmovie, fd, setError, setIsAdd))
 
     }
+
     const HandleChange = (e) => {
         setMovie({ ...movieDetail[0], hinhAnh, [e.target.name]: e.target.value })//{
         //     ...book,
@@ -194,7 +195,7 @@ export const Movie = () => {
         const fd = new FormData();
         if (filehinhAnh != null)
             fd.append('file', filehinhAnh, hinhAnh)
-        await dispatch(updateMovieAction(biDanh, movie, fd, setError, setIsEdit))
+        dispatch(updateMovieAction(biDanh, movie, fd, setError, setIsEdit))
 
     }
 
@@ -322,16 +323,17 @@ export const Movie = () => {
                         type="text"
                         onChange={HandleChange}//{(e) => setTenPhim(e.target.value)}
                         name='tenPhim'
-                        disabled='true'
+                        disabled={true}
                     />
                     <Input
                         Label="Ngày khởi chiếu"
                         placeholder="Nhập ngày khởi chiếu"
                         value={formatDate(movie.ngayKhoiChieu)}
                         type="text"
+                        name='ngayKhoiChieu'
                         // onChange={HandleChange}//{(e) => setNgayKhoiChieu(e.target.value)}
                         //name='ngayKhoiChieu'
-                        disabled='true'
+                        disabled={true}
 
                     />
                     <div>Mô tả</div>
@@ -381,4 +383,3 @@ export const Movie = () => {
     );
 }
 
-export default Movie;

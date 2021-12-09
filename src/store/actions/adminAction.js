@@ -2,162 +2,33 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import {
   ADD_NEW_MOVIE, //
-  ADD_NEW_USER,
-  CHANGE_MOVIE,
   DELETE_MOVIE, //
-  DELETE_USER,
-  GET_CUM_RAP_CHIEU,
-  GET_GIO_CHIEU_ADMIN,
+  GET_CUM_RAP_CHIEU,//
   GET_LIST_MOVIE_PAGE,//
-  GET_LIST_SEARCH_USER_PAGE,
-  GET_LIST_USER_PAGE,
-  GET_NGAY_CHIEU,
+  GET_LIST_USER_PAGE, //
   GET_RAP_CHIEU, //
   TAO_LICH_CHIEU,//
   UPDATE_MOVIE, //
-  UPDATE_USER,
+  // GET_DETAIL_BY_SLUG,//
+  CHANGE_MOVIE
 } from "../const/adminConst";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-export const getListUserPageAction = (maNhom, soTrang, soPhanTuTrenTrang) => {
+import { getMovieDetailAction } from "./movieAction";
+
+export const getListUserPageAction = () => {
   return async (dispatch) => {
     try {
       const res = await axios({
-        url: `https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/LayDanhSachNguoiDungPhanTrang?MaNhom=${maNhom}&soTrang=${soTrang}&soPhanTuTrenTrang=${soPhanTuTrenTrang}`,
+        url: `http://localhost:5000/admin/user`,
         method: "GET",
       });
-      //   console.log(res.data);
+      console.log('danh sách người dùng', res.data);
       dispatch({
         type: GET_LIST_USER_PAGE,
         payload: res.data,
       });
     } catch (error) {
-      console.log(error);
-    }
-  };
-};
-
-export const deleteUserAction = (
-  tuKhoa,
-  taiKhoan,
-  maNhom,
-  soTrang,
-  soPhanTuTrenTrang
-) => {
-  return async (dispatch) => {
-    try {
-      const token = JSON.parse(localStorage.getItem("token"));
-      const res = await axios({
-        url: `https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/XoaNguoiDung?TaiKhoan=${taiKhoan}`,
-        method: "DELETE",
-        data: taiKhoan,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(res.data);
-      dispatch({
-        type: DELETE_USER,
-        payload: taiKhoan,
-      });
-      dispatch(await getListUserPageAction(maNhom, soTrang, soPhanTuTrenTrang));
-      dispatch(
-        await getListSearchUserPageAction(
-          tuKhoa,
-          maNhom,
-          soTrang,
-          soPhanTuTrenTrang
-        )
-      );
-    } catch (error) {
-      alert(error.response.data);
-      console.log(error);
-    }
-  };
-};
-
-export const updateUserAction = (user, index, tuKhoa) => {
-  return async (dispatch) => {
-    try {
-      const token = JSON.parse(localStorage.getItem("token"));
-      const res = await axios({
-        url: "https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/CapNhatThongTinNguoiDung",
-        method: "PUT",
-        data: user,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      dispatch({
-        type: UPDATE_USER,
-        payload: [res.data, index, tuKhoa],
-      });
-      alert("cập nhật tài khoản thành công");
-    } catch (error) {
-      alert(error.response.data);
-      console.log(error.response.data);
-    }
-  };
-};
-
-export const getListSearchUserPageAction = (
-  tuKhoa,
-  maNhom,
-  soTrang,
-  soPhanTuTrenTrang
-) => {
-  return async (dispatch) => {
-    try {
-      const res = await axios({
-        method: "GET",
-        url: `https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/TimKiemNguoiDungPhanTrang?MaNhom=${maNhom}&tuKhoa=${tuKhoa}&soTrang=${soTrang}&soPhanTuTrenTrang=${soPhanTuTrenTrang}`,
-        data: "",
-      });
-      //   console.log("data" ,res.data);
-      dispatch({
-        type: GET_LIST_SEARCH_USER_PAGE,
-        payload: res.data,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
-
-export const addNewUserAction = (
-  user,
-  maNhom,
-  soTrang,
-  soPhanTuTrenTrang,
-  tuKhoa
-) => {
-  return async (dispatch) => {
-    try {
-      const token = JSON.parse(localStorage.getItem("token"));
-      const res = await axios({
-        url: "https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/ThemNguoiDung",
-        method: "POST",
-        data: user,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      alert("thêm người dùng thành công");
-      dispatch(await getListUserPageAction(maNhom, soTrang, soPhanTuTrenTrang));
-      dispatch(
-        await getListSearchUserPageAction(
-          tuKhoa,
-          maNhom,
-          soTrang,
-          soPhanTuTrenTrang
-        )
-      );
-      dispatch({
-        type: ADD_NEW_USER,
-        payload: res.data,
-      });
-    } catch (error) {
-      alert(error.response.data);
       console.log(error);
     }
   };
@@ -270,6 +141,7 @@ export const addNewMovieAction = (
       dispatch(
         await getListMoviePageAction()
       );
+
       dispatch({
         type: ADD_NEW_MOVIE,
         payload: res.data,
@@ -283,9 +155,9 @@ export const addNewMovieAction = (
         },
       });
       setIsAdd(false)
-
     } catch (error) {
       setError(error.response.data.error)
+      toast.error('Thêm phim mới thất bại', { autoClose: 2000 });
       // alert(error.response.data);
       console.log(error);
     }
@@ -346,32 +218,6 @@ export const getCumRapChieuAction = () => {
   };
 };
 
-// export const getCumRapChieuAction = (maHeThongRap) => {
-//   return {
-//     type: GET_CUM_RAP_CHIEU,
-//     payload: maHeThongRap,
-//   };
-// };
-
-// export const getNgayChieuAction = (maCumRap) => {
-//   return {
-//     type: GET_NGAY_CHIEU,
-//     payload: maCumRap,
-//   };
-// };
-
-// export const getGioChieuAdminAction = (ngay) => {
-//   return {
-//     type: GET_GIO_CHIEU_ADMIN,
-//     payload: ngay,
-//   };
-// };
-
-export const changeMovieAction = () => {
-  return {
-    type: CHANGE_MOVIE,
-  };
-};
 
 export const taoLichChieuAction = (lichChieu, biDanh) => {
   return async (dispatch) => {
@@ -385,16 +231,58 @@ export const taoLichChieuAction = (lichChieu, biDanh) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      Swal.fire("Thông báo", "Tạo lịch chiếu thành công", "success");
-      console.log('in lịch chiếu', res.data);
-      dispatch({
-        type: TAO_LICH_CHIEU,
-        payload: res.data,
-      });
+      if (res.status === 200) {
+        // Swal.fire("Thông báo", "Tạo lịch chiếu thành công", "success");
+        toast.success('Tạo lịch chiếu  thành công', { autoClose: 2000 });
+        console.log('in lịch chiếu', res.data);
+        dispatch({
+          type: TAO_LICH_CHIEU,
+          payload: res.data,
+        });
+        dispatch(getCumRapChieuAction())
+        var setMovieDetail
+        dispatch(getMovieDetailAction(biDanh, setMovieDetail))
+      }
+
       // dispatch(await getRapChieuAdminAction(maPhim));
     } catch (error) {
-      Swal.fire("Thông báo", error.response.data, "error");
+      toast.error(error.response.data.error, { autoClose: 2000 });
+      // Swal.fire("Thông báo", , "error");
       console.log(error);
     }
+  };
+};
+
+// export const getDetailBySlugAction = (
+//   biDanh, setMovieDetail
+// ) => {
+//   return async (dispatch) => {
+//     try {
+//       const token = JSON.parse(localStorage.getItem("token"));
+//       const res = await axios({
+//         url: `http://localhost:5000/movie/${biDanh}`,
+//         method: "GET",
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       });
+//       //toast.success('Lịch chiếu của phim ', { autoClose: 2000 });
+//       console.log('Lịch chiếu của phim', res.data);
+//       dispatch({
+//         type: GET_DETAIL_BY_SLUG,
+//         payload: res.data.data,
+//       });
+//       setMovieDetail(res.data.data)
+//     } catch (error) {
+//       //alert(error.response.data);
+//       console.log(error);
+//     }
+//   };
+// }; //XONG
+
+
+export const changeMovieAction = () => {
+  return {
+    type: CHANGE_MOVIE,
   };
 };
