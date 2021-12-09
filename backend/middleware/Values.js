@@ -36,7 +36,7 @@ exports.validationShowTime = [
 ]
 
 exports.validationUser = [
-    check('tenTaiKhoan')
+    check('taiKhoan')
         .notEmpty()
         .withMessage('Vui lòng nhập tên tài khoản'),
     check('matKhau')
@@ -64,19 +64,27 @@ exports.validationSignIn = [
 
 ]
 exports.validationSignUp = [
-    check('tenTaiKhoan')
+    check('taiKhoan')
         .notEmpty()
         .withMessage('Vui lòng nhập tên tài khoản'),
     check('matKhau')
         .notEmpty()
         .withMessage('Bạn chưa nhập mật khẩu'),
+    check('hoTen')
+        .notEmpty()
+        .withMessage('Bạn chưa điền họ tên'),
     check('email')
         .notEmpty()
         .withMessage('Vui lòng nhập gmail'),
     check('email')
         .isEmail()
         .withMessage('Vui lòng nhập đúng định dạng mail'),
-
+    check('SDT')
+        .notEmpty()
+        .withMessage('Nhập số điện thoại'),
+    check('SDT')
+        .isMobilePhone()
+        .withMessage('Định dạng số điện thoại chưa phù hợp'),
 ]
 exports.isRequestValidated = (req, res, next) => {
 

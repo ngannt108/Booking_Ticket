@@ -151,7 +151,7 @@ export default function Signin() {
             <CssTextField
               fullWidth
               required
-              name="soDt"
+              name="SDT"
               onChange={handleChange}
             ></CssTextField>
           </div>
