@@ -5,14 +5,18 @@ import {
   UPDATE_PROFILE,
 } from "../const/profileConst";
 
-export const getProfileAction = (taiKhoan) => {
+export const getProfileAction = () => {
   return async (dispatch) => {
     try {
+      const token = JSON.parse(localStorage.getItem("token"));
       const res = await axios({
         method: "GET",
-        url: "http://localhost:5000/user/:id",
-        data: {
-          tentaiKhoan: taiKhoan,
+        url: "http://localhost:5000/user",
+        // data: {
+        //   tentaiKhoan: taiKhoan,
+        // },
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
       });
       // console.log(res.data);
@@ -34,28 +38,28 @@ export const getProfileAction = (taiKhoan) => {
 //   };
 // };
 
-// export const updateProfileUserAction = (user) => {
-//     return async (dispatch) => {
-//         try {
-//             const token =  JSON.parse(localStorage.getItem("token"));
+export const updateProfileUserAction = (user) => {
+  return async (dispatch) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
 
-//             const res = await axios ({
-//                 url: "https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/CapNhatThongTinNguoiDung",
-//                 method: "PUT",
-//                 data: user,
-//                 headers: {
-//                     Authorization: `Bearer ${token}`,
-//                 }
-//             })
-//             console.log("data",res.data);
-//             dispatch({
-//                 type: UPDATE_PROFILE,
-//                 payload: res.data
-//             })
-//             alert("cập nhật tài khoản thành công");
-//         } catch (error) {
-//             alert("cập nhật tài khoản thất bại");
-//             console.log(error);
-//         }
-//     }
-// }
+      const res = await axios({
+        url: "https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/CapNhatThongTinNguoiDung",
+        method: "PUT",
+        data: user,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      console.log("data", res.data);
+      dispatch({
+        type: UPDATE_PROFILE,
+        payload: res.data
+      })
+      alert("cập nhật tài khoản thành công");
+    } catch (error) {
+      alert("cập nhật tài khoản thất bại");
+      console.log(error);
+    }
+  }
+}

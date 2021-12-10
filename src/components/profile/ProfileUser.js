@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -7,7 +7,7 @@ import { Container, makeStyles, withStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { Button, Grid } from "@material-ui/core";
 import { FormLabel } from "@material-ui/core";
-import { updateProfileUserAction } from "../../store/actions/profileAction";
+import { getProfileAction, updateProfileUserAction } from "../../store/actions/profileAction";
 import Avatar from "@material-ui/core/Avatar";
 import { deepOrange } from "@material-ui/core/colors";
 
@@ -69,12 +69,13 @@ const CssTextField = withStyles({
 const inputStyle = { margin: "10px 0", "&>input": { color: "white" } };
 
 function ProfileUser() {
+  useEffect(() => {
+    dispatch(getProfileAction())
+  }, [])
   const classes = useStyles();
   const dispatch = useDispatch();
-  const profileUser = useSelector((state) => {
-    return state?.profile?.profileUser;
-  });
-  // console.log(profileUser);
+  const profileUser = useSelector((state) => state.profile?.profileUser);
+  console.log(profileUser);
   const renderThongTinTaiKhoan = () => {
     return (
       <div>
@@ -97,11 +98,10 @@ function ProfileUser() {
               </button>
             </Grid>
             <Grid item md={9}>
-              <h1>Tên tài khoản: {profileUser.taiKhoan}</h1>
-              <h1>Mật khẩu: {profileUser.matKhau}</h1>
-              <h1>Họ và tên: {profileUser.hoTen}</h1>
-              <h1>Email: {profileUser.email}</h1>
-              <h1>Số điện thoại: {profileUser.SDT}</h1>
+              <h1>Tên tài khoản: {profileUser[0].tentaiKhoan}</h1>
+              <h1>Họ và tên: {profileUser[0].hoTen}</h1>
+              <h1>Email: {profileUser[0].email}</h1>
+              <h1>Số điện thoại: {profileUser[0].SDT}</h1>
             </Grid>
           </Grid>
         </Container>

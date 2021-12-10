@@ -8,6 +8,7 @@ import GuardAdminPage from "./components/HOC/GuardAdminPage";
 import AdminPage from "./pages/AdminPage";
 
 import { ToastContainer } from "react-toastify";
+import ProfilePage from "./pages/profile-user/ProfilePage";
 function App() {
   return (
     <>
@@ -23,6 +24,10 @@ function App() {
 
           <Route path="/sign-up" exact={true}>
             <SignUpPage />
+          </Route>
+
+          <Route path="/profile" exact={true}>
+            <ProfilePage />
           </Route>
 
           <Route path="/forgot-password" exact={true}>

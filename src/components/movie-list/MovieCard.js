@@ -148,7 +148,7 @@ export default function MovieCard(props) {
       </div>
       <div className={classes.cardText}>
         <p className={classes.movieTittle}>{props.movie.tenPhim}</p>
-        <p className={classes.time}>100 phút</p>
+        <p className={classes.time}>{props.movie.thoiLuong} phút</p>
         <div className={classes.btnWrap}>
           <button
             className={classes.btn}

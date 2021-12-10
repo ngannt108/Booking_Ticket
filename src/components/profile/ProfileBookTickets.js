@@ -9,7 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import { getBookTicketChairAction } from "../../store/actions/profileAction";
+// import { getBookTicketChairAction } from "../../store/actions/profileAction";
 
 const useStyles = makeStyles((theme) => ({
   fixoverflow: {
@@ -28,7 +28,7 @@ function ProfileBookTickets() {
   // ------------------------------   COL-1   --------------------
   const layDanhSachGhe = (maVe) => {
     // console.log(maVe);
-    dispatch(getBookTicketChairAction(maVe));
+    // dispatch(getBookTicketChairAction(maVe));
   };
   const renderLichSuDatVe = () => {
     return profileUser?.thongTinDatVe?.map((ve, index) => {
