@@ -56,13 +56,12 @@ export const signUpAction = (auth, history, setError) => {
         type: SIGN_UP,
         payload: authSignUp,
       });
-
       Swal.fire("Thông Báo", "Bạn đã đăng kí thành công", "success");
       history.push("/sign-in");
     } catch (error) {
-      //Swal.fire("Thông Báo", error.response.data.error.toString(), "error");
+      //Swal.fire("Thông Báo", "Bạn đã đăng kí không thành công", "error");
       setError(error.response.data.error)
-      //console.log('Lỗi', error.response.data.error);
+      console.log(error);
     }
   };
 };

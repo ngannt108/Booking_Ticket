@@ -89,7 +89,7 @@ exports.validationSignUp = [
         .notEmpty()
         .withMessage('Nhập số điện thoại'),
     check('SDT')
-        .isMobilePhone({ min: 10 })
+        .isMobilePhone()
         .withMessage('Định dạng số điện thoại chưa phù hợp'),
 ]
 exports.isRequestValidated = (req, res, next) => {
