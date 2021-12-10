@@ -2,6 +2,7 @@
 const User = require('../models/User');
 const TicketBooking = require('../models/TicketBooking');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 class UserController {
     // với re là reqiure và res là response
@@ -10,7 +11,7 @@ class UserController {
     //-----TỪ KHÚC NÀY TRỞ ĐI CHƯA GÁN route-----
     //[GET] /user/info/:id
     info(req, res, next) {
-        User.find({ _id: req.params.id })
+        User.find({ _id: req.user })
             .then(data => {
                 res.status(200).json(data)
             })
@@ -98,7 +99,7 @@ class UserController {
 
     //[GET] user/:id/history
     history(req, res, next) {  //CHẠY ĐƯỢC, NHƯNG NẾU LẤY MỖI thời gian và thông tin lịch chiếu thì 'undetifined'
-        TicketBooking.find({ 'tentaiKhoan': req.params.id })
+        TicketBooking.find({ 'tentaiKhoan': req.user })
             .populate('tentaiKhoan')
             .populate('maLichChieu')
             .then((data) => {
@@ -137,58 +138,9 @@ class UserController {
 
     }
 
-
-    // checkPermission(req, res, next) { //dùng try catch để bắt lỗi khi chưa đăng nhập/ chưa tìm thấy token (do checkPermission là xử lý đồng bộ)
-    //     try {
-    //         var token = req.cookies.token;
-    //         var id = jwb.verify(token, 'user');
-    //         // var objectToken = jwb.verify(token, 'user');
-    //         // if(objectToken.maLoaiNguoiDung === '1') next();
-    //         // else res.json('Không có quyền xem thông tin cá nhân của user');
-    //         User.findOne({ _id: id })
-    //             .then(data => {
-    //                 if (data) {
-    //                     req.data = data; //gán dữ liệu để những middleware sau có thể sử dụng req.data
-    //                     next();
-    //                 }
-    //                 else res.json('Không có quyền truy cập');
-    //             })
-    //             .catch();
-    //     } catch (err) { res.json('Lỗi token') };
-
-    // }
-    // checkUser(req, res, next) {
-    //     if (req.data.maLoaiNguoiDung == '1')
-    //         next();
-    //     else res.json('Không có quyền xem thông tin cá nhân của user');
-    // }
-
-
-    // //Phim
-    // show(req, res) {
-    //     Phim.find({})
-    //         .then(data => {
-    //             if (data)
-    //                 res.json(data)
-    //             else res.json('chưa có dữ liệu')
-    //         })
-    //         .catch(err => res.json('Hệ thống đang lỗi, vui lòng chờ!'))
-
-    // }
-
-    // showOne(req, res) {
-    //     Phim.findOne({ biDanh: req.params.bidanh })
-    //         .then(data => {
-    //             if (data)
-    //                 res.json(data)
-    //             else res.json('chưa có dữ liệu về phim')
-    //         })
-    //         .catch(err => res.json('Hệ thống đang lỗi, vui lòng chờ!'))
-
-    // }
     //[GET] /admin/user
     getAllUser(req, res, next) {
-        User.find({})
+        User.find({ 'maLoaiNguoiDung': '1' })
             .then(data => {
                 //if (data === true)
                 res.status(200).json(data)
@@ -210,7 +162,7 @@ class UserController {
     //[PUT] /user/:id/editPassword
     editPassword(req, res, next) {
         //console.log(req.body)
-        User.findById(req.params.id)
+        User.findById(req.user)
             .then(user => {
                 console.log('người dùng', user)
                 if (bcrypt.compareSync(req.body.matKhau, user.matKhau)) {
@@ -249,6 +201,8 @@ class UserController {
 
 
     }
+
+
 
 }
 module.exports = new UserController;

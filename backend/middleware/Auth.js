@@ -28,6 +28,7 @@ class Auth {
     }
     checkAdmin(req, res, next) {
         if (req.data.maLoaiNguoiDung == '0')
+
             next();
         else {
             res.status(404).json({ error: 'Không có quyền truy cập chức năng này' })
@@ -37,8 +38,10 @@ class Auth {
         }
     }
     checkUser(req, res, next) {
-        if (req.data.maLoaiNguoiDung == '1')
+        if (req.data.maLoaiNguoiDung == '1') {
+            req.user = req.data._id
             next();
+        }
         else {
             res.status(404).json({ error: 'Không có quyền truy cập chức năng này' })
             // const err = new Error('Không có quyền truy cập chức năng này');

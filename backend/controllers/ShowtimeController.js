@@ -2,6 +2,8 @@ const Movie = require("../models/Movie");
 const ShowTime = require("../models/Showtime");
 const Room = require("../models/Room");
 const Movietheater = require("../models/Movietheater");
+const TicketBooking = require('../models/TicketBooking');
+const jwt = require('jsonwebtoken');
 
 class ShowTimeController {
   //[POST] /movie/:bidanh/showtime
@@ -141,5 +143,45 @@ class ShowTimeController {
         res.status(500).json({ error: "Hệ thống lỗi, vui lòng chờ" })
       );
   }
+
+  //[POST] /user/:bidanh/showtime/:IDshowtime
+  async ticketBooking(req, res) {
+    // const token = req.headers.authorization.split(" ")[1];
+    // const user = jwt.verify(token, 'user');
+    const IDShowTime = req.params.IDshowtime
+    const ticket = req.body.danhSachGhe
+    var DanhSachve = []
+    var GheDaChon = []
+    const showtime = await ShowTime.findById(IDShowTime)
+    if (showtime)
+      ticket.forEach(dsGhe => {
+        DanhSachve.push({ maGhe: dsGhe, giaGhe: showtime.giaVe })
+        GheDaChon.push(dsGhe)
+      });
+    else (res.status(400).json({ error: 'Vui lòng kiểm tra lại lịch chiếu' }))
+    const booking = new TicketBooking({
+      maLichChieu: IDShowTime,
+      danhSachVe: DanhSachve,
+      tentaiKhoan: req.user
+    })
+    // console.log('**Trong tình trạng đặt vé', DanhSachve)
+    // console.log('**Trong tình trạng đặt vé', GheDaChon)
+    booking.save()
+      .then(async () => {
+        res.status(200).json('Đặt vé thành công')
+        showtime.gheDaChon = [...showtime.gheDaChon, ...GheDaChon]
+        const ticketBooking = await showtime.save()
+        if (ticketBooking)
+          res.status(200).json({ tongTien: showtime.giaVe * GheDaChon.length })
+        else res.status(500).json({ error: 'Chưa thể tiến hành đặt vé' })
+        // .then()
+        // .catch(err => res.status(500).json({ error: 'Chưa thể tiến hành đặt vé' }))
+      })
+      .catch(err => res.status(500).json({ error: 'Đặt vé thất bại' }))
+
+
+
+  }
+
 }
 module.exports = new ShowTimeController();

@@ -79,6 +79,7 @@ export default function Signin() {
 
   const dispatch = useDispatch();
   const history = useHistory();
+  const [error, setError] = useState('')
 
   const [authSignUp, setAuthSignUp] = useState({
     taiKhoan: "",
@@ -101,7 +102,7 @@ export default function Signin() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (authSignUp.matKhau === authSignUp.nhapLaiMatKhau)
-      dispatch(signUpAction(authSignUp, history));
+      dispatch(signUpAction(authSignUp, history, setError));
     else Swal.fire("Thông báo", "Mật khẩu không trùng khớp", "error");
   };
 
@@ -173,6 +174,7 @@ export default function Signin() {
             control={<WhiteCheckbox name="checkedB" />}
             label="Đồng ý với điều khoản"
           />
+          <p style={{ marginLeft: "20px", color: "red" }}>{error}</p>
           <Button
             style={{ margin: "20px 0" }}
             type="submit"

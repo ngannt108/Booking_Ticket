@@ -10,15 +10,21 @@ exports.validationMovie = [
     check('ngayKhoiChieu')
         .notEmpty()
         .withMessage('Nhập ngày chiếu của phim'),
-    check('hinhAnh')
+    check('moTa')
         .notEmpty()
-        .withMessage('Vui lòng chọn hình ảnh cho phim'),
+        .withMessage('Thiếu mô tả phim'),
     check('thoiLuong')
         .notEmpty()
         .withMessage('Chưa chọn thời lượng cho phim'),
     check('thoiLuong')
         .isFloat({ min: 0 })
-        .withMessage('Thời lượng không được bé hơn 0')
+        .withMessage('Thời lượng không được bé hơn 0'),
+    check('trailer')
+        .notEmpty()
+        .withMessage('Phim chưa có trailer'),
+    check('hinhAnh')
+        .notEmpty()
+        .withMessage('Chọn hình ảnh cho phim')
 
 ]
 exports.validationShowTime = [
@@ -83,7 +89,7 @@ exports.validationSignUp = [
         .notEmpty()
         .withMessage('Nhập số điện thoại'),
     check('SDT')
-        .isMobilePhone()
+        .isMobilePhone({ min: 10 })
         .withMessage('Định dạng số điện thoại chưa phù hợp'),
 ]
 exports.isRequestValidated = (req, res, next) => {

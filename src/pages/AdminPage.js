@@ -32,6 +32,8 @@ import { Movie } from "../components/Admin/Movie";
 import AddShowTime from "../components/Admin/AddShowtime";
 import { User } from "../components/Admin/User";
 import { ChartAdmin } from "../components/Admin/Chart";
+import { signOutActions } from "../store/actions/authAction";
+import { useHistory } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -108,7 +110,7 @@ export default function AdminPage() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [option, setOption] = useState(1);
-
+  const history = useHistory();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -116,6 +118,11 @@ export default function AdminPage() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const signOut = () => {
+    //dispatch(signOutActions(history))
+    localStorage.clear();
+    history.push("/");
+  }
 
   return (
     <div>
@@ -214,6 +221,15 @@ export default function AdminPage() {
               </ListItemIcon>
               <ListItemText primary="Thống kê" />
             </ListItem>
+            <ListItem
+              button
+              onClick={() => signOut()}
+            >
+              <ListItemIcon >
+                <InsertChart />
+              </ListItemIcon>
+              <ListItemText primary="Đăng xuất" />
+            </ListItem>
           </List>
         </Drawer>
         <main className={classes.content}>
@@ -222,6 +238,7 @@ export default function AdminPage() {
           {option === 2 ? <Movie /> : ""}
           {option === 3 ? <AddShowTime /> : ""}
           {option === 4 ? <ChartAdmin /> : ""}
+
         </main>
       </div>
     </div>

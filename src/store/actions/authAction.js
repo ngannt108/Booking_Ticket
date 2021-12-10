@@ -43,7 +43,7 @@ export const signInAction = (auth, history) => {
   };
 };
 
-export const signUpAction = (auth, history) => {
+export const signUpAction = (auth, history, setError) => {
   return async (dispatch) => {
     try {
       const res = await axios({
@@ -56,11 +56,13 @@ export const signUpAction = (auth, history) => {
         type: SIGN_UP,
         payload: authSignUp,
       });
+
       Swal.fire("Thông Báo", "Bạn đã đăng kí thành công", "success");
       history.push("/sign-in");
     } catch (error) {
-      Swal.fire("Thông Báo", "Bạn đã đăng kí không thành công", "error");
-      console.log(error);
+      //Swal.fire("Thông Báo", error.response.data.error.toString(), "error");
+      setError(error.response.data.error)
+      //console.log('Lỗi', error.response.data.error);
     }
   };
 };
