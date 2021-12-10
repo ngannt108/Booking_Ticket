@@ -44,13 +44,14 @@ export const adminReducer = (state = initialState, { type, payload }) => {
       return { ...state }; //
     }
     case UPDATE_MOVIE: {
-      const listMovieUpdate = [...state.listUser.items];
-      for (let i = 0; i < listMovieUpdate.length; i++) {
-        if (i === payload[1]) {
-          listMovieUpdate[i] = payload[0];
-        }
-      }
-      state.listUser.items = listMovieUpdate;
+      // const listMovieUpdate = [...state.listUser.items];
+      // for (let i = 0; i < listMovieUpdate.length; i++) {
+      //   if (i === payload[1]) {
+      //     listMovieUpdate[i] = payload[0];
+      //   }
+      // }
+      // state.listUser.items = listMovieUpdate;
+      state.detailMovie = payload
       return { ...state };
     }//
     case ADD_NEW_MOVIE: {

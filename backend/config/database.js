@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-async function connect() { 
+async function connect() {
     try {
-        await mongoose.connect('mongodb://localhost:27017/WebBanVePhim', {
+        await mongoose.connect('mongodb+srv://Phuong:Phuong123@cluster0.nlesc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
             useNewUrlParser: true,
-            // useUnifiedopology: true
+            useUnifiedTopology: true
         });
         console.log('Connect successfully');
     } catch (error) {

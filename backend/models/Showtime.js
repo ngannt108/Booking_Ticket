@@ -13,14 +13,15 @@ const Showtime = new Schema({
     ngayChieu: { type: Date, required: [true, 'Hãy chọn khung giờ chiếu'] }, //unique: true,
     gioKetThuc: { type: Date },
     gheDaChon: {
-        hangA: { type: Array, default: [] },
-        hangB: { type: Array, default: [] },
-        hangC: { type: Array, default: [] },
-        hangD: { type: Array, default: [] },
-        hangE: { type: Array, default: [] },
-        hangF: { type: Array, default: [] },
-        hangG: { type: Array, default: [] },
-        hangH: { type: Array, default: [] },
+        type: Array, default: []
+        // hangA: { type: Array, default: [] },
+        // hangB: { type: Array, default: [] },
+        // hangC: { type: Array, default: [] },
+        // hangD: { type: Array, default: [] },
+        // hangE: { type: Array, default: [] },
+        // hangF: { type: Array, default: [] },
+        // hangG: { type: Array, default: [] },
+        // hangH: { type: Array, default: [] },
 
     },
     giaVe: { type: Number, required: [true] }

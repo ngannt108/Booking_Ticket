@@ -19,9 +19,13 @@ import { getMovieDetailAction } from "./movieAction";
 export const getListUserPageAction = () => {
   return async (dispatch) => {
     try {
+      const token = JSON.parse(localStorage.getItem("token"));
       const res = await axios({
         url: `http://localhost:5000/admin/user`,
         method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       console.log('danh sách người dùng', res.data);
       dispatch({
@@ -86,7 +90,7 @@ export const deleteMovieAction = (
 }; //XONG
 
 export const updateMovieAction = (
-  biDanh, form_data, fd, setError, setIsEdit
+  biDanh, movie, fd, setError, setIsEdit
 ) => {
   return async (dispatch) => {
     try {
@@ -94,30 +98,43 @@ export const updateMovieAction = (
       const res = await axios({
         url: `http://localhost:5000/admin/movie/${biDanh}`,
         method: "PUT",
-        data: form_data,
+        data: movie,
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      toast.success('Đã chỉnh sửa thông tin phim', { autoClose: 2000 });
-      setIsEdit(false)
-      dispatch({
-        type: UPDATE_MOVIE,
-        payload: [res.data],
-      });
-      dispatch(
-        await getListMoviePageAction()
-      );
-      await axios({
-        url: "http://localhost:5000/admin/upload",
-        method: "POST",
-        data: fd,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    } catch (error) {
-      setError(error.response.data.error)
+
+
+      // axios({
+      //   url: "http://localhost:5000/admin/upload",
+      //   method: "POST",
+      //   data: fd,
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // }).then((e) => {
+      if (res.status === 200) {
+
+        toast.success('Đã chỉnh sửa thông tin phim', { autoClose: 2000 });
+        // })
+        //   .catch((e) => {
+        //     toast.error("Lưu ảnh thất bại", { autoClose: 2000 });
+        //   })
+        setIsEdit(false)
+        dispatch({
+          type: UPDATE_MOVIE,
+          payload: [res.data],
+        });
+        dispatch(
+          await getListMoviePageAction()
+
+        );
+      }
+
+
+    } catch (err) {
+      //toast.error(error.response.data.error, { autoClose: 2000 });
+      setError(err.response.data.error)
       //console.log(error.response.data);
     }
   };
@@ -137,29 +154,38 @@ export const addNewMovieAction = (
           Authorization: `Bearer ${token}`,
         },
       });
-      toast.success('Tạo phim mới thành công', { autoClose: 2000 });
-      dispatch(
-        await getListMoviePageAction()
-      );
+      if (res.status === 200) {
+        // axios({
+        //   url: "http://localhost:5000/admin/upload",
+        //   method: "POST",
+        //   data: fd,
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // }).then((e) => {
+        dispatch({
+          type: ADD_NEW_MOVIE,
+          payload: res.data,
+        });
+        toast.success('Tạo phim mới thành công', { autoClose: 2000 });
 
-      dispatch({
-        type: ADD_NEW_MOVIE,
-        payload: res.data,
-      });
-      await axios({
-        url: "http://localhost:5000/admin/upload",
-        method: "POST",
-        data: fd,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setIsAdd(false)
-    } catch (error) {
-      setError(error.response.data.error)
-      toast.error('Thêm phim mới thất bại', { autoClose: 2000 });
+        // })
+        //   .catch((e) => {
+        //     toast.error('Lưu thất bại', { autoClose: 2000 });
+        //   })
+
+        dispatch(
+          await getListMoviePageAction()
+        );
+        setIsAdd(false)
+      }
+
+    } catch (err) {
+      //toast.error(error.response.data.error, { autoClose: 2000 });
+      setError(err.response.data.error)
+
       // alert(error.response.data);
-      console.log(error);
+
     }
   };
 };////XONG

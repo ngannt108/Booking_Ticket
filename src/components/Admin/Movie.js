@@ -110,7 +110,7 @@ export const Movie = () => {
               {/* <NavLink to={`/admin/book/${tableMeta.rowData[1]}/edit`}> */}
               <EditRounded
                 onClick={() => (
-                  setIsEdit(true), getDetail(tableMeta.rowData[1])
+                  setIsEdit(true), setError(''), getDetail(tableMeta.rowData[1]), setHinhAnh(tableMeta.rowData[3])
                 )}
               ></EditRounded>
               {/* </NavLink> */}
@@ -153,6 +153,17 @@ export const Movie = () => {
   const [thoiLuong, setThoiLuong] = useState("");
   const [error, setError] = useState("");
   const [isEdit, setIsEdit] = useState("");
+  const setInitialData = () => {
+    setTenPhim('')
+    setNgayKhoiChieu('')
+    setHinhAnh('')
+    setTrailer('')
+    setThoiLuong('')
+    setMoTa('')
+    setIsAdd(false)
+    setError('')
+  }
+
   const getDetail = (biDanh) => {
     setBiDanh(biDanh);
     dispatch(getMovieDetailAction(biDanh, setMovie));
@@ -178,12 +189,12 @@ export const Movie = () => {
     //const update = JSON.stringify(updatebook)
     //await setHinhAnh(ramdom+'_'+hinhAnh)
     const fd = new FormData();
-    if (filehinhAnh != null) fd.append("file", filehinhAnh, hinhAnh);
+    //if (filehinhAnh != null) fd.append("file", filehinhAnh, hinhAnh);
     dispatch(addNewMovieAction(newmovie, fd, setError, setIsAdd));
   };
 
   const HandleChange = (e) => {
-    setMovie({ ...movieDetail[0], hinhAnh, [e.target.name]: e.target.value }); //{
+    setMovie({ ...movie, hinhAnh, [e.target.name]: e.target.value }); //{
     //     ...book,
     //     [e.target.name]: e.target.value,
     //     //hinhAnh: e.target.name.hinhAnh.files[0].name
@@ -198,7 +209,7 @@ export const Movie = () => {
 
     console.log(">>phim sau khi update:", movie);
     const fd = new FormData();
-    if (filehinhAnh != null) fd.append("file", filehinhAnh, hinhAnh);
+    //if (filehinhAnh != null) fd.append("file", filehinhAnh, hinhAnh);
     dispatch(updateMovieAction(biDanh, movie, fd, setError, setIsEdit));
   };
 
@@ -217,7 +228,7 @@ export const Movie = () => {
     <>
       <div className="list">
         <div>
-          <button onClick={() => setIsAdd(true)} className="button">
+          <button onClick={setInitialData, () => setIsAdd(true)} className="button">
             Thêm phim{" "}
           </button>
           {/* <NavLink to='/admin/movie/add'> </NavLink> */}
@@ -244,7 +255,7 @@ export const Movie = () => {
         </Modal>
       </div>
       {/* THÊM THÔNG TIN PHIM */}
-      <Modal show={isAdd} onHide={() => setIsAdd(false)}>
+      <Modal show={isAdd} onHide={setInitialData}>
         <Modal.Header>
           <Modal.Title>Tạo thông tin phim</Modal.Title>
         </Modal.Header>
@@ -258,7 +269,7 @@ export const Movie = () => {
           />
           <Input
             Label="Ngày khởi chiếu"
-            placeholder="Nhập giá tiền"
+            placeholder=""
             value={ngayKhoiChieu}
             type="date"
             onChange={(e) => setNgayKhoiChieu(e.target.value)}
@@ -272,17 +283,18 @@ export const Movie = () => {
             onChange={(e) => setMoTa(e.target.value)}
           />
           <Input
-            type="file"
+            type="text" //file"
             accept=".jpg, .png"
             Label="Hình ảnh"
-            name="file"
-            // value={''}
+            name="hinhAnh"//"file"
+            // value={hinhAnh}
             onChange={(event) => {
-              console.log("file  hình:", event.target.files);
-              //setHinhAnh(event.target.files[0].name);
-              setFileHinhAnh(event.target.files[0]);
-              console.log("file  hình2 :", filehinhAnh);
-              setHinhAnh(Date.now() + "_" + event.target.files[0].name);
+              setHinhAnh(event.target.value)
+              // console.log("file  hình:", event.target.files);
+              // //setHinhAnh(event.target.files[0].name);
+              // setFileHinhAnh(event.target.files[0]);
+              // console.log("file  hình2 :", filehinhAnh);
+              // setHinhAnh(Date.now() + "_" + event.target.files[0].name);
             }}
           />
           <Input
@@ -308,8 +320,8 @@ export const Movie = () => {
           <button onClick={() => setIsAdd(false)}>Cancel</button>
         </Modal.Footer>
       </Modal>
-      {/* CHỈNH SỬA THÔNG TIN PHIM */}
-      <Modal show={isEdit} onHide={() => setIsEdit(false)}>
+      {/* CHỈNH SỬA THÔNG TIN PHIM  () => setIsEdit(false)*/}
+      <Modal show={isEdit} onHide={setInitialData}>
         <Modal.Header>
           <Modal.Title>Chỉnh sửa thông tin phim</Modal.Title>
         </Modal.Header>
@@ -343,19 +355,20 @@ export const Movie = () => {
             name="moTa"
           />
           <Input
-            type="file"
+            type="text" //file"
             accept=".jpg, .png"
             Label="Hình ảnh"
-            name="file"
-            // value={''}
-            // onChange={HandleChange}
-            onChange={(event) => {
-              console.log("file  hình:", event.target.files);
-              //setHinhAnh(event.target.files[0].name);
-              setFileHinhAnh(event.target.files[0]);
-              console.log("file  hình2 :", filehinhAnh);
-              setHinhAnh(Date.now() + "_" + event.target.files[0].name);
-            }}
+            name="hinhAnh"  //"file"
+            value={movie.hinhAnh}
+            onChange={HandleChange}
+          // onChange={(event) => {
+
+          // console.log("file  hình:", event.target.files);
+          // //setHinhAnh(event.target.files[0].name);
+          // setFileHinhAnh(event.target.files[0]);
+          // console.log("file  hình2 :", filehinhAnh);
+          // setHinhAnh(Date.now() + "_" + event.target.files[0].name);
+          // }}
           />
           <Input
             Label="Trailer"

@@ -62,14 +62,14 @@ class MovieController {
         if (data) {
           res.status(200).json("Cập nhật thành công");
         } else {
-          res.status(404).json("Cập nhật thất bại");
+          res.status(404).json({ error: "Cập nhật thất bại" });
           // const err = new Error('Cập nhật thất bại');
           // err.statusCode = 404
           // return next(err)
         }
       })
       .catch((err) => {
-        res.status(500).json("Hệ thống đang xử lý, vui lòng chờ");
+        res.status(500).json({ error: "Hệ thống đang xử lý, vui lòng chờ" });
         // err = new Error('Hệ thống đang xử lý, vui lòng chờ');
         // err.statusCode = 500
         // return next(err)

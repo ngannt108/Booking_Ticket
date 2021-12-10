@@ -78,7 +78,7 @@ export default function Signin() {
 
   const dispatch = useDispatch();
   const history = useHistory();
-
+  const [error, setError] = useState('')
   const [authSignUp, setAuthSignUp] = useState({
     taiKhoan: "",
     matKhau: "",
@@ -98,7 +98,8 @@ export default function Signin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(signUpAction(authSignUp, history));
+
+    dispatch(signUpAction(authSignUp, history, setError));
   };
 
   return (
@@ -169,6 +170,7 @@ export default function Signin() {
             control={<WhiteCheckbox name="checkedB" />}
             label="Đồng ý với điều khoản"
           />
+          <p style={{ marginLeft: "20px", color: "red" }}>{error}</p>
           <Button
             style={{ margin: "20px 0" }}
             type="submit"
