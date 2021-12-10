@@ -37,7 +37,7 @@ class MovieController {
   show(req, res, next) {
     Movie.find({ daXoa: false })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         if (data.length != 0) res.status(200).json(data);
         else {
           res.status(404).json("Chưa có phim nào");
@@ -53,6 +53,40 @@ class MovieController {
         // return next(err)
       });
   }
+
+  showMovieByCluster(req, res, next) {
+    Movie.find({ daXoa: false })
+      .populate("lichChieu")
+      .then((data) => {
+        if (data.length != 0) {
+          var phim = []
+          data.forEach((showtime) => {
+            showtime.lichChieu.forEach((cumRap) => {
+              //res.status(404).json(cumRap);
+              if (cumRap.tenCumRap === req.params.maCumRap) {
+                phim.push(showtime)
+                //console.log('cụm rap', cumRap);
+
+                //return phim.push(data)
+              }
+            })
+          })
+          console.log('dữ liệu của phim', phim)
+          res.status(200).json(phim);
+          // res.status(404).json(phim);
+        } else {
+          res.status(404).json("Chưa có phim nào");
+        }
+      })
+      .catch((err) => {
+        res.status(500).json("Hệ thống đang xử lý, vui lòng chờ");
+        // err = new Error('Hệ thống đang xử lý, vui lòng chờ');
+        // err.statusCode = 500
+        // return next(err)
+      });
+  }
+
+
   //[PUT] /movie/edit/:bidanh
   edit(req, res, next) {
     Movie.findOneAndUpdate({ biDanh: req.params.bidanh }, req.body, {

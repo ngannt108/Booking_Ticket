@@ -50,15 +50,16 @@ export const cinemaReducer = (state = initialState, { type, payload }) => {
       return { ...state };
     }
     case GET_MOVIE: {
-      state.tenPhim = "";
-      state.ngayChieu = [];
-      state.gioChieu = [];
-      state.chiTietPhim = [];
-      let myCinemaMovie = [...state.cinemaMovie];
-      const index = myCinemaMovie[0]?.lstCumRap?.findIndex(
-        (rap) => rap.maCumRap === payload
-      );
-      state.movie = myCinemaMovie[0]?.lstCumRap[index];
+      // state.tenPhim = "";
+      // state.ngayChieu = [];
+      // state.gioChieu = [];
+      // state.chiTietPhim = [];
+      // let myCinemaMovie = [...state.cinemaMovie];
+      // const index = myCinemaMovie[0]?.lstCumRap?.findIndex(
+      //   (rap) => rap.maCumRap === payload
+      // );
+      // state.movie = myCinemaMovie[0]?.lstCumRap[index];
+      state.movie = payload;
       return { ...state };
     }
     case LAY_TEN_PHIM: {
@@ -92,6 +93,8 @@ export const cinemaReducer = (state = initialState, { type, payload }) => {
         }
       }
       state.ngayChieu = locNgayXem;
+
+
       return { ...state };
     }
     case LAY_NGAY_XEM: {

@@ -27,8 +27,8 @@ router.post('/upload', Auth.checkPermission, Auth.checkAdmin, upload.single('fil
 router.post('/movie/:bidanh/showtime', Auth.checkPermission, Auth.checkAdmin, validationShowTime, isRequestValidated, showtimeController.add);
 router.get('/movie/topShowtimes', Auth.checkPermission, Auth.checkAdmin, movieController.top20Showtimes);
 router.get('/movie/topMovies', Auth.checkPermission, Auth.checkAdmin, movieController.top20Movies);
-router.get('/movie/movietheater', Auth.checkPermission, Auth.checkAdmin, ShowtimeController.getMovieTheater);
-router.get('/movie/room', Auth.checkPermission, Auth.checkAdmin, ShowtimeController.getRoom);
+router.get('/movie/movietheater', /*Auth.checkPermission, Auth.checkAdmin,*/ ShowtimeController.getMovieTheater);
+router.get('/movie/room',/* Auth.checkPermission, Auth.checkAdmin,*/ ShowtimeController.getRoom);
 router.delete('/movie/:bidanh', Auth.checkPermission, Auth.checkAdmin, movieController.delete);
 router.put('/movie/:bidanh', Auth.checkPermission, Auth.checkAdmin, validationMovie, isRequestValidated, movieController.edit);
 router.post('/movie', Auth.checkPermission, Auth.checkAdmin, validationMovie, isRequestValidated, movieController.add);

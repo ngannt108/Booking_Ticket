@@ -21,6 +21,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { animateScroll as scroll } from "react-scroll";
 import { HashLink as LinkH } from "react-router-hash-link";
+import { getProfileAction } from "../../store/actions/profileAction";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -101,6 +102,7 @@ export default function Header() {
 
   const handleProfile = () => {
     setAnchorEl(null);
+    dispatch(getProfileAction())
     history.push("/profile");
   };
 

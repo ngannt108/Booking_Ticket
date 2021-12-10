@@ -19,6 +19,8 @@ import {
 } from "../../store/actions/cinemaAction";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
+import { getListMoviePageAction } from "../../store/actions/adminAction";
+import { getMovieDetailAction } from "../../store/actions/movieAction";
 
 const useStyles = makeStyles((theme) => ({
   cinemaList: {
@@ -64,40 +66,43 @@ function Cinema() {
   });
 
   // ------------------------------------ COL-1 -----------------------------------------
-  const [selectedCol1Index, setSelectedCol1Index] = useState(null);
-  const renderCol1 = () => {
-    return cinemaList?.map((cinema, index) => {
-      const faded = selectedCol1Index != index;
-      return (
-        <TableRow key={index} style={faded ? fadeAwayStyle : null}>
-          <TableCell style={{ padding: 10 }}>
-            <Button
-              onClick={() => {
-                handleChoiceCinema(cinema.maHeThongRap);
-                setSelectedCol1Index(index);
-              }}
-            >
-              <img width="50px" src={cinema.logo} alt="" />
-            </Button>
-          </TableCell>
-        </TableRow>
-      );
-    });
-  };
+  // const [selectedCol1Index, setSelectedCol1Index] = useState(null);
+  // const renderCol1 = () => {
+  //   return cinemaList?.map((cinema, index) => {
+  //     const faded = selectedCol1Index != index;
+  //     return (
+  //       <TableRow key={index} style={faded ? fadeAwayStyle : null}>
+  //         <TableCell style={{ padding: 10 }}>
+  //           <Button
+  //             onClick={() => {
+  //               handleChoiceCinema(); //cinema.maHeThongRap
+  //               setSelectedCol1Index(index);
+  //             }}
+  //           >
+  //             <img width="50px" src={cinema.logo} alt="" />
+  //           </Button>
+  //         </TableCell>
+  //       </TableRow>
+  //     );
+  //   });
+  // };
 
-  const handleChoiceCinema = (cinema) => {
-    dispatch(getCinemaClusterAction(cinema));
-    dispatch(getCinemaMovieAction(cinema));
-    setSelectedCol2Index(null);
-  };
+  // const handleChoiceCinema = () => { //cinema
+  //   dispatch(getCinemaClusterAction()); //cinema
+  //   dispatch(getCinemaMovieAction()); //cinema
+  //   setSelectedCol2Index(null);
+  // };
 
   // ------------------------------------ COL-2 -----------------------------------------
+  useEffect(() => {
+    dispatch(getCinemaClusterAction())
+  }, [])
   const [selectedCol2Index, setSelectedCol2Index] = useState(null);
-  const cinemaCluster = useSelector((state) => {
-    return state.cinema.cinemaCluster;
-  });
-  const handleChoiceMovie = (cluster) => {
-    dispatch(getMovieAction(cluster));
+  const cinemaCluster = useSelector((state) => state.cinema.cinemaCluster);
+  console.log('cụm rạp', cinemaCluster)
+  const handleChoiceMovie = (maCumRap) => { //cluster
+    //dispatch(getListMoviePageAction())
+    dispatch(getMovieAction(maCumRap));  //cluster
   };
 
   const renderCol2 = () => {
@@ -107,7 +112,8 @@ function Cinema() {
         <TableRow key={index} style={faded ? fadeAwayStyle : null}>
           <TableCell
             onClick={() => {
-              handleChoiceMovie(cluster.maCumRap);
+              handleChoiceMovie(cluster._id);
+              console.log('ID cụm rạp', cluster._id)
               setSelectedCol2Index(index);
             }}
             className={classes.cumRap}
@@ -122,11 +128,34 @@ function Cinema() {
     });
   };
 
+
+
+
   // ------------------------------------ COL-3 -----------------------------------------
 
+  // const cinemaMovie = useSelector((state) => {
+  //   return state.cinema?.movie;
+  // });
+  const formatDate = (date) => {
+    if (date) {
+      const d = new Date(date); //d.toLocaleString("en-AU")//
+      return `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
+    }
+    return "";
+  };
+  const formatTime = (date) => {
+    if (date) {
+      const d = new Date(date); //d.toLocaleString("en-AU")//
+      const time = d.toLocaleString("en-AU", { hour: 'numeric', minute: 'numeric' })
+      return time
+    }
+    return "";
+
+  };
   const cinemaMovie = useSelector((state) => {
     return state.cinema?.movie;
   });
+  const [movieDetail, setMovieDetail] = useState('')
   const ngayChieu = useSelector((state) => {
     return state.cinema?.ngayChieu;
   });
@@ -137,8 +166,9 @@ function Cinema() {
     return state.cinema?.gioChieu;
   });
 
+  console.log('phim theo lịch chiếu', cinemaMovie)
   const renderCol3 = () => {
-    return cinemaMovie?.danhSachPhim?.map((movie, index) => {
+    return cinemaMovie?.map((movie, index) => { //cinemaMovie?.danhSachPhim?.map((movie, index)
       return (
         <TableRow key={index}>
           <TableCell style={{ height: 110, minHeight: 110, padding: 5 }}>
@@ -155,12 +185,12 @@ function Cinema() {
                 <img width="50px" src={movie.hinhAnh} alt="" />
               </Grid>
               <Grid item xs={9}>
-                <Button onClick={() => handleLayTenPhim(movie.tenPhim)}>
+                <Button onClick={() => handleLayTenPhim(movie.biDanh)}>
                   <h4>{movie.tenPhim}</h4>
                 </Button>
-                <div>{tenPhim === movie.tenPhim ? renderNgayChieu() : ""}</div>
+                <div>{movieDetail.tenPhim === movie.tenPhim ? renderNgayChieu() : ""}</div>
                 <div>
-                  {tenPhim === movie.tenPhim && ngayXem !== undefined
+                  {movieDetail.tenPhim === movie.tenPhim && ngayXem !== undefined //ngayXem !== undefined
                     ? renderGioChieu()
                     : ""}
                 </div>
@@ -174,15 +204,16 @@ function Cinema() {
 
   const [activeIndex, setActiveIndex] = useState(null);
 
-  const handleLayTenPhim = (tenPhim) => {
-    dispatch(layTenPhimAction(tenPhim));
+  const handleLayTenPhim = (biDanh) => {
+    //dispatch(layTenPhimAction(tenPhim));
+    dispatch(getMovieDetailAction(biDanh, setMovieDetail))
     setActiveIndex(null);
     setSuatChieu();
     setNgayXem();
   };
 
   const renderNgayChieu = () => {
-    return ngayChieu?.map((ngay, index) => {
+    return movieDetail.lichChieu?.map((lich, index) => { // return ngayChieu?.map((ngay, index) => {
       const flag = activeIndex === index;
       return (
         <Button
@@ -193,11 +224,11 @@ function Cinema() {
             fontSize: 12,
           }}
           onClick={() => {
-            handleLayNgayXem(ngay);
+            handleLayNgayXem(lich.ngayChieu);
             setActiveIndex(index);
           }}
         >
-          {ngay}
+          {formatDate(lich.ngayChieu)}
         </Button>
       );
     });
@@ -206,21 +237,21 @@ function Cinema() {
   const [suatChieu, setSuatChieu] = useState();
 
   const handleLayNgayXem = (ngayXem) => {
-    dispatch(layNgayXemAction(ngayXem));
+    //dispatch(layNgayXemAction(ngayXem));
     setNgayXem(ngayXem);
     setSuatChieu();
   };
 
   const renderGioChieu = () => {
-    return gioChieu.map((gio, index) => {
+    return movieDetail.lichChieu?.map((lich, index) => {
       return (
         <Button
           key={index}
           onClick={() => {
-            setSuatChieu(gio);
+            setSuatChieu(lich);
           }}
         >
-          {gio}
+          {formatTime(lich.ngayChieu)}
         </Button>
       );
     });
@@ -251,9 +282,9 @@ function Cinema() {
           <TableHead></TableHead>
           <TableBody>
             <TableRow>
-              <TableCell className={classes.col1}>
+              {/* <TableCell className={classes.col1}>
                 <div className={classes.fixoverflow}>{renderCol1()}</div>
-              </TableCell>
+              </TableCell> */}
 
               <TableCell className={classes.col2}>
                 <div className={classes.fixoverflow}> {renderCol2()}</div>

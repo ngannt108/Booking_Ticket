@@ -19,12 +19,12 @@ export const getProfileAction = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      // console.log(res.data);
+      console.log('thông tin người dùng', res.data);
       dispatch({
         type: GET_PROFILE,
         payload: res.data,
       });
-      console.log(res.data);
+
     } catch (error) {
       console.log(error);
     }

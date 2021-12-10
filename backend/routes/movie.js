@@ -23,8 +23,8 @@ const path = require("path");
 
 
 //router.get('/:bidanh/showtime', showtimeController.getShowtime);
-
-router.get('/:biDanh', movieController.showDetail);
+router.get('/cluster/:maCumRap', movieController.showMovieByCluster);
+router.get('/:biDanh', movieController.showDetail); //
 router.get('/', movieController.show);
 
 

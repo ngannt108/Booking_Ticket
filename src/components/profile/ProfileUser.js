@@ -74,8 +74,8 @@ function ProfileUser() {
   }, [])
   const classes = useStyles();
   const dispatch = useDispatch();
-  const profileUser = useSelector((state) => state.profile?.profileUser);
-  console.log(profileUser);
+  const profileUser = useSelector((state) => state.profile.profileUser);
+  console.log('người dùng', profileUser);
   const renderThongTinTaiKhoan = () => {
     return (
       <div>
@@ -98,10 +98,15 @@ function ProfileUser() {
               </button>
             </Grid>
             <Grid item md={9}>
-              <h1>Tên tài khoản: {profileUser[0].tentaiKhoan}</h1>
-              <h1>Họ và tên: {profileUser[0].hoTen}</h1>
-              <h1>Email: {profileUser[0].email}</h1>
-              <h1>Số điện thoại: {profileUser[0].SDT}</h1>
+              {profileUser.length > 0 ?
+                <>
+                  <h1>Tên tài khoản: {profileUser[0].tentaiKhoan}</h1>
+                  <h1>Họ và tên: {profileUser[0].hoTen}</h1>
+                  <h1>Email: {profileUser[0].email}</h1>
+                  <h1>Số điện thoại: {profileUser[0].SDT}</h1>
+                </> : ''
+              }
+
             </Grid>
           </Grid>
         </Container>
