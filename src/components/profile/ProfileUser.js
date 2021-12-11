@@ -7,9 +7,15 @@ import { Container, makeStyles, withStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { Button, Grid } from "@material-ui/core";
 import { FormLabel } from "@material-ui/core";
-import { getProfileAction, updateProfileUserAction } from "../../store/actions/profileAction";
+import {
+  getProfileAction,
+  updateProfileUserAction,
+  changePasswordAction,
+} from "../../store/actions/profileAction";
 import Avatar from "@material-ui/core/Avatar";
 import { deepOrange } from "@material-ui/core/colors";
+import { ModalBody } from "react-bootstrap";
+import Swal from "sweetalert2";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -70,44 +76,49 @@ const inputStyle = { margin: "10px 0", "&>input": { color: "white" } };
 
 function ProfileUser() {
   useEffect(() => {
-    dispatch(getProfileAction())
-  }, [])
+    dispatch(getProfileAction());
+  }, []);
   const classes = useStyles();
   const dispatch = useDispatch();
   const profileUser = useSelector((state) => state.profile.profileUser);
-  console.log('người dùng', profileUser);
+  console.log("người dùng", profileUser);
   const renderThongTinTaiKhoan = () => {
     return (
       <div>
         <Container>
           <Grid container>
-            <Grid item md={3} style={{ textAlign: "center" }}>
-              <Avatar src="/broken-image.jpg" />
-              <button
-                onClick={() => {
-                  changeUserDetail(
-                    profileUser.taiKhoan,
-                    profileUser.matKhau,
-                    profileUser.hoTen,
-                    profileUser.email,
-                    profileUser.SDT
-                  );
-                }}
-              >
-                Thay đổi thông tin tài khoản
-              </button>
-            </Grid>
             <Grid item md={9}>
-              {profileUser.length > 0 ?
+              {profileUser.length > 0 ? (
                 <>
                   <h1>Tên tài khoản: {profileUser[0].tentaiKhoan}</h1>
                   <h1>Họ và tên: {profileUser[0].hoTen}</h1>
                   <h1>Email: {profileUser[0].email}</h1>
                   <h1>Số điện thoại: {profileUser[0].SDT}</h1>
-                </> : ''
-              }
-
+                </>
+              ) : (
+                ""
+              )}
+              <button
+                onClick={() => {
+                  changeUserDetail(
+                    // profileUser[0].tentaiKhoan,
+                    // profileUser[0].matKhau,
+                    profileUser[0].hoTen,
+                    profileUser[0].email,
+                    profileUser[0].SDT
+                  );
+                }}
+                className="btn btn-success"
+              >
+                Thay đổi thông tin tài khoản
+              </button>
+              <button onClick={changeUserPassword} className="btn btn-primary">
+                Đổi mật khẩu
+              </button>
             </Grid>
+            {/* <Grid item md={3} style={{ textAlign: "center" }}>
+              <Avatar src="/broken-image.jpg" />
+            </Grid> */}
           </Grid>
         </Container>
       </div>
@@ -117,28 +128,54 @@ function ProfileUser() {
   // ------------------------ MODAL UPDATE USER --------------------
 
   const [user, setUser] = useState({
-    tentaiKhoan: "",
+    taiKhoan: "",
     matKhau: "",
     email: "",
     SDT: "",
-    maLoaiNguoiDung: "KhachHang",
+    maLoaiNguoiDung: "1",
     hoTen: "",
   });
-  const changeUserDetail = (taiKhoan, matKhau, hoTen, email, SDT) => {
+
+  // const [user, setUserChangePassword] = useState({
+  //   matKhau: "",
+  //   maLoaiNguoiDung: "1",
+  // });
+
+  const changeUserDetail = (hoTen, email, SDT) => {
     setOpen(true);
     // console.log(taiKhoan, matKhau, hoTen, email, soDT);
     setUser({
-      tentaiKhoan: taiKhoan,
-      matKhau: matKhau,
+      taiKhoan: profileUser[0].tentaiKhoan,
+      matKhau: profileUser[0].matKhau,
       hoTen: hoTen,
       email: email,
       SDT: SDT,
       maLoaiNguoiDung: "1",
     });
+    // console.log("Chi tiết cập nhật", user);
   };
+
+  const changeUserPassword = (
+    e /*matKhauHienTai, matKhauMoi, nhapLaiMatKhau*/
+  ) => {
+    const { name, value } = e.target;
+    setOpenChangePassword(true);
+    setUser({
+      ...profileUser,
+      [name]: value,
+      // matKhau: matKhauHienTai,
+      // matKhauMoi: matKhauMoi,
+      // nhapLaiMatKhau: nhapLaiMatKhau,
+      // maLoaiNguoiDung: "1",
+    });
+  };
+
+  const [openChangePassword, setOpenChangePassword] = useState(false);
   const [open, setOpen] = useState(false);
+
   const handleClose = () => {
     setOpen(false);
+    setOpenChangePassword(false);
   };
 
   const handleChange = (e) => {
@@ -148,11 +185,32 @@ function ProfileUser() {
       ...user,
       [name]: value,
     });
+    console.log("Thông tin user: ", user);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("Chi tiết cập nhật", user);
+    setOpen(false);
     dispatch(updateProfileUserAction(user));
+  };
+
+  const handleSubmitChangePassword = (e) => {
+    e.preventDefault();
+    setOpenChangePassword(false);
+    dispatch(changePasswordAction(user));
+    // if (
+    //   user.matKhau === profileUser[0].matKhau &&
+    //   user.matKhauMoi === user.nhapLaiMatKhau
+    // ) {
+    //   console.log("Đổi mật khẩu", user);
+    //   setOpenChangePassword(false);
+    //   dispatch(changePasswordAction(user));
+    // // } else if (user.matKhau !== profileUser[0].matKhau) {
+    // //   Swal.fire("Thông báo", "Mật khẩu của bạn không đúng", "error");
+    // // } else if (user.matKhauMoi !== user.nhapLaiMatKhau) {
+    // //   Swal.fire("Thông báo", "Mật khẩu không trùng khớp", "error");
+    // // }
   };
 
   const renderModal = () => {
@@ -172,28 +230,16 @@ function ProfileUser() {
         <Fade in={open}>
           <form onSubmit={handleSubmit}>
             <Grid align="center" className={classes.tittle}>
-              <h2>Thay đổi thông tin tài khoản</h2>
+              <h2 style={{ color: "white" }}>Thay đổi thông tin tài khoản</h2>
             </Grid>
             <div style={inputStyle}>
-              <FormLabel style={{ color: "white" }}>Tài khoản:</FormLabel>
+              <FormLabel style={{ color: "white" }}>Họ tên:</FormLabel>
               <CssTextField
                 fullWidth
                 required
-                name="taiKhoan"
+                name="hoTen"
                 onChange={handleChange}
-                value={user.taiKhoan}
-                disabled={true}
-              ></CssTextField>
-            </div>
-            <div style={inputStyle}>
-              <FormLabel style={{ color: "white" }}>Mật khẩu:</FormLabel>
-              <CssTextField
-                type="password"
-                fullWidth
-                required
-                name="matKhau"
-                onChange={handleChange}
-                value={user.matKhau}
+                value={user.hoTen}
               ></CssTextField>
             </div>
             <div style={inputStyle}>
@@ -216,14 +262,72 @@ function ProfileUser() {
                 value={user.SDT}
               ></CssTextField>
             </div>
+            <Button
+              style={{ margin: "20px 0" }}
+              type="submit"
+              color="primary"
+              variant="contained"
+              fullWidth
+            >
+              Thay đổi
+            </Button>
+          </form>
+        </Fade>
+      </Modal>
+    );
+  };
+
+  const renderModalChangePassword = () => {
+    return (
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={openChangePassword}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openChangePassword}>
+          <form onSubmit={handleSubmitChangePassword}>
+            <Grid align="center" className={classes.tittle}>
+              <h2 style={{ color: "white" }}>Thay đổi mật khẩu</h2>
+            </Grid>
             <div style={inputStyle}>
-              <FormLabel style={{ color: "white" }}>Họ tên:</FormLabel>
+              <FormLabel style={{ color: "white" }}>
+                Mật khẩu hiện tại:
+              </FormLabel>
               <CssTextField
+                type="password"
                 fullWidth
                 required
-                name="hoTen"
+                name="matKhau"
                 onChange={handleChange}
-                value={user.hoTen}
+              ></CssTextField>
+            </div>
+            <div style={inputStyle}>
+              <FormLabel style={{ color: "white" }}>Mật khẩu mới:</FormLabel>
+              <CssTextField
+                type="password"
+                fullWidth
+                required
+                name="matKhauMoi"
+                onChange={handleChange}
+              ></CssTextField>
+            </div>
+            <div style={inputStyle}>
+              <FormLabel style={{ color: "white" }}>
+                Nhập lại mật khẩu:
+              </FormLabel>
+              <CssTextField
+                type="password"
+                fullWidth
+                required
+                name="nhapLaiMatKhau"
+                onChange={handleChange}
               ></CssTextField>
             </div>
             <Button
@@ -245,6 +349,7 @@ function ProfileUser() {
     <div>
       {renderThongTinTaiKhoan()}
       {renderModal()}
+      {renderModalChangePassword()}
     </div>
   );
 }

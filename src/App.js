@@ -3,12 +3,11 @@ import HomePage from "./pages/home/HomePage";
 import SignInPage from "./pages/sign-in/SignInPage";
 import SignUpPage from "./pages/sign-up/SignUpPage";
 import ForgotPassword from "./pages/forgot-password/ForgotPassword";
-
 import GuardAdminPage from "./HOC/GuardAdminPage";
 import AdminPage from "./pages/AdminPage";
-
 import { ToastContainer } from "react-toastify";
 import ProfilePage from "./pages/profile-user/ProfilePage";
+
 function App() {
   return (
     <>
@@ -33,6 +32,7 @@ function App() {
           <Route path="/forgot-password" exact={true}>
             <ForgotPassword />
           </Route>
+
           <Route path="/admin" exact={true}>
             <GuardAdminPage>
               <AdminPage />

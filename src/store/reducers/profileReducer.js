@@ -3,6 +3,7 @@ import {
   GET_BOOK_TICKET_CHAIR,
   GET_PROFILE,
   UPDATE_PROFILE,
+  CHANGE_PASSWORD,
 } from "../const/profileConst";
 
 const initialState = {
@@ -32,6 +33,10 @@ export const profileReducer = (state = initialState, { type, payload }) => {
       return { ...state };
     }
     case UPDATE_PROFILE: {
+      state.profileUser = payload;
+      return { ...state };
+    }
+    case CHANGE_PASSWORD: {
       state.profileUser = payload;
       return { ...state };
     }

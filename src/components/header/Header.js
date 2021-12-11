@@ -102,7 +102,7 @@ export default function Header() {
 
   const handleProfile = () => {
     setAnchorEl(null);
-    dispatch(getProfileAction())
+    dispatch(getProfileAction());
     history.push("/profile");
   };
 

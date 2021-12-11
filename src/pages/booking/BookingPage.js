@@ -1,49 +1,49 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
-import Header from '../components/Header';
-import Loading from '../components/Loading';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import Header from "../../components/header/Header";
+import Loading from "../../components/loading-status/Loading";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   bookingTicketAction,
   choiceChairAction,
   getTicketListAction,
-} from '../store/actions/bookingAction';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { Button, Container, Grid } from '@material-ui/core';
-import Swal from 'sweetalert2';
+} from "../../store/actions/bookingAction";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import { Button, Container, Grid } from "@material-ui/core";
+import Swal from "sweetalert2";
 
 const useStyles = makeStyles((theme) => ({
   BookingPage: {
-    paddingTop: '100px',
+    paddingTop: "100px",
   },
   choiceChair: {
-    backgroundColor: '#6645fd !important',
-    color: 'white',
-    '&:hover': {
-      backgroundColor: '#6645fd',
+    backgroundColor: "#6645fd !important",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "#6645fd",
     },
   },
   daDat: {
-    cursor: 'no-drop !important',
+    cursor: "no-drop !important",
   },
   bill: {
     maxHeight: 320,
-    overflowY: 'scroll',
+    overflowY: "scroll",
   },
   wrap: {
-    width: '100vw',
-    overflowY: 'scroll',
+    width: "100vw",
+    overflowY: "scroll",
   },
   fixoverflow: {
-    overflow: 'auto',
-    height: '100%',
+    overflow: "auto",
+    height: "100%",
   },
 }));
 
@@ -98,36 +98,36 @@ function BookingPage() {
   for (let i = 0; i < listChair.length; i++) {
     if (i <= 15) {
       dayGhe[0].push(listChair[i]);
-      listChair[i]['day'] = 0;
+      listChair[i]["day"] = 0;
     } else if (i <= 31) {
       dayGhe[1].push(listChair[i]);
-      listChair[i]['day'] = 1;
+      listChair[i]["day"] = 1;
     } else if (i <= 47) {
       dayGhe[2].push(listChair[i]);
-      listChair[i]['day'] = 2;
+      listChair[i]["day"] = 2;
     } else if (i <= 63) {
       dayGhe[3].push(listChair[i]);
-      listChair[i]['day'] = 3;
+      listChair[i]["day"] = 3;
     } else if (i <= 79) {
       dayGhe[4].push(listChair[i]);
-      listChair[i]['day'] = 4;
+      listChair[i]["day"] = 4;
     } else if (i <= 95) {
       dayGhe[5].push(listChair[i]);
-      listChair[i]['day'] = 5;
+      listChair[i]["day"] = 5;
     } else if (i <= 111) {
       dayGhe[6].push(listChair[i]);
-      listChair[i]['day'] = 6;
+      listChair[i]["day"] = 6;
     } else if (i <= 127) {
       dayGhe[7].push(listChair[i]);
-      listChair[i]['day'] = 7;
+      listChair[i]["day"] = 7;
     } else if (i <= 143) {
       dayGhe[8].push(listChair[i]);
-      listChair[i]['day'] = 8;
+      listChair[i]["day"] = 8;
     } else if (i <= 159) {
       dayGhe[9].push(listChair[i]);
-      listChair[i]['day'] = 9;
+      listChair[i]["day"] = 9;
     }
-    listChair[i]['vitri'] = i % 16;
+    listChair[i]["vitri"] = i % 16;
   }
 
   const renderListChairA = () => {
@@ -135,22 +135,22 @@ function BookingPage() {
       return (
         <button
           style={{
-            cursor: `${chair.daDat ? 'no-drop' : 'pointer'}`,
-            width: '4.5%',
+            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            width: "4.5%",
             minWidth: 30,
             height: 30,
-            margin: '5px',
-            borderRadius: '5px',
-            border: 'none',
-            color: `${chair.loaiGhe === 'Thuong' ? 'white' : 'yellow'}`,
-            backgroundColor: `${chair.daDat ? 'black' : 'rgb(116,112,112)'}`,
+            margin: "5px",
+            borderRadius: "5px",
+            border: "none",
+            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
-          className={chair.dangChon ? classes.choiceChair : ''}
+          className={chair.dangChon ? classes.choiceChair : ""}
           onClick={() => handleChoice(chair)}
           disabled={chair.daDat}
           variant="contained"
         >
-          {chair.daDat ? 'X' : chair.tenGhe}
+          {chair.daDat ? "X" : chair.tenGhe}
         </button>
       );
     });
@@ -161,22 +161,22 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair.daDat ? 'no-drop' : 'pointer'}`,
-            width: '4.5%',
+            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            width: "4.5%",
             minWidth: 30,
             height: 30,
-            margin: '5px',
-            borderRadius: '5px',
-            border: 'none',
-            color: `${chair.loaiGhe === 'Thuong' ? 'white' : 'yellow'}`,
-            backgroundColor: `${chair.daDat ? 'black' : 'rgb(116,112,112)'}`,
+            margin: "5px",
+            borderRadius: "5px",
+            border: "none",
+            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
-          className={chair.dangChon ? classes.choiceChair : ''}
+          className={chair.dangChon ? classes.choiceChair : ""}
           onClick={() => handleChoice(chair)}
           disabled={chair.daDat}
           variant="contained"
         >
-          {chair.daDat ? 'X' : chair.tenGhe}
+          {chair.daDat ? "X" : chair.tenGhe}
         </button>
       );
     });
@@ -187,22 +187,22 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair.daDat ? 'no-drop' : 'pointer'}`,
-            width: '4.5%',
+            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            width: "4.5%",
             minWidth: 30,
             height: 30,
-            margin: '5px',
-            borderRadius: '5px',
-            border: 'none',
-            color: `${chair.loaiGhe === 'Thuong' ? 'white' : 'yellow'}`,
-            backgroundColor: `${chair.daDat ? 'black' : 'rgb(116,112,112)'}`,
+            margin: "5px",
+            borderRadius: "5px",
+            border: "none",
+            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
-          className={chair.dangChon ? classes.choiceChair : ''}
+          className={chair.dangChon ? classes.choiceChair : ""}
           onClick={() => handleChoice(chair)}
           disabled={chair.daDat}
           variant="contained"
         >
-          {chair.daDat ? 'X' : chair.tenGhe}
+          {chair.daDat ? "X" : chair.tenGhe}
         </button>
       );
     });
@@ -213,22 +213,22 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair.daDat ? 'no-drop' : 'pointer'}`,
-            width: '4.5%',
+            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            width: "4.5%",
             minWidth: 30,
             height: 30,
-            margin: '5px',
-            borderRadius: '5px',
-            border: 'none',
-            color: `${chair.loaiGhe === 'Thuong' ? 'white' : 'yellow'}`,
-            backgroundColor: `${chair.daDat ? 'black' : 'rgb(116,112,112)'}`,
+            margin: "5px",
+            borderRadius: "5px",
+            border: "none",
+            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
-          className={chair.dangChon ? classes.choiceChair : ''}
+          className={chair.dangChon ? classes.choiceChair : ""}
           onClick={() => handleChoice(chair)}
           disabled={chair.daDat}
           variant="contained"
         >
-          {chair.daDat ? 'X' : chair.tenGhe}
+          {chair.daDat ? "X" : chair.tenGhe}
         </button>
       );
     });
@@ -239,22 +239,22 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair.daDat ? 'no-drop' : 'pointer'}`,
-            width: '4.5%',
+            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            width: "4.5%",
             minWidth: 30,
             height: 30,
-            margin: '5px',
-            borderRadius: '5px',
-            border: 'none',
-            color: `${chair.loaiGhe === 'Thuong' ? 'white' : 'yellow'}`,
-            backgroundColor: `${chair.daDat ? 'black' : 'rgb(116,112,112)'}`,
+            margin: "5px",
+            borderRadius: "5px",
+            border: "none",
+            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
-          className={chair.dangChon ? classes.choiceChair : ''}
+          className={chair.dangChon ? classes.choiceChair : ""}
           onClick={() => handleChoice(chair)}
           disabled={chair.daDat}
           variant="contained"
         >
-          {chair.daDat ? 'X' : chair.tenGhe}
+          {chair.daDat ? "X" : chair.tenGhe}
         </button>
       );
     });
@@ -265,22 +265,22 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair.daDat ? 'no-drop' : 'pointer'}`,
-            width: '4.5%',
+            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            width: "4.5%",
             minWidth: 30,
             height: 30,
-            margin: '5px',
-            borderRadius: '5px',
-            border: 'none',
-            color: `${chair.loaiGhe === 'Thuong' ? 'white' : 'yellow'}`,
-            backgroundColor: `${chair.daDat ? 'black' : 'rgb(116,112,112)'}`,
+            margin: "5px",
+            borderRadius: "5px",
+            border: "none",
+            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
-          className={chair.dangChon ? classes.choiceChair : ''}
+          className={chair.dangChon ? classes.choiceChair : ""}
           onClick={() => handleChoice(chair)}
           disabled={chair.daDat}
           variant="contained"
         >
-          {chair.daDat ? 'X' : chair.tenGhe}
+          {chair.daDat ? "X" : chair.tenGhe}
         </button>
       );
     });
@@ -291,22 +291,22 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair.daDat ? 'no-drop' : 'pointer'}`,
-            width: '4.5%',
+            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            width: "4.5%",
             minWidth: 30,
             height: 30,
-            margin: '5px',
-            borderRadius: '5px',
-            border: 'none',
-            color: `${chair.loaiGhe === 'Thuong' ? 'white' : 'yellow'}`,
-            backgroundColor: `${chair.daDat ? 'black' : 'rgb(116,112,112)'}`,
+            margin: "5px",
+            borderRadius: "5px",
+            border: "none",
+            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
-          className={chair.dangChon ? classes.choiceChair : ''}
+          className={chair.dangChon ? classes.choiceChair : ""}
           onClick={() => handleChoice(chair)}
           disabled={chair.daDat}
           variant="contained"
         >
-          {chair.daDat ? 'X' : chair.tenGhe}
+          {chair.daDat ? "X" : chair.tenGhe}
         </button>
       );
     });
@@ -317,22 +317,22 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair.daDat ? 'no-drop' : 'pointer'}`,
-            width: '4.5%',
+            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            width: "4.5%",
             minWidth: 30,
             height: 30,
-            margin: '5px',
-            borderRadius: '5px',
-            border: 'none',
-            color: `${chair.loaiGhe === 'Thuong' ? 'white' : 'yellow'}`,
-            backgroundColor: `${chair.daDat ? 'black' : 'rgb(116,112,112)'}`,
+            margin: "5px",
+            borderRadius: "5px",
+            border: "none",
+            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
-          className={chair.dangChon ? classes.choiceChair : ''}
+          className={chair.dangChon ? classes.choiceChair : ""}
           onClick={() => handleChoice(chair)}
           disabled={chair.daDat}
           variant="contained"
         >
-          {chair.daDat ? 'X' : chair.tenGhe}
+          {chair.daDat ? "X" : chair.tenGhe}
         </button>
       );
     });
@@ -343,22 +343,22 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair.daDat ? 'no-drop' : 'pointer'}`,
-            width: '4.5%',
+            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            width: "4.5%",
             minWidth: 30,
             height: 30,
-            margin: '5px',
-            borderRadius: '5px',
-            border: 'none',
-            color: `${chair.loaiGhe === 'Thuong' ? 'white' : 'yellow'}`,
-            backgroundColor: `${chair.daDat ? 'black' : 'rgb(116,112,112)'}`,
+            margin: "5px",
+            borderRadius: "5px",
+            border: "none",
+            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
-          className={chair.dangChon ? classes.choiceChair : ''}
+          className={chair.dangChon ? classes.choiceChair : ""}
           onClick={() => handleChoice(chair)}
           disabled={chair.daDat}
           variant="contained"
         >
-          {chair.daDat ? 'X' : chair.tenGhe}
+          {chair.daDat ? "X" : chair.tenGhe}
         </button>
       );
     });
@@ -369,22 +369,22 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair.daDat ? 'no-drop' : 'pointer'}`,
-            width: '4.5%',
+            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            width: "4.5%",
             minWidth: 30,
             height: 30,
-            margin: '5px',
-            borderRadius: '5px',
-            border: 'none',
-            color: `${chair.loaiGhe === 'Thuong' ? 'white' : 'yellow'}`,
-            backgroundColor: `${chair.daDat ? 'black' : 'rgb(116,112,112)'}`,
+            margin: "5px",
+            borderRadius: "5px",
+            border: "none",
+            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
-          className={chair.dangChon ? classes.choiceChair : ''}
+          className={chair.dangChon ? classes.choiceChair : ""}
           onClick={() => handleChoice(chair)}
           disabled={chair.daDat}
           variant="contained"
         >
-          {chair.daDat ? 'X' : chair.tenGhe}
+          {chair.daDat ? "X" : chair.tenGhe}
         </button>
       );
     });
@@ -407,21 +407,21 @@ function BookingPage() {
   let flag = true;
 
   const handleOneRow = (bookedRow) => {
-    const day = bookedRow[0]['day'];
+    const day = bookedRow[0]["day"];
 
-    let binDemo = '';
+    let binDemo = "";
     for (let i = 0; i < 16; i++) {
-      if (dayGhe[day][i]['daDat'] === true) binDemo += '1';
-      else if (bookedRow.findIndex((e) => e['vitri'] === i) >= 0)
-        binDemo += '1';
-      else binDemo += '0';
+      if (dayGhe[day][i]["daDat"] === true) binDemo += "1";
+      else if (bookedRow.findIndex((e) => e["vitri"] === i) >= 0)
+        binDemo += "1";
+      else binDemo += "0";
     }
 
-    if (binDemo.split('1').findIndex((e) => e === '0') >= 0) {
+    if (binDemo.split("1").findIndex((e) => e === "0") >= 0) {
       Swal.fire(
-        'Thông Báo',
-        'Không được chừa trống ghế ở giữa hoặc ở hai hàng ngoài cùng ',
-        'error'
+        "Thông Báo",
+        "Không được chừa trống ghế ở giữa hoặc ở hai hàng ngoài cùng ",
+        "error"
       );
       flag = false;
     }
@@ -430,9 +430,9 @@ function BookingPage() {
   const handleBooking = () => {
     const listChairChoice = listChair.filter((chair) => chair.dangChon);
     for (let i = 0; i < listChairChoice.length; i++) {
-      dayDat[listChairChoice[i]['day']].push({
-        vitri: listChairChoice[i]['vitri'],
-        day: listChairChoice[i]['day'],
+      dayDat[listChairChoice[i]["day"]].push({
+        vitri: listChairChoice[i]["vitri"],
+        day: listChairChoice[i]["day"],
       });
     }
     for (let i = 0; i < 10; i++) {
@@ -456,16 +456,16 @@ function BookingPage() {
             <Container>
               <Grid container spacing={3}>
                 <Grid item md={8} className={classes.wrap}>
-                  <div style={{ width: '100%' }}>
+                  <div style={{ width: "100%" }}>
                     <img
-                      style={{ width: '100%', minWidth: 700 }}
+                      style={{ width: "100%", minWidth: 700 }}
                       src="https://tix.vn/app/assets/img/icons/screen.png"
                     />
                   </div>
                   <div
                     style={{
-                      textAlign: 'center',
-                      width: '100%',
+                      textAlign: "center",
+                      width: "100%",
                       minWidth: 700,
                     }}
                   >
@@ -491,7 +491,7 @@ function BookingPage() {
                     </TableContainer>
                   </div>
                 </Grid>
-                <Grid item md={4} style={{ margin: 'auto' }}>
+                <Grid item md={4} style={{ margin: "auto" }}>
                   <img
                     src={thongTinPhim?.hinhAnh}
                     alt=""
@@ -503,7 +503,7 @@ function BookingPage() {
                   <p>Địa chỉ: {thongTinPhim?.diaChi}</p>
                   <p>{thongTinPhim?.tenRap}</p>
                   <p>
-                    Ngày chiếu: {thongTinPhim?.ngayChieu} - Giờ chiếu:{' '}
+                    Ngày chiếu: {thongTinPhim?.ngayChieu} - Giờ chiếu:{" "}
                     {thongTinPhim?.gioChieu}
                   </p>
                   <br />
@@ -541,7 +541,7 @@ function BookingPage() {
                       </Table>
                     </TableContainer>
                   </div>
-                  <div style={{ textAlign: 'center', margin: '30px' }}>
+                  <div style={{ textAlign: "center", margin: "30px" }}>
                     <Button
                       disabled={isValid}
                       onClick={handleBooking}

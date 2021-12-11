@@ -122,7 +122,7 @@ export default function AdminPage() {
     //dispatch(signOutActions(history))
     localStorage.clear();
     history.push("/");
-  }
+  };
 
   return (
     <div>
@@ -150,7 +150,6 @@ export default function AdminPage() {
               Quản lý
               {/* //Typography */}
             </Typography>
-
           </Toolbar>
         </AppBar>
         <Drawer
@@ -221,11 +220,8 @@ export default function AdminPage() {
               </ListItemIcon>
               <ListItemText primary="Thống kê" />
             </ListItem>
-            <ListItem
-              button
-              onClick={() => signOut()}
-            >
-              <ListItemIcon >
+            <ListItem button onClick={() => signOut()}>
+              <ListItemIcon>
                 <InsertChart />
               </ListItemIcon>
               <ListItemText primary="Đăng xuất" />
@@ -238,7 +234,6 @@ export default function AdminPage() {
           {option === 2 ? <Movie /> : ""}
           {option === 3 ? <AddShowTime /> : ""}
           {option === 4 ? <ChartAdmin /> : ""}
-
         </main>
       </div>
     </div>

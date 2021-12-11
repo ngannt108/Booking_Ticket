@@ -110,7 +110,10 @@ export const Movie = () => {
               {/* <NavLink to={`/admin/book/${tableMeta.rowData[1]}/edit`}> */}
               <EditRounded
                 onClick={() => (
-                  setIsEdit(true), setError(''), getDetail(tableMeta.rowData[1]), setHinhAnh(tableMeta.rowData[3])
+                  setIsEdit(true),
+                  setError(""),
+                  getDetail(tableMeta.rowData[1]),
+                  setHinhAnh(tableMeta.rowData[3])
                 )}
               ></EditRounded>
               {/* </NavLink> */}
@@ -154,15 +157,15 @@ export const Movie = () => {
   const [error, setError] = useState("");
   const [isEdit, setIsEdit] = useState("");
   const setInitialData = () => {
-    setTenPhim('')
-    setNgayKhoiChieu('')
-    setHinhAnh('')
-    setTrailer('')
-    setThoiLuong('')
-    setMoTa('')
-    setIsAdd(false)
-    setError('')
-  }
+    setTenPhim("");
+    setNgayKhoiChieu("");
+    setHinhAnh("");
+    setTrailer("");
+    setThoiLuong("");
+    setMoTa("");
+    setIsAdd(false);
+    setError("");
+  };
 
   const getDetail = (biDanh) => {
     setBiDanh(biDanh);
@@ -228,7 +231,10 @@ export const Movie = () => {
     <>
       <div className="list">
         <div>
-          <button onClick={setInitialData, () => setIsAdd(true)} className="button">
+          <button
+            onClick={(setInitialData, () => setIsAdd(true))}
+            className="btn btn-success"
+          >
             Thêm phim{" "}
           </button>
           {/* <NavLink to='/admin/movie/add'> </NavLink> */}
@@ -247,10 +253,12 @@ export const Movie = () => {
           </Modal.Header>
           <Modal.Body>Bạn có chắc muốn xóa sách {tenPhim} không?</Modal.Body>
           <Modal.Footer>
-            <button className="btn-OK" onClick={confirmDelete}>
+            <button className="btn btn-warning" onClick={confirmDelete}>
               Delete
             </button>
-            <button onClick={hideModal}>Cancel</button>
+            <button className="btn btn-danger" onClick={hideModal}>
+              Cancel
+            </button>
           </Modal.Footer>
         </Modal>
       </div>
@@ -286,10 +294,10 @@ export const Movie = () => {
             type="text" //file"
             accept=".jpg, .png"
             Label="Hình ảnh"
-            name="hinhAnh"//"file"
+            name="hinhAnh" //"file"
             // value={hinhAnh}
             onChange={(event) => {
-              setHinhAnh(event.target.value)
+              setHinhAnh(event.target.value);
               // console.log("file  hình:", event.target.files);
               // //setHinhAnh(event.target.files[0].name);
               // setFileHinhAnh(event.target.files[0]);
@@ -314,10 +322,12 @@ export const Movie = () => {
         </Modal.Body>
         <p style={{ marginLeft: "20px", color: "red" }}>{error}</p>
         <Modal.Footer>
-          <button className="btn-OK" onClick={addMovie}>
+          <button className="btn btn-success" onClick={addMovie}>
             Submit
           </button>
-          <button onClick={() => setIsAdd(false)}>Cancel</button>
+          <button className="btn btn-danger" onClick={() => setIsAdd(false)}>
+            Cancel
+          </button>
         </Modal.Footer>
       </Modal>
       {/* CHỈNH SỬA THÔNG TIN PHIM  () => setIsEdit(false)*/}
@@ -358,17 +368,17 @@ export const Movie = () => {
             type="text" //file"
             accept=".jpg, .png"
             Label="Hình ảnh"
-            name="hinhAnh"  //"file"
+            name="hinhAnh" //"file"
             value={movie.hinhAnh}
             onChange={HandleChange}
-          // onChange={(event) => {
+            // onChange={(event) => {
 
-          // console.log("file  hình:", event.target.files);
-          // //setHinhAnh(event.target.files[0].name);
-          // setFileHinhAnh(event.target.files[0]);
-          // console.log("file  hình2 :", filehinhAnh);
-          // setHinhAnh(Date.now() + "_" + event.target.files[0].name);
-          // }}
+            // console.log("file  hình:", event.target.files);
+            // //setHinhAnh(event.target.files[0].name);
+            // setFileHinhAnh(event.target.files[0]);
+            // console.log("file  hình2 :", filehinhAnh);
+            // setHinhAnh(Date.now() + "_" + event.target.files[0].name);
+            // }}
           />
           <Input
             Label="Trailer"
@@ -381,10 +391,12 @@ export const Movie = () => {
         </Modal.Body>
         <p style={{ marginLeft: "20px", color: "red" }}>{error}</p>
         <Modal.Footer>
-          <button className="btn-OK" onClick={editMovie}>
+          <button className="btn btn-success" onClick={editMovie}>
             Submit
           </button>
-          <button onClick={() => setIsEdit(false)}>Cancel</button>
+          <button className="btn btn-danger" onClick={() => setIsEdit(false)}>
+            Cancel
+          </button>
         </Modal.Footer>
       </Modal>
     </>
