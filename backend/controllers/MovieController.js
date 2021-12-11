@@ -60,17 +60,26 @@ class MovieController {
       .then((data) => {
         if (data.length != 0) {
           var phim = []
+          var countDuplicate = 0
           data.forEach((showtime) => {
+            countDuplicate = 0
             showtime.lichChieu.forEach((cumRap) => {
               //res.status(404).json(cumRap);
-              if (cumRap.tenCumRap === req.params.maCumRap) {
-                phim.push(showtime)
-                //console.log('cụm rap', cumRap);
 
-                //return phim.push(data)
+              if (cumRap.tenCumRap === req.params.maCumRap) {
+                countDuplicate++
+                console.log('biến đếm', countDuplicate)
               }
+
+              //console.log('cụm rap', cumRap);
+
+              //return phim.push(data)
+
             })
-          })
+            if (countDuplicate > 0) phim.push(showtime)
+          }
+
+          )
           console.log('dữ liệu của phim', phim)
           res.status(200).json(phim);
           // res.status(404).json(phim);

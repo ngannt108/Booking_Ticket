@@ -61,39 +61,8 @@ function Cinema() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  const cinemaList = useSelector((state) => {
-    return state.cinema.cinemaList;
-  });
 
   // ------------------------------------ COL-1 -----------------------------------------
-  // const [selectedCol1Index, setSelectedCol1Index] = useState(null);
-  // const renderCol1 = () => {
-  //   return cinemaList?.map((cinema, index) => {
-  //     const faded = selectedCol1Index != index;
-  //     return (
-  //       <TableRow key={index} style={faded ? fadeAwayStyle : null}>
-  //         <TableCell style={{ padding: 10 }}>
-  //           <Button
-  //             onClick={() => {
-  //               handleChoiceCinema(); //cinema.maHeThongRap
-  //               setSelectedCol1Index(index);
-  //             }}
-  //           >
-  //             <img width="50px" src={cinema.logo} alt="" />
-  //           </Button>
-  //         </TableCell>
-  //       </TableRow>
-  //     );
-  //   });
-  // };
-
-  // const handleChoiceCinema = () => { //cinema
-  //   dispatch(getCinemaClusterAction()); //cinema
-  //   dispatch(getCinemaMovieAction()); //cinema
-  //   setSelectedCol2Index(null);
-  // };
-
-  // ------------------------------------ COL-2 -----------------------------------------
   useEffect(() => {
     dispatch(getCinemaClusterAction())
   }, [])
@@ -129,9 +98,7 @@ function Cinema() {
   };
 
 
-
-
-  // ------------------------------------ COL-3 -----------------------------------------
+  // ------------------------------------ COL-2 -----------------------------------------
 
   // const cinemaMovie = useSelector((state) => {
   //   return state.cinema?.movie;
@@ -189,6 +156,8 @@ function Cinema() {
                   <h4>{movie.tenPhim}</h4>
                 </Button>
                 <div>{movieDetail.tenPhim === movie.tenPhim ? renderNgayChieu() : ""}</div>
+
+                {console.log('movie detail', movieDetail)}
                 <div>
                   {movieDetail.tenPhim === movie.tenPhim && ngayXem !== undefined //ngayXem !== undefined
                     ? renderGioChieu()
@@ -211,28 +180,47 @@ function Cinema() {
     setSuatChieu();
     setNgayXem();
   };
-
+  var ngaychieu = []
+  ngaychieu.push('')
   const renderNgayChieu = () => {
-    return movieDetail.lichChieu?.map((lich, index) => { // return ngayChieu?.map((ngay, index) => {
+    return movieDetail.lichChieu?.map((lich, index) => {
       const flag = activeIndex === index;
-      return (
-        <Button
-          key={index}
-          style={{
-            marginRight: 5,
-            backgroundColor: `${flag ? "#2a85f5" : ""}`,
-            fontSize: 12,
-          }}
-          onClick={() => {
-            handleLayNgayXem(lich.ngayChieu);
-            setActiveIndex(index);
-          }}
-        >
-          {formatDate(lich.ngayChieu)}
-        </Button>
-      );
-    });
-  };
+      var isExist = false;
+      // if (index === 0)
+      //   ngaychieu.push(lich.ngayChieu)
+      // else {
+      ngaychieu.map((ngay) => {
+        if (formatDate(ngay) == formatDate(lich.ngayChieu))
+          isExist = true
+      })
+      if (isExist == false) {
+        ngaychieu.push(lich.ngayChieu)
+        return (
+          <Button
+            key={index}
+            style={{
+              marginRight: 5,
+              backgroundColor: `${flag ? "#2a85f5" : ""}`,
+              fontSize: 12,
+            }}
+            onClick={() => {
+              handleLayNgayXem(lich.ngayChieu)//.ngayChieu);
+              setActiveIndex(index);
+            }}
+          >
+            {console.log('laylich', formatDate(lich))}
+            {formatDate(lich.ngayChieu)}
+            {/* //.ngayChieu)} */}
+          </Button>
+        );
+      }
+      //}
+      console.log('ngày chiếu trong trang chủ', ngaychieu, index)
+
+    })
+
+  }
+
   const [ngayXem, setNgayXem] = useState();
   const [suatChieu, setSuatChieu] = useState();
 
@@ -244,17 +232,20 @@ function Cinema() {
 
   const renderGioChieu = () => {
     return movieDetail.lichChieu?.map((lich, index) => {
-      return (
-        <Button
-          key={index}
-          onClick={() => {
-            setSuatChieu(lich);
-          }}
-        >
-          {formatTime(lich.ngayChieu)}
-        </Button>
-      );
-    });
+      if (formatDate(lich.ngayChieu) === formatDate(ngayXem)) {
+
+        return (
+          <Button
+            onClick={() => {
+              setSuatChieu(lich.ngayChieu);
+            }}
+          >
+            {formatTime(lich.ngayChieu)}
+            {/* ngayXem */}
+          </Button>)
+      }
+    })
+
   };
   useEffect(() => {
     if (ngayXem !== undefined && suatChieu !== undefined) {

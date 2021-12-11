@@ -237,6 +237,7 @@ function ProfileUser() {
             </Button>
           </form>
         </Fade>
+
       </Modal>
     );
   };

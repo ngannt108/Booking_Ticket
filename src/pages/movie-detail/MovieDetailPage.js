@@ -3,14 +3,14 @@ import { Tabs, Tab } from "@material-ui/core";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import { makeStyles } from "@material-ui/core/styles";
-import LichChieu from "../components/LichChieu";
-import ThongTin from "../components/ThongTin";
-import Loading from "../components/Loading";
+import LichChieu from "../../components/movie-detail/LichChieu";
+import ThongTin from "../../components/movie-detail/ThongTin";
+import Loading from "../../components/loading-status/Loading"
 import Grid from "@material-ui/core/Grid";
 import format from "date-format";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import DanhGia from "../components/DanhGia";
+import DanhGia from "../../components/movie-detail/DanhGia";
 
 const useStyles = makeStyles((theme) => ({
   movieDetailPage: {
@@ -34,12 +34,12 @@ function MovieDetailPage() {
   const [error, setError] = useState("");
   const [movieDetail, setMovieDetail] = useState(null);
 
-  const { movieCode } = useParams();
+  const { biDanh } = useParams();
 
   const getMovieDetail = async () => {
     try {
       const res = await axios({
-        url: `https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/LayThongTinPhim?MaPhim=${movieCode}`,
+        url: `http://localhost:5000/movie/${biDanh}`,
         method: "GET",
       });
       setMovieDetail(res.data);
@@ -48,7 +48,6 @@ function MovieDetailPage() {
       setError("404 page not found");
     }
   };
-  console.log(movieDetail);
 
   useEffect(() => {
     getMovieDetail();
@@ -65,7 +64,6 @@ function MovieDetailPage() {
     background: "rgba(10, 32, 41, 0.5)",
     backdropFilter: "blur(20px)",
   };
-
   return (
     <>
       {error ? (
@@ -78,7 +76,7 @@ function MovieDetailPage() {
             <h1>
               <div
                 style={{
-                  backgroundImage: `url(${movieDetail.hinhAnh})`,
+                  backgroundImage: `url(${movieDetail[0].hinhAnh})`,
                   backgroundSize: "cover",
                   backgroundPosition: "top",
                 }}
@@ -90,21 +88,22 @@ function MovieDetailPage() {
                       <Grid item xs={12} sm={5}>
                         <img
                           className={classes.img}
-                          src={movieDetail.hinhAnh}
+                          src={movieDetail[0].hinhAnh}
                           alt=""
                         />
                       </Grid>
                       <Grid item xs={12} sm={7}>
                         <div className={classes.detail}>
-                          <h2>{movieDetail.tenPhim}</h2>
+                          <h2>{movieDetail[0].tenPhim}</h2>
                           <h6>
                             Ngày khởi chiếu:{" "}
                             {format(
                               "MM/dd/yyyy",
-                              new Date(movieDetail.ngayKhoiChieu)
+                              new Date(movieDetail[0].ngayKhoiChieu)
                             )}
                           </h6>
-                          <h6>Đánh giá: {movieDetail.danhGia}/10</h6>
+                          <h6>Đánh giá: {movieDetail[0].danhGia}/10</h6>
+                          <h6>Thời lượng: {movieDetail[0].thoiLuong} phút</h6>
                         </div>
                       </Grid>
                     </Grid>
@@ -117,7 +116,7 @@ function MovieDetailPage() {
                       <LichChieu maPhim={movieDetail?.maPhim} />
                     )}
                     {selectedTab === 1 && (
-                      <ThongTin movieDetail={movieDetail} />
+                      <ThongTin movieDetail={movieDetail[0]} />
                     )}
                     {selectedTab === 2 && <DanhGia />}
                   </div>

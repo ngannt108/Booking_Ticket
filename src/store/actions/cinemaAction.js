@@ -16,23 +16,23 @@ import {
   LAY_THONG_TIN_LICH_CHIEU_PHIM,
 } from "../const/cinemaConst";
 
-export const getCinemaListAction = () => {
-  return async (dispatch) => {
-    try {
-      const res = await axios({
-        url: "http://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinHeThongRap",
-        method: "GET",
-      });
-      //   console.log(res.data);
-      dispatch({
-        type: GET_CINEMA_LIST,
-        payload: res.data,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
+// export const getCinemaListAction = () => {
+//   return async (dispatch) => {
+//     try {
+//       const res = await axios({
+//         url: "http://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinHeThongRap",
+//         method: "GET",
+//       });
+//       //   console.log(res.data);
+//       dispatch({
+//         type: GET_CINEMA_LIST,
+//         payload: res.data,
+//       });
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// };
 
 export const getCinemaClusterAction = () => { //maRap
   return async (dispatch) => {
@@ -89,19 +89,19 @@ export const getMovieAction = (rap) => {
 
 };
 
-export const layTenPhimAction = (tenPhim) => {
-  return {
-    type: LAY_TEN_PHIM,
-    payload: tenPhim,
-  };
-};
+// export const layTenPhimAction = (tenPhim) => {
+//   return {
+//     type: LAY_TEN_PHIM,
+//     payload: tenPhim,
+//   };
+// };
 
-export const layNgayXemAction = (ngayXem) => {
-  return {
-    type: LAY_NGAY_XEM,
-    payload: ngayXem,
-  };
-};
+// export const layNgayXemAction = (ngayXem) => {
+//   return {
+//     type: LAY_NGAY_XEM,
+//     payload: ngayXem,
+//   };
+// };
 
 export const layChiTietAction = (gio, ngayXem) => {
   return {
