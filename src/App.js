@@ -7,7 +7,7 @@ import GuardAdminPage from "./HOC/GuardAdminPage";
 import AdminPage from "./pages/AdminPage";
 import { ToastContainer } from "react-toastify";
 import ProfilePage from "./pages/profile-user/ProfilePage";
-
+import MovieDetailPage from "./pages/movie-detail/MovieDetailPage";
 function App() {
   return (
     <>
@@ -32,7 +32,9 @@ function App() {
           <Route path="/forgot-password" exact={true}>
             <ForgotPassword />
           </Route>
-
+          <Route path="/movie-detail/:biDanh" exact={true}>
+            <MovieDetailPage />
+          </Route>
           <Route path="/admin" exact={true}>
             <GuardAdminPage>
               <AdminPage />

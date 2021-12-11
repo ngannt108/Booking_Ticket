@@ -10,7 +10,7 @@ import Footer from "../../components/footer/Footer";
 import { useDispatch } from "react-redux";
 import { getMovieListNowShowingAction } from "../../store/actions/movieAction";
 import Cinema from "../../components/cinema/Cinema";
-import { getCinemaListAction } from "../../store/actions/cinemaAction";
+//import { getCinemaListAction } from "../../store/actions/cinemaAction";
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ export default function HomePage() {
   //   dispatch(getMovieListUpComingAction());
   // }, []);
   useEffect(() => {
-    dispatch(getCinemaListAction());
+    // dispatch(getCinemaListAction());
   }, [dispatch]);
   return (
     <>
