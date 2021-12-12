@@ -69,23 +69,19 @@ export const choiceChairAction = (chair) => {
   };
 };
 
-export const bookingTicketAction = (maLichChieu, danhSachVe) => {
+export const bookingTicketAction = (IDshowtime, biDanh, { danhSachGhe }) => {
   let isLoading = true;
   return async (dispatch) => {
     dispatch(setBtnLoadingAction(isLoading));
     try {
       // get localStorage
       const token = JSON.parse(localStorage.getItem("token"));
-      const taiKhoan = JSON.parse(localStorage.getItem("taiKhoan"));
-
+      //const taiKhoan = JSON.parse(localStorage.getItem("taiKhoan"));
+      console.log('danh sách ghế, dispatch', danhSachGhe)
       const res = await axios({
-        url: "https://movie0706.cybersoft.edu.vn/api/QuanLyDatVe/DatVe",
+        url: `http://localhost:5000/user/${biDanh}/showtime/${IDshowtime}`,
         method: "POST",
-        data: {
-          maLichChieu,
-          danhSachVe,
-          taiKhoanNguoiDung: taiKhoan,
-        },
+        data: { danhSachGhe },
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -93,7 +89,7 @@ export const bookingTicketAction = (maLichChieu, danhSachVe) => {
       isLoading = false;
       dispatch(setBtnLoadingAction(isLoading));
       Swal.fire("Thông Báo", "Bạn đã đặt vé thành công", "success");
-      dispatch(await getTicketListAction(maLichChieu));
+      dispatch(await getTicketListAction(biDanh, IDshowtime));
       dispatch({
         type: DAT_VE_THANH_CONG,
       });
