@@ -3,3 +3,5 @@ export const CHOICE_CHAIR = 'CHOICE_CHAIR';
 export const DAT_VE_THANH_CONG = 'DAT_VE_THANH_CONG';
 export const SET_LOADING = 'SET_LOADING';
 export const SET_BTN_LOADING = 'SET_BTN_LOADING';
+export const GET_CHAIR_BOOKED_LIST = 'GET_CHAIR_BOOKED_LIST';
+export const GET_INFO_MOVIE = 'GET_INFO_MOVIE'

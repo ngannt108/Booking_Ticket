@@ -6,6 +6,8 @@ import {
   GET_CHAIR_LIST,
   SET_LOADING,
   SET_BTN_LOADING,
+  GET_CHAIR_BOOKED_LIST,
+  GET_INFO_MOVIE,
 } from "../const/bookingConst";
 
 export const setLoadingAction = (data) => {
@@ -22,20 +24,35 @@ export const setBtnLoadingAction = (data) => {
   };
 };
 
-export const getTicketListAction = (biDanh) => {
+export const getTicketListAction = (biDanh, showTimeCode) => {  //XONG
   let isLoading = true;
   return async (dispatch) => {
     dispatch(setLoadingAction(isLoading));
     try {
       const res = await axios({
         method: "GET",
-        url: `http://localhost:5000/user/${biDanh}/showtime/getchair`,
+        url: `http://localhost:5000/movie/${biDanh}`,
       });
       isLoading = false;
+      var rap;
       dispatch(setLoadingAction(isLoading));
+
+      res.data[0].lichChieu.forEach((lich) => {
+        if (lich._id == showTimeCode)
+          rap = lich
+      })
+      console.log('data', rap)
       dispatch({
         type: GET_CHAIR_LIST,
-        payload: res.data,
+        payload: rap.tenRap, //res.data
+      });
+      dispatch({
+        type: GET_CHAIR_BOOKED_LIST,
+        payload: rap.gheDaChon, //res.data
+      });
+      dispatch({
+        type: GET_INFO_MOVIE,
+        payload: rap, //res.data
       });
     } catch (error) {
       console.log(error);

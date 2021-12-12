@@ -52,17 +52,40 @@ function BookingPage() {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
-  const { biDanh, setMovie } = useParams();
+  const { biDanh, showTimeCode } = useParams();
+  const [movie, setMovie] = useState('')
   // console.log(showTimeCode);
   useEffect(
     () => {
-      dispatch(getMovieDetailAction(biDanh, setMovie));
+      dispatch(getTicketListAction(biDanh, showTimeCode));
     },
     [
       /*dispatch, biDanh*/
     ]
   );
+  const formatDate = (date) => {
+    if (date) {
+      const d = new Date(date); //d.toLocaleString("en-AU")//
 
+      return d.toLocaleString("en-AU", {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+      }); // `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
+    }
+    return "";
+  };
+  const formatTime = (date) => {
+    if (date) {
+      const d = new Date(date); //d.toLocaleString("en-AU")//
+      const time = d.toLocaleString("en-AU", {
+        hour: "numeric",
+        minute: "numeric",
+      });
+      return time;
+    }
+    return "";
+  };
   const isLoading = useSelector((state) => {
     return state.booking.isLoading;
   });
@@ -72,13 +95,28 @@ function BookingPage() {
   });
 
   const thongTinPhim = useSelector((state) => {
-    return state.booking.thongTinPhim.thongTinPhim;
+    return state.booking.thongTinPhim;
   });
+  // console.log('Thông tin phim', thongTinPhim)
 
   const listChair = useSelector((state) => {
-    return state.booking.listChair;
+    return state.booking.listChair; //XONG
   });
-  //console.log(listChair);
+  const listChairBooked = useSelector((state) => {
+    return state.booking.listChairBooked; //XONG
+  });
+
+  // console.log('ghế trong rạp', listChair)
+  // console.log('ghế đã chọn trong rạp', listChairBooked)
+  // debugger;
+  for (var i = 0; i < listChairBooked.length; i++) {
+    for (var j = 0; j < listChair.length; j++) {
+      if (listChairBooked[i] === listChair[j]) {
+        listChair[j] = 'X'
+      }
+    }
+  }
+
 
   const [isValid, setIsValid] = useState(true);
   const chairDangChon = listChair.filter((chair) => chair.dangChon);
@@ -94,40 +132,56 @@ function BookingPage() {
   useEffect(() => {
     setIsValid(isBtnLoading);
   }, [isBtnLoading]);
-
+  //const [chairArray, setChairArray] = useState([])
+  let chairArray = []
+  //const [isSelect, setIsSelect] = useState(false)
+  const [chairIsSelect, setChairIsSelect] = useState([])
+  const isSelect = useSelector(state => state.booking.listChairSelected)
   const handleChoice = (chair) => {
+    chairArray.push(chair) //A1, B2
+    //setChairIsSelect(chair)
+    // // var chairArray=[]
+    // 
+    console.log('mảng', chairArray)
     dispatch(choiceChairAction(chair));
   };
+
   let dayDat = [[], [], [], [], [], [], [], [], [], []];
   let dayGhe = [[], [], [], [], [], [], [], [], [], []];
 
   for (let i = 0; i < listChair.length; i++) {
     if (i <= 9) {
       dayGhe[0].push(listChair[i]);
-      listChair[i]["day"] = 0;
+      //listChair[i] = 0; //["day"]
     } else if (i <= 19) {
       dayGhe[1].push(listChair[i]);
-      listChair[i]["day"] = 1;
+      // listChair[i] = 1;
     } else if (i <= 29) {
       dayGhe[2].push(listChair[i]);
-      listChair[i]["day"] = 2;
+      // listChair[i] = 2;
     } else if (i <= 39) {
       dayGhe[3].push(listChair[i]);
-      listChair[i]["day"] = 3;
+      // listChair[i] = 3;
     } else if (i <= 49) {
       dayGhe[4].push(listChair[i]);
-      listChair[i]["day"] = 4;
+      // listChair[i] = 4;
     } else if (i <= 59) {
       dayGhe[5].push(listChair[i]);
-      listChair[i]["day"] = 5;
+      //  listChair[i] = 5;
     } else if (i <= 69) {
       dayGhe[6].push(listChair[i]);
-      listChair[i]["day"] = 6;
+      //  listChair[i] = 6;
     } else if (i <= 79) {
       dayGhe[7].push(listChair[i]);
-      listChair[i]["day"] = 7;
+      // listChair[i] = 7;
     }
-    listChair[i]["vitri"] = i % 10;
+    // listChair[i] = i % 10; //[vitri]
+  }
+  const chairColor = (chair) => {
+    var result = false
+    if (chair == 'X')
+      result = true
+    return result
   }
 
   const renderListChairA = () => {
@@ -135,22 +189,32 @@ function BookingPage() {
       return (
         <button
           style={{
-            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            cursor: `${chair == 'X' ? "no-drop" : "pointer"}`,
             width: "4.5%",
             minWidth: 30,
             height: 30,
             margin: "5px",
             borderRadius: "5px",
             border: "none",
-            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
-            backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
+            color: "white", //`${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            backgroundColor: `${chair == 'X' ? "black" : "rgb(116,112,112)"}`,
           }}
-          className={chair.dangChon ? classes.choiceChair : ""}
-          onClick={() => handleChoice(chair)}
-          disabled={chair.daDat}
+          onClick={(e) => {
+            if (e.target.classList[0] === 'makeStyles-choiceChair-24')
+              e.target.classList.remove('makeStyles-choiceChair-24')
+            else
+              e.target.classList.add('makeStyles-choiceChair-24')
+            handleChoice(chair)
+
+          }}
+
+          disabled={chairColor(chair)}
+          // chairColor(chair)
           variant="contained"
         >
-          {chair.daDat ? "X" : chair.tenGhe}
+
+          {chair}
+          {/* //chair.daDat ? "X" : */}
         </button>
       );
     });
@@ -161,22 +225,29 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            cursor: `${chair == 'X' ? "no-drop" : "pointer"}`,
             width: "4.5%",
             minWidth: 30,
             height: 30,
             margin: "5px",
             borderRadius: "5px",
             border: "none",
-            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            color: "white",
             backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
-          className={chair.dangChon ? classes.choiceChair : ""}
-          onClick={() => handleChoice(chair)}
-          disabled={chair.daDat}
+
+          onClick={(e) => {
+            if (e.target.classList[0] === 'makeStyles-choiceChair-24')
+              e.target.classList.remove('makeStyles-choiceChair-24')
+            else
+              e.target.classList.add('makeStyles-choiceChair-24')
+            handleChoice(chair)
+
+          }}
+          disabled={chairColor(chair)}
           variant="contained"
         >
-          {chair.daDat ? "X" : chair.tenGhe}
+          {chair}
         </button>
       );
     });
@@ -187,22 +258,29 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            cursor: `${chair == 'X' ? "no-drop" : "pointer"}`,
             width: "4.5%",
             minWidth: 30,
             height: 30,
             margin: "5px",
             borderRadius: "5px",
             border: "none",
-            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            color: "white",
             backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
-          onClick={() => handleChoice(chair)}
-          disabled={chair.daDat}
+          onClick={(e) => {
+            if (e.target.classList[0] === 'makeStyles-choiceChair-24')
+              e.target.classList.remove('makeStyles-choiceChair-24')
+            else
+              e.target.classList.add('makeStyles-choiceChair-24')
+            handleChoice(chair)
+
+          }}
+          disabled={chairColor(chair)}
           variant="contained"
         >
-          {chair.daDat ? "X" : chair.tenGhe}
+          {chair}
         </button>
       );
     });
@@ -213,22 +291,29 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            cursor: `${chair == 'X' ? "no-drop" : "pointer"}`,
             width: "4.5%",
             minWidth: 30,
             height: 30,
             margin: "5px",
             borderRadius: "5px",
             border: "none",
-            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            color: "white",
             backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
-          onClick={() => handleChoice(chair)}
-          disabled={chair.daDat}
+          onClick={(e) => {
+            if (e.target.classList[0] === 'makeStyles-choiceChair-24')
+              e.target.classList.remove('makeStyles-choiceChair-24')
+            else
+              e.target.classList.add('makeStyles-choiceChair-24')
+            handleChoice(chair)
+
+          }}
+          disabled={chairColor(chair)}
           variant="contained"
         >
-          {chair.daDat ? "X" : chair.tenGhe}
+          {chair}
         </button>
       );
     });
@@ -239,22 +324,29 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            cursor: `${chair == 'X' ? "no-drop" : "pointer"}`,
             width: "4.5%",
             minWidth: 30,
             height: 30,
             margin: "5px",
             borderRadius: "5px",
             border: "none",
-            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            color: "white",
             backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
-          onClick={() => handleChoice(chair)}
-          disabled={chair.daDat}
+          onClick={(e) => {
+            if (e.target.classList[0] === 'makeStyles-choiceChair-24')
+              e.target.classList.remove('makeStyles-choiceChair-24')
+            else
+              e.target.classList.add('makeStyles-choiceChair-24')
+            handleChoice(chair)
+
+          }}
+          disabled={chairColor(chair)}
           variant="contained"
         >
-          {chair.daDat ? "X" : chair.tenGhe}
+          {chair}
         </button>
       );
     });
@@ -265,22 +357,29 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            cursor: `${chair == 'X' ? "no-drop" : "pointer"}`,
             width: "4.5%",
             minWidth: 30,
             height: 30,
             margin: "5px",
             borderRadius: "5px",
             border: "none",
-            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            color: "white",
             backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
-          onClick={() => handleChoice(chair)}
-          disabled={chair.daDat}
+          onClick={(e) => {
+            if (e.target.classList[0] === 'makeStyles-choiceChair-24')
+              e.target.classList.remove('makeStyles-choiceChair-24')
+            else
+              e.target.classList.add('makeStyles-choiceChair-24')
+            handleChoice(chair)
+
+          }}
+          disabled={chairColor(chair)}
           variant="contained"
         >
-          {chair.daDat ? "X" : chair.tenGhe}
+          {chair}
         </button>
       );
     });
@@ -291,22 +390,29 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            cursor: `${chair == 'X' ? "no-drop" : "pointer"}`,
             width: "4.5%",
             minWidth: 30,
             height: 30,
             margin: "5px",
             borderRadius: "5px",
             border: "none",
-            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            color: "white",
             backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
-          onClick={() => handleChoice(chair)}
-          disabled={chair.daDat}
+          onClick={(e) => {
+            if (e.target.classList[0] === 'makeStyles-choiceChair-24')
+              e.target.classList.remove('makeStyles-choiceChair-24')
+            else
+              e.target.classList.add('makeStyles-choiceChair-24')
+            handleChoice(chair)
+
+          }}
+          disabled={chairColor(chair)}
           variant="contained"
         >
-          {chair.daDat ? "X" : chair.tenGhe}
+          {chair}
         </button>
       );
     });
@@ -317,22 +423,29 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
+            cursor: `${chair == 'X' ? "no-drop" : "pointer"}`,
             width: "4.5%",
             minWidth: 30,
             height: 30,
             margin: "5px",
             borderRadius: "5px",
             border: "none",
-            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
+            color: "white",
             backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
-          onClick={() => handleChoice(chair)}
-          disabled={chair.daDat}
+          onClick={(e) => {
+            if (e.target.classList[0] === 'makeStyles-choiceChair-24')
+              e.target.classList.remove('makeStyles-choiceChair-24')
+            else
+              e.target.classList.add('makeStyles-choiceChair-24')
+            handleChoice(chair)
+
+          }}
+          disabled={chairColor(chair)}
           variant="contained"
         >
-          {chair.daDat ? "X" : chair.tenGhe}
+          {chair}
         </button>
       );
     });
@@ -422,6 +535,7 @@ function BookingPage() {
                       >
                         <TableHead></TableHead>
                         <TableBody>
+
                           <TableRow>{renderListChairA()}</TableRow>
                           <TableRow>{renderListChairB()}</TableRow>
                           <TableRow>{renderListChairC()}</TableRow>
@@ -442,12 +556,13 @@ function BookingPage() {
                     width="100%"
                     height="auto"
                   />
-                  <p>Tên phim: {thongTinPhim?.tenPhim}</p>
-                  <p>Rạp: {thongTinPhim?.tenCumRap}</p>
-                  <p>{thongTinPhim?.tenRap}</p>
+                  {/* <p>Tên phim: {thongTinPhim?.tenPhim}</p> */}
+                  <p>Cụm rạp: {thongTinPhim?.tenCumRap?.tenCumRap}</p>
+                  <p>{thongTinPhim?.tenRap?.tenRap}</p>
+                  {/*  */}
                   <p>
-                    Ngày chiếu: {thongTinPhim?.ngayChieu} - Giờ chiếu:{" "}
-                    {thongTinPhim?.gioChieu}
+                    Ngày chiếu: {formatDate(thongTinPhim?.ngayChieu)} - Giờ chiếu:{" "}
+                    {formatTime(thongTinPhim?.ngayChieu)}
                   </p>
                   <br />
                   <hr />
