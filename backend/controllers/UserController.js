@@ -164,8 +164,8 @@ class UserController {
         if (bcrypt.compareSync(req.body.matKhau, user.matKhau)) {
           if (req.body.matKhauMoi === req.body.nhapLaiMatKhau) {
             const hashPassword = bcrypt.hashSync(req.body.matKhauMoi, 10);
-            User.findByIdAndUpdate(req.params.id, { matKhau: hashPassword })
-              .then(res.status(200).json("Cập nhật thành công"))
+            User.findByIdAndUpdate(req.user, { matKhau: hashPassword })
+              .then((updateinfo) => res.status(200).json(updateinfo))
               .catch((err) => {
                 res.status(500).json({ error: "Cập nhật thất bại" });
                 // err = new Error('Cập nhật thất bại');

@@ -167,7 +167,7 @@ function Cinema() {
                 {console.log("movie detail", movieDetail)}
                 <div>
                   {movieDetail.tenPhim === movie.tenPhim &&
-                  ngayXem !== undefined //ngayXem !== undefined
+                    ngayXem !== undefined //ngayXem !== undefined
                     ? renderGioChieu()
                     : ""}
                 </div>
@@ -243,7 +243,7 @@ function Cinema() {
         return (
           <Button
             onClick={() => {
-              setMaLichChieu(lich._id);
+              setMaLichChieu(lich._id)
               setSuatChieu(lich.ngayChieu);
             }}
           >

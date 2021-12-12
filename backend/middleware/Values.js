@@ -59,6 +59,20 @@ exports.validationUser = [
         .withMessage('Định dạng số điện thoại chưa phù hợp')
 
 ]
+
+exports.validationChangePassword = [
+    check('matKhau')
+        .notEmpty()
+        .withMessage('Bạn chưa nhập mật khẩu'),
+    check('matKhauMoi')
+        .notEmpty()
+        .withMessage('Vui lòng nhập gmail'),
+    check('nhapLaiMatKhau')
+        .notEmpty()
+        .withMessage('Vui lòng nhập gmail'),
+
+]
+
 exports.validationSignIn = [
     check('taiKhoan')
         .notEmpty()
