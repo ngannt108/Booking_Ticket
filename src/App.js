@@ -4,10 +4,12 @@ import SignInPage from "./pages/sign-in/SignInPage";
 import SignUpPage from "./pages/sign-up/SignUpPage";
 import ForgotPassword from "./pages/forgot-password/ForgotPassword";
 import GuardAdminPage from "./HOC/GuardAdminPage";
-import AdminPage from "./pages/AdminPage";
+import GuardBooking from "./HOC/GuardBooking";
+import AdminPage from "./pages/admin/AdminPage";
 import { ToastContainer } from "react-toastify";
 import ProfilePage from "./pages/profile-user/ProfilePage";
 import MovieDetailPage from "./pages/movie-detail/MovieDetailPage";
+import BookingPage from "./pages/booking/BookingPage";
 function App() {
   return (
     <>
@@ -15,6 +17,12 @@ function App() {
         <Switch>
           <Route path="/" exact={true}>
             <HomePage />
+          </Route>
+
+          <Route path="/:biDanh/booking/:showTimeCode" exact={true}>
+            <GuardBooking>
+              <BookingPage />
+            </GuardBooking>
           </Route>
 
           <Route path="/sign-in" exact={true}>

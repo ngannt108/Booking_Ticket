@@ -9,6 +9,7 @@ import {
   choiceChairAction,
   getTicketListAction,
 } from "../../store/actions/bookingAction";
+import { getMovieDetailAction } from "../../store/actions/movieAction";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -51,11 +52,16 @@ function BookingPage() {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
-  const { showTimeCode } = useParams();
+  const { biDanh, setMovie } = useParams();
   // console.log(showTimeCode);
-  useEffect(() => {
-    dispatch(getTicketListAction(showTimeCode));
-  }, [dispatch, showTimeCode]);
+  useEffect(
+    () => {
+      dispatch(getMovieDetailAction(biDanh, setMovie));
+    },
+    [
+      /*dispatch, biDanh*/
+    ]
+  );
 
   const isLoading = useSelector((state) => {
     return state.booking.isLoading;
@@ -72,7 +78,7 @@ function BookingPage() {
   const listChair = useSelector((state) => {
     return state.booking.listChair;
   });
-  //   console.log(listChair);
+  //console.log(listChair);
 
   const [isValid, setIsValid] = useState(true);
   const chairDangChon = listChair.filter((chair) => chair.dangChon);
@@ -96,38 +102,32 @@ function BookingPage() {
   let dayGhe = [[], [], [], [], [], [], [], [], [], []];
 
   for (let i = 0; i < listChair.length; i++) {
-    if (i <= 15) {
+    if (i <= 9) {
       dayGhe[0].push(listChair[i]);
       listChair[i]["day"] = 0;
-    } else if (i <= 31) {
+    } else if (i <= 19) {
       dayGhe[1].push(listChair[i]);
       listChair[i]["day"] = 1;
-    } else if (i <= 47) {
+    } else if (i <= 29) {
       dayGhe[2].push(listChair[i]);
       listChair[i]["day"] = 2;
-    } else if (i <= 63) {
+    } else if (i <= 39) {
       dayGhe[3].push(listChair[i]);
       listChair[i]["day"] = 3;
-    } else if (i <= 79) {
+    } else if (i <= 49) {
       dayGhe[4].push(listChair[i]);
       listChair[i]["day"] = 4;
-    } else if (i <= 95) {
+    } else if (i <= 59) {
       dayGhe[5].push(listChair[i]);
       listChair[i]["day"] = 5;
-    } else if (i <= 111) {
+    } else if (i <= 69) {
       dayGhe[6].push(listChair[i]);
       listChair[i]["day"] = 6;
-    } else if (i <= 127) {
+    } else if (i <= 79) {
       dayGhe[7].push(listChair[i]);
       listChair[i]["day"] = 7;
-    } else if (i <= 143) {
-      dayGhe[8].push(listChair[i]);
-      listChair[i]["day"] = 8;
-    } else if (i <= 159) {
-      dayGhe[9].push(listChair[i]);
-      listChair[i]["day"] = 9;
     }
-    listChair[i]["vitri"] = i % 16;
+    listChair[i]["vitri"] = i % 10;
   }
 
   const renderListChairA = () => {
@@ -337,67 +337,13 @@ function BookingPage() {
       );
     });
   };
-  const renderListChairI = () => {
-    return dayGhe[8]?.map((chair, index) => {
-      return (
-        <button
-          key={index}
-          style={{
-            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
-            width: "4.5%",
-            minWidth: 30,
-            height: 30,
-            margin: "5px",
-            borderRadius: "5px",
-            border: "none",
-            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
-            backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
-          }}
-          className={chair.dangChon ? classes.choiceChair : ""}
-          onClick={() => handleChoice(chair)}
-          disabled={chair.daDat}
-          variant="contained"
-        >
-          {chair.daDat ? "X" : chair.tenGhe}
-        </button>
-      );
-    });
-  };
-  const renderListChairJ = () => {
-    return dayGhe[9]?.map((chair, index) => {
-      return (
-        <button
-          key={index}
-          style={{
-            cursor: `${chair.daDat ? "no-drop" : "pointer"}`,
-            width: "4.5%",
-            minWidth: 30,
-            height: 30,
-            margin: "5px",
-            borderRadius: "5px",
-            border: "none",
-            color: `${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
-            backgroundColor: `${chair.daDat ? "black" : "rgb(116,112,112)"}`,
-          }}
-          className={chair.dangChon ? classes.choiceChair : ""}
-          onClick={() => handleChoice(chair)}
-          disabled={chair.daDat}
-          variant="contained"
-        >
-          {chair.daDat ? "X" : chair.tenGhe}
-        </button>
-      );
-    });
-  };
 
   const renderTable = () => {
     return listChair?.map((chair, index) => {
       if (chair.dangChon) {
         return (
           <TableRow key={index}>
-            <TableCell>{chair.tenGhe}</TableCell>
-            <TableCell>{chair.loaiGhe}</TableCell>
-            <TableCell>{chair.giaVe}</TableCell>
+            <TableCell>{chair.ghe}</TableCell>
           </TableRow>
         );
       }
@@ -410,7 +356,7 @@ function BookingPage() {
     const day = bookedRow[0]["day"];
 
     let binDemo = "";
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < 10; i++) {
       if (dayGhe[day][i]["daDat"] === true) binDemo += "1";
       else if (bookedRow.findIndex((e) => e["vitri"] === i) >= 0)
         binDemo += "1";
@@ -441,7 +387,7 @@ function BookingPage() {
       }
     }
     if (flag) {
-      dispatch(bookingTicketAction(showTimeCode, listChairChoice, history));
+      dispatch(bookingTicketAction(biDanh, listChairChoice, history));
     }
   };
 
@@ -484,8 +430,6 @@ function BookingPage() {
                           <TableRow>{renderListChairF()}</TableRow>
                           <TableRow>{renderListChairG()}</TableRow>
                           <TableRow>{renderListChairH()}</TableRow>
-                          <TableRow>{renderListChairI()}</TableRow>
-                          <TableRow>{renderListChairJ()}</TableRow>
                         </TableBody>
                       </Table>
                     </TableContainer>
@@ -500,7 +444,6 @@ function BookingPage() {
                   />
                   <p>Tên phim: {thongTinPhim?.tenPhim}</p>
                   <p>Rạp: {thongTinPhim?.tenCumRap}</p>
-                  <p>Địa chỉ: {thongTinPhim?.diaChi}</p>
                   <p>{thongTinPhim?.tenRap}</p>
                   <p>
                     Ngày chiếu: {thongTinPhim?.ngayChieu} - Giờ chiếu:{" "}
@@ -518,7 +461,6 @@ function BookingPage() {
                         <TableHead>
                           <TableRow>
                             <TableCell>Ghế</TableCell>
-                            <TableCell>Loại ghế</TableCell>
                             <TableCell>Giá vé</TableCell>
                           </TableRow>
                         </TableHead>

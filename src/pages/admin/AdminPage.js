@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
-import { getProfileAction } from "../store/actions/profileAction";
+import { getProfileAction } from "../../store/actions/profileAction";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -28,11 +28,11 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import clsx from "clsx";
 // import AdminQuanLyMovie from "../components/AdminQuanLyMovie";
 // import AdminTaoLichChieuPhim from "../components/AdminTaoLichChieuPhim";
-import { Movie } from "../components/Admin/Movie";
-import AddShowTime from "../components/Admin/AddShowtime";
-import { User } from "../components/Admin/User";
-import { ChartAdmin } from "../components/Admin/Chart";
-import { signOutActions } from "../store/actions/authAction";
+import { Movie } from "../../components/Admin/Movie";
+import AddShowTime from "../../components/Admin/AddShowtime";
+import { User } from "../../components/Admin/User";
+import { ChartAdmin } from "../../components/Admin/Chart";
+import { signOutActions } from "../../store/actions/authAction";
 import { useHistory } from "react-router-dom";
 
 const drawerWidth = 240;

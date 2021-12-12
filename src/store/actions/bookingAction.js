@@ -1,12 +1,12 @@
-import axios from 'axios';
-import Swal from 'sweetalert2';
+import axios from "axios";
+import Swal from "sweetalert2";
 import {
   CHOICE_CHAIR,
   DAT_VE_THANH_CONG,
   GET_CHAIR_LIST,
   SET_LOADING,
   SET_BTN_LOADING,
-} from '../const/bookingConst';
+} from "../const/bookingConst";
 
 export const setLoadingAction = (data) => {
   return {
@@ -22,14 +22,14 @@ export const setBtnLoadingAction = (data) => {
   };
 };
 
-export const getTicketListAction = (maLichChieu) => {
+export const getTicketListAction = (biDanh) => {
   let isLoading = true;
   return async (dispatch) => {
     dispatch(setLoadingAction(isLoading));
     try {
       const res = await axios({
-        method: 'GET',
-        url: `https://movie0706.cybersoft.edu.vn/api/QuanLyDatVe/LayDanhSachPhongVe?MaLichChieu=${maLichChieu}`,
+        method: "GET",
+        url: `http://localhost:5000/user/${biDanh}/showtime/getchair`,
       });
       isLoading = false;
       dispatch(setLoadingAction(isLoading));
@@ -58,12 +58,12 @@ export const bookingTicketAction = (maLichChieu, danhSachVe) => {
     dispatch(setBtnLoadingAction(isLoading));
     try {
       // get localStorage
-      const token = JSON.parse(localStorage.getItem('token'));
-      const taiKhoan = JSON.parse(localStorage.getItem('taiKhoan'));
+      const token = JSON.parse(localStorage.getItem("token"));
+      const taiKhoan = JSON.parse(localStorage.getItem("taiKhoan"));
 
       const res = await axios({
-        url: 'https://movie0706.cybersoft.edu.vn/api/QuanLyDatVe/DatVe',
-        method: 'POST',
+        url: "https://movie0706.cybersoft.edu.vn/api/QuanLyDatVe/DatVe",
+        method: "POST",
         data: {
           maLichChieu,
           danhSachVe,
@@ -75,7 +75,7 @@ export const bookingTicketAction = (maLichChieu, danhSachVe) => {
       });
       isLoading = false;
       dispatch(setBtnLoadingAction(isLoading));
-      Swal.fire('Thông Báo', 'Bạn đã đặt vé thành công', 'success');
+      Swal.fire("Thông Báo", "Bạn đã đặt vé thành công", "success");
       dispatch(await getTicketListAction(maLichChieu));
       dispatch({
         type: DAT_VE_THANH_CONG,

@@ -64,14 +64,15 @@ function Cinema() {
 
   // ------------------------------------ COL-1 -----------------------------------------
   useEffect(() => {
-    dispatch(getCinemaClusterAction())
-  }, [])
+    dispatch(getCinemaClusterAction());
+  }, []);
   const [selectedCol2Index, setSelectedCol2Index] = useState(null);
   const cinemaCluster = useSelector((state) => state.cinema.cinemaCluster);
-  console.log('cụm rạp', cinemaCluster)
-  const handleChoiceMovie = (maCumRap) => { //cluster
+  console.log("cụm rạp", cinemaCluster);
+  const handleChoiceMovie = (maCumRap) => {
+    //cluster
     //dispatch(getListMoviePageAction())
-    dispatch(getMovieAction(maCumRap));  //cluster
+    dispatch(getMovieAction(maCumRap)); //cluster
   };
 
   const renderCol2 = () => {
@@ -82,7 +83,7 @@ function Cinema() {
           <TableCell
             onClick={() => {
               handleChoiceMovie(cluster._id);
-              console.log('ID cụm rạp', cluster._id)
+              console.log("ID cụm rạp", cluster._id);
               setSelectedCol2Index(index);
             }}
             className={classes.cumRap}
@@ -96,7 +97,6 @@ function Cinema() {
       );
     });
   };
-
 
   // ------------------------------------ COL-2 -----------------------------------------
 
@@ -113,16 +113,18 @@ function Cinema() {
   const formatTime = (date) => {
     if (date) {
       const d = new Date(date); //d.toLocaleString("en-AU")//
-      const time = d.toLocaleString("en-AU", { hour: 'numeric', minute: 'numeric' })
-      return time
+      const time = d.toLocaleString("en-AU", {
+        hour: "numeric",
+        minute: "numeric",
+      });
+      return time;
     }
     return "";
-
   };
   const cinemaMovie = useSelector((state) => {
     return state.cinema?.movie;
   });
-  const [movieDetail, setMovieDetail] = useState('')
+  const [movieDetail, setMovieDetail] = useState("");
   const ngayChieu = useSelector((state) => {
     return state.cinema?.ngayChieu;
   });
@@ -133,9 +135,10 @@ function Cinema() {
     return state.cinema?.gioChieu;
   });
 
-  console.log('phim theo lịch chiếu', cinemaMovie)
+  console.log("phim theo lịch chiếu", cinemaMovie);
   const renderCol3 = () => {
-    return cinemaMovie?.map((movie, index) => { //cinemaMovie?.danhSachPhim?.map((movie, index)
+    return cinemaMovie?.map((movie, index) => {
+      //cinemaMovie?.danhSachPhim?.map((movie, index)
       return (
         <TableRow key={index}>
           <TableCell style={{ height: 110, minHeight: 110, padding: 5 }}>
@@ -155,11 +158,16 @@ function Cinema() {
                 <Button onClick={() => handleLayTenPhim(movie.biDanh)}>
                   <h4>{movie.tenPhim}</h4>
                 </Button>
-                <div>{movieDetail.tenPhim === movie.tenPhim ? renderNgayChieu() : ""}</div>
-
-                {console.log('movie detail', movieDetail)}
                 <div>
-                  {movieDetail.tenPhim === movie.tenPhim && ngayXem !== undefined //ngayXem !== undefined
+                  {movieDetail.tenPhim === movie.tenPhim
+                    ? renderNgayChieu()
+                    : ""}
+                </div>
+
+                {console.log("movie detail", movieDetail)}
+                <div>
+                  {movieDetail.tenPhim === movie.tenPhim &&
+                  ngayXem !== undefined //ngayXem !== undefined
                     ? renderGioChieu()
                     : ""}
                 </div>
@@ -172,16 +180,18 @@ function Cinema() {
   };
 
   const [activeIndex, setActiveIndex] = useState(null);
+  const [biDanh, setBiDanh] = useState(null);
 
   const handleLayTenPhim = (biDanh) => {
     //dispatch(layTenPhimAction(tenPhim));
-    dispatch(getMovieDetailAction(biDanh, setMovieDetail))
+    setBiDanh(biDanh);
+    dispatch(getMovieDetailAction(biDanh, setMovieDetail));
     setActiveIndex(null);
     setSuatChieu();
     setNgayXem();
   };
-  var ngaychieu = []
-  ngaychieu.push('')
+  var ngaychieu = [];
+  ngaychieu.push("");
   const renderNgayChieu = () => {
     return movieDetail.lichChieu?.map((lich, index) => {
       const flag = activeIndex === index;
@@ -190,11 +200,10 @@ function Cinema() {
       //   ngaychieu.push(lich.ngayChieu)
       // else {
       ngaychieu.map((ngay) => {
-        if (formatDate(ngay) == formatDate(lich.ngayChieu))
-          isExist = true
-      })
+        if (formatDate(ngay) == formatDate(lich.ngayChieu)) isExist = true;
+      });
       if (isExist == false) {
-        ngaychieu.push(lich.ngayChieu)
+        ngaychieu.push(lich.ngayChieu);
         return (
           <Button
             key={index}
@@ -204,22 +213,20 @@ function Cinema() {
               fontSize: 12,
             }}
             onClick={() => {
-              handleLayNgayXem(lich.ngayChieu)//.ngayChieu);
+              handleLayNgayXem(lich.ngayChieu); //.ngayChieu);
               setActiveIndex(index);
             }}
           >
-            {console.log('laylich', formatDate(lich))}
+            {console.log("laylich", formatDate(lich))}
             {formatDate(lich.ngayChieu)}
             {/* //.ngayChieu)} */}
           </Button>
         );
       }
       //}
-      console.log('ngày chiếu trong trang chủ', ngaychieu, index)
-
-    })
-
-  }
+      console.log("ngày chiếu trong trang chủ", ngaychieu, index);
+    });
+  };
 
   const [ngayXem, setNgayXem] = useState();
   const [suatChieu, setSuatChieu] = useState();
@@ -233,29 +240,30 @@ function Cinema() {
   const renderGioChieu = () => {
     return movieDetail.lichChieu?.map((lich, index) => {
       if (formatDate(lich.ngayChieu) === formatDate(ngayXem)) {
-
         return (
           <Button
             onClick={() => {
+              setMaLichChieu(lich._id);
               setSuatChieu(lich.ngayChieu);
             }}
           >
             {formatTime(lich.ngayChieu)}
             {/* ngayXem */}
-          </Button>)
+          </Button>
+        );
       }
-    })
-
+    });
   };
+  const [maLichChieu, setMaLichChieu] = useState("");
   useEffect(() => {
     if (ngayXem !== undefined && suatChieu !== undefined) {
-      dispatch(layChiTietAction(suatChieu, ngayXem));
+      // dispatch(layChiTietAction(suatChieu, ngayXem));
     }
   }, [dispatch, ngayXem, suatChieu]);
 
-  const maLichChieu = useSelector((state) => {
-    return state.cinema?.chiTietPhim?.maLichChieu;
-  });
+  // const maLichChieu = useSelector((state) => {
+  //   return state.cinema?.chiTietPhim?.maLichChieu;
+  // });
 
   if (
     maLichChieu !== undefined &&
@@ -263,7 +271,7 @@ function Cinema() {
     suatChieu !== undefined
   ) {
     localStorage.setItem("maLichChieu", JSON.stringify(maLichChieu));
-    history.push(`/booking/${maLichChieu}`);
+    history.push(`/${biDanh}/booking/${maLichChieu}`);
   }
 
   return (
