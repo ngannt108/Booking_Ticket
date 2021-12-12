@@ -74,6 +74,9 @@ export const bookingTicketAction = (IDshowtime, biDanh, { danhSachGhe }) => {
   return async (dispatch) => {
     dispatch(setBtnLoadingAction(isLoading));
     try {
+      const Format = (x) => {
+        return x.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
+      }
       // get localStorage
       const token = JSON.parse(localStorage.getItem("token"));
       //const taiKhoan = JSON.parse(localStorage.getItem("taiKhoan"));
@@ -88,7 +91,7 @@ export const bookingTicketAction = (IDshowtime, biDanh, { danhSachGhe }) => {
       });
       isLoading = false;
       dispatch(setBtnLoadingAction(isLoading));
-      Swal.fire("Thông Báo", "Bạn đã đặt vé thành công", "success");
+      Swal.fire("Thông Báo", "Bạn đã đặt vé thành công, tổng tiền là:" + Format(res.data.tongTien), "success");
       dispatch(await getTicketListAction(biDanh, IDshowtime));
       dispatch({
         type: DAT_VE_THANH_CONG,

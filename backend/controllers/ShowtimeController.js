@@ -168,7 +168,7 @@ class ShowTimeController {
     // console.log('**Trong tình trạng đặt vé', GheDaChon)
     booking.save()
       .then(async () => {
-        res.status(200).json('Đặt vé thành công')
+        //res.status(200).json('Đặt vé thành công')
         showtime.gheDaChon = [...showtime.gheDaChon, ...GheDaChon]
         const ticketBooking = await showtime.save()
         if (ticketBooking)
