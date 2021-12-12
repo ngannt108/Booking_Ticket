@@ -237,6 +237,7 @@ function Cinema() {
         return (
           <Button
             onClick={() => {
+              setMaLichChieu(lich._id)
               setSuatChieu(lich.ngayChieu);
             }}
           >
@@ -247,20 +248,21 @@ function Cinema() {
     })
 
   };
+  const [maLichChieu, setMaLichChieu] = useState('')
   useEffect(() => {
     if (ngayXem !== undefined && suatChieu !== undefined) {
       dispatch(layChiTietAction(suatChieu, ngayXem));
     }
   }, [dispatch, ngayXem, suatChieu]);
 
-  const maLichChieu = useSelector((state) => {
-    return state.cinema?.chiTietPhim?.maLichChieu;
-  });
+  // const maLichChieu = useSelector((state) => {
+  //   return state.cinema?.chiTietPhim?.maLichChieu;
+  // });
 
   if (
     maLichChieu !== undefined &&
-    ngayXem !== undefined &&
-    suatChieu !== undefined
+    ngayXem !== undefined //&&
+    //suatChieu !== undefined
   ) {
     localStorage.setItem("maLichChieu", JSON.stringify(maLichChieu));
     history.push(`/booking/${maLichChieu}`);

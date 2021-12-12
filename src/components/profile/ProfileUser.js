@@ -77,11 +77,11 @@ const inputStyle = { margin: "10px 0", "&>input": { color: "white" } };
 function ProfileUser() {
   useEffect(() => {
     dispatch(getProfileAction());
+
   }, []);
   const classes = useStyles();
   const dispatch = useDispatch();
   const profileUser = useSelector((state) => state.profile.profileUser);
-  console.log("người dùng", profileUser);
   const renderThongTinTaiKhoan = () => {
     return (
       <div>
@@ -90,6 +90,7 @@ function ProfileUser() {
             <Grid item md={9}>
               {profileUser.length > 0 ? (
                 <>
+
                   <h1>Tên tài khoản: {profileUser[0].tentaiKhoan}</h1>
                   <h1>Họ và tên: {profileUser[0].hoTen}</h1>
                   <h1>Email: {profileUser[0].email}</h1>
@@ -138,7 +139,8 @@ function ProfileUser() {
 
   // const [user, setUserChangePassword] = useState({
   //   matKhau: "",
-  //   maLoaiNguoiDung: "1",
+  //   matKhauMoi: "",
+  //   nhapLaiMatKhau
   // });
 
   const changeUserDetail = (hoTen, email, SDT) => {
@@ -155,24 +157,28 @@ function ProfileUser() {
     // console.log("Chi tiết cập nhật", user);
   };
 
-  const changeUserPassword = (
-    e /*matKhauHienTai, matKhauMoi, nhapLaiMatKhau*/
+  const changeUserPassword = (e
+    // matKhau, matKhauMoi, nhapLaiMatKhau
   ) => {
-    const { name, value } = e.target;
+
     setOpenChangePassword(true);
+    console.log("Thông tin user lúc đầu: ", profileUser[0]);
     setUser({
-      ...profileUser,
-      [name]: value,
-      // matKhau: matKhauHienTai,
-      // matKhauMoi: matKhauMoi,
-      // nhapLaiMatKhau: nhapLaiMatKhau,
+      // taiKhoan: profileUser[0].tentaiKhoan,
+      matKhau: profileUser[0].matKhau,
+      // hoTen: profileUser[0].hoTen,
+      // email: profileUser[0].email,
+      // SDT: profileUser[0].SDT,
       // maLoaiNguoiDung: "1",
     });
+    console.log("Thông tin user sau khi đổi mật khẩu 1: ", user);
   };
 
   const [openChangePassword, setOpenChangePassword] = useState(false);
   const [open, setOpen] = useState(false);
-
+  // const [matKhau, setMatKhau] = useState('')
+  // const [matKhauMoi, setMatKhauMoi] = useState('')
+  // const [nhapLaiMatKhau, setNhapLaiMatKhau] = useState('')
   const handleClose = () => {
     setOpen(false);
     setOpenChangePassword(false);
@@ -183,9 +189,10 @@ function ProfileUser() {
     // console.log(name, value);
     setUser({
       ...user,
-      [name]: value,
+      [name]: value
     });
     console.log("Thông tin user: ", user);
+
   };
 
   const handleSubmit = (e) => {
@@ -198,6 +205,8 @@ function ProfileUser() {
   const handleSubmitChangePassword = (e) => {
     e.preventDefault();
     setOpenChangePassword(false);
+
+    console.log("Thông tin user sau khi đổi mật khẩu 2: ", user);
     dispatch(changePasswordAction(user));
     // if (
     //   user.matKhau === profileUser[0].matKhau &&
@@ -212,7 +221,7 @@ function ProfileUser() {
     // //   Swal.fire("Thông báo", "Mật khẩu không trùng khớp", "error");
     // // }
   };
-
+  console.log('profileUser', profileUser)
   const renderModal = () => {
     return (
       <Modal
@@ -327,7 +336,7 @@ function ProfileUser() {
                 fullWidth
                 required
                 name="nhapLaiMatKhau"
-                onChange={handleChange}
+                onChange={handleChange} //handleChange
               ></CssTextField>
             </div>
             <Button

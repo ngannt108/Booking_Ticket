@@ -22,7 +22,7 @@ export const getProfileAction = () => {
       });
       console.log("thông tin người dùng", res.data);
       dispatch({
-        type: CHANGE_PASSWORD,
+        type: GET_PROFILE, //CHANGE_PASSWORD
         payload: res.data,
       });
     } catch (error) {
@@ -86,8 +86,8 @@ export const changePasswordAction = (user) => {
       dispatch(getProfileAction());
       alert("Thay đổi mật khẩu thành công");
     } catch (error) {
-      alert("Thay đổi mật khẩu thất bại");
-      console.log(error);
+      alert(error.response.data.error); //"Thay đổi mật khẩu thất bại"
+      console.log('lỗi:', error);
     }
   };
 };

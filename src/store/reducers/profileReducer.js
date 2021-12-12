@@ -37,7 +37,7 @@ export const profileReducer = (state = initialState, { type, payload }) => {
       return { ...state };
     }
     case CHANGE_PASSWORD: {
-      state.profileUser = payload;
+      //state.profileUser = payload;
       return { ...state };
     }
     default:

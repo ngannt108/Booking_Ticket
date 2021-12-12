@@ -63,12 +63,13 @@ function LichChieu(props) {
     const classes = useStyles();
     const dispatch = useDispatch();
     //const maPhim = props?.maPhim;
+    const [movieDetail, setMovieDetail] = useState('')
     const history = useHistory();
 
     useEffect(() => {
         // dispatch(layThongTinLichChieuPhimAction(maPhim));
         dispatch(getMovieDetailAction(biDanh, setMovieDetail))
-    }, [maPhim, dispatch]);
+    }, []);//[maPhim, dispatch
 
     const heThongRapChieu = useSelector((state) => {
         return state.cinema?.phim?.heThongRapChieu;
