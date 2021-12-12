@@ -31,7 +31,7 @@ export const bookingReducer = (state = initialState, action) => {
       state.thongTinPhim = payload;
       return { ...state };
     case CHOICE_CHAIR:
-      state.listChairSelected = [...state.listChairSelected, payload]
+      state.listChairSelected = [payload]
       // let listChair = [...state.listChair];
       // // tìm vị trí của ghế đang chọn
       // const index = listChair.findIndex(
