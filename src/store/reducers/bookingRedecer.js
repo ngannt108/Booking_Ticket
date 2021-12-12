@@ -2,17 +2,18 @@ import {
   CHOICE_CHAIR,
   DAT_VE_THANH_CONG,
   GET_CHAIR_LIST, //
-  GET_CHAIR_BOOKED_LIST,//
-  GET_INFO_MOVIE,//
+  GET_CHAIR_BOOKED_LIST, //
+  GET_INFO_MOVIE, //
   SET_LOADING,
   SET_BTN_LOADING,
-} from '../const/bookingConst';
+} from "../const/bookingConst";
 
 const initialState = {
   thongTinPhim: [],
   listChair: [],
   listChairBooked: [],
   listChairSelected: [],
+  ticketPrize: 0,
   isLoading: false,
   isBtnLoading: false,
 };
@@ -31,7 +32,7 @@ export const bookingReducer = (state = initialState, action) => {
       state.thongTinPhim = payload;
       return { ...state };
     case CHOICE_CHAIR:
-      state.listChairSelected = [payload]
+      state.listChairSelected = [payload];
       // let listChair = [...state.listChair];
       // // tìm vị trí của ghế đang chọn
       // const index = listChair.findIndex(

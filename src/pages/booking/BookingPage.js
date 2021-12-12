@@ -53,18 +53,19 @@ function BookingPage() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { biDanh, showTimeCode } = useParams();
-  const [movie, setMovie] = useState('')
-
+  const [movie, setMovie] = useState("");
+  const [chairArray, setArray] = useState([]);
+  const [ischange, setChange] = useState(false);
   // console.log(showTimeCode);
   useEffect(
     () => {
       dispatch(getTicketListAction(biDanh, showTimeCode));
-
     },
     [
       /*dispatch, biDanh*/
     ]
   );
+  useEffect(() => {}, [ischange /*dispatch, biDanh*/]);
 
   const formatDate = (date) => {
     if (date) {
@@ -115,16 +116,15 @@ function BookingPage() {
   for (var i = 0; i < listChairBooked.length; i++) {
     for (var j = 0; j < listChair.length; j++) {
       if (listChairBooked[i] === listChair[j]) {
-        listChair[j] = 'X'
+        listChair[j] = "X";
       }
     }
   }
 
-
   const [isValid, setIsValid] = useState(true);
 
   //const [chairArray, setChairArray] = useState([])
-  let chairArray = []
+  // let chairArray = [];
 
   let dayDat = [[], [], [], [], [], [], [], [], [], []];
   let dayGhe = [[], [], [], [], [], [], [], [], [], []];
@@ -162,18 +162,17 @@ function BookingPage() {
     // listChair[i] = i % 10; //[vitri]
   }
   const chairColor = (chair) => {
-    var result = false
-    if (chair == 'X')
-      result = true
-    return result
-  }
+    var result = false;
+    if (chair == "X") result = true;
+    return result;
+  };
 
   const renderListChairA = () => {
     return dayGhe[0]?.map((chair, index) => {
       return (
         <button
           style={{
-            cursor: `${chair == 'X' ? "no-drop" : "pointer"}`,
+            cursor: `${chair == "X" ? "no-drop" : "pointer"}`,
             width: "4.5%",
             minWidth: 30,
             height: 30,
@@ -181,30 +180,26 @@ function BookingPage() {
             borderRadius: "5px",
             border: "none",
             color: "white", //`${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
-            backgroundColor: `${chair == 'X' ? "black" : "rgb(116,112,112)"}`,
+            backgroundColor: `${chair == "X" ? "black" : "rgb(116,112,112)"}`,
           }}
-
           onClick={(e) => {
+            setChange(!ischange);
             if (e.target.classList[0] === classes.choiceChair) {
-              e.target.classList.remove(classes.choiceChair) //  classes.choiceChair
+              e.target.classList.remove(classes.choiceChair); //  classes.choiceChair
               const index = chairArray.indexOf(chair);
               if (index > -1) {
                 chairArray.splice(index, 1);
               }
-
+            } else {
+              e.target.classList.add(classes.choiceChair);
+              chairArray.push(chair);
             }
-            else {
-              e.target.classList.add(classes.choiceChair)
-              chairArray.push(chair)
-            }
-            console.log('ghế chọn', chairArray)
+            console.log("ghế chọn", chairArray);
           }}
-
           disabled={chairColor(chair)}
           // chairColor(chair)
           variant="contained"
         >
-
           {chair}
           {/* //chair.daDat ? "X" : */}
         </button>
@@ -217,7 +212,7 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair == 'X' ? "no-drop" : "pointer"}`,
+            cursor: `${chair == "X" ? "no-drop" : "pointer"}`,
             width: "4.5%",
             minWidth: 30,
             height: 30,
@@ -225,23 +220,21 @@ function BookingPage() {
             borderRadius: "5px",
             border: "none",
             color: "white",
-            backgroundColor: `${chair == 'X' ? "black" : "rgb(116,112,112)"}`,
+            backgroundColor: `${chair == "X" ? "black" : "rgb(116,112,112)"}`,
           }}
-
           onClick={(e) => {
+            setChange(!ischange);
             if (e.target.classList[0] === classes.choiceChair) {
-              e.target.classList.remove(classes.choiceChair)
+              e.target.classList.remove(classes.choiceChair);
               const index = chairArray.indexOf(chair);
               if (index > -1) {
                 chairArray.splice(index, 1);
               }
-
+            } else {
+              e.target.classList.add(classes.choiceChair);
+              chairArray.push(chair);
             }
-            else {
-              e.target.classList.add(classes.choiceChair)
-              chairArray.push(chair)
-            }
-            console.log('ghế chọn', chairArray)
+            console.log("ghế chọn", chairArray);
           }}
           disabled={chairColor(chair)}
           variant="contained"
@@ -257,7 +250,7 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair == 'X' ? "no-drop" : "pointer"}`,
+            cursor: `${chair == "X" ? "no-drop" : "pointer"}`,
             width: "4.5%",
             minWidth: 30,
             height: 30,
@@ -265,23 +258,22 @@ function BookingPage() {
             borderRadius: "5px",
             border: "none",
             color: "white",
-            backgroundColor: `${chair == 'X' ? "black" : "rgb(116,112,112)"}`,
+            backgroundColor: `${chair == "X" ? "black" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
           onClick={(e) => {
+            setChange(!ischange);
             if (e.target.classList[0] === classes.choiceChair) {
-              e.target.classList.remove(classes.choiceChair)
+              e.target.classList.remove(classes.choiceChair);
               const index = chairArray.indexOf(chair);
               if (index > -1) {
                 chairArray.splice(index, 1);
               }
-
+            } else {
+              e.target.classList.add(classes.choiceChair);
+              chairArray.push(chair);
             }
-            else {
-              e.target.classList.add(classes.choiceChair)
-              chairArray.push(chair)
-            }
-            console.log('ghế chọn', chairArray)
+            console.log("ghế chọn", chairArray);
           }}
           disabled={chairColor(chair)}
           variant="contained"
@@ -297,7 +289,7 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair == 'X' ? "no-drop" : "pointer"}`,
+            cursor: `${chair == "X" ? "no-drop" : "pointer"}`,
             width: "4.5%",
             minWidth: 30,
             height: 30,
@@ -305,23 +297,22 @@ function BookingPage() {
             borderRadius: "5px",
             border: "none",
             color: "white",
-            backgroundColor: `${chair == 'X' ? "black" : "rgb(116,112,112)"}`,
+            backgroundColor: `${chair == "X" ? "black" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
           onClick={(e) => {
+            setChange(!ischange);
             if (e.target.classList[0] === classes.choiceChair) {
-              e.target.classList.remove(classes.choiceChair)
+              e.target.classList.remove(classes.choiceChair);
               const index = chairArray.indexOf(chair);
               if (index > -1) {
                 chairArray.splice(index, 1);
               }
-
+            } else {
+              e.target.classList.add(classes.choiceChair);
+              chairArray.push(chair);
             }
-            else {
-              e.target.classList.add(classes.choiceChair)
-              chairArray.push(chair)
-            }
-            console.log('ghế chọn', chairArray)
+            console.log("ghế chọn", chairArray);
           }}
           disabled={chairColor(chair)}
           variant="contained"
@@ -337,7 +328,7 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair == 'X' ? "no-drop" : "pointer"}`,
+            cursor: `${chair == "X" ? "no-drop" : "pointer"}`,
             width: "4.5%",
             minWidth: 30,
             height: 30,
@@ -345,23 +336,22 @@ function BookingPage() {
             borderRadius: "5px",
             border: "none",
             color: "white",
-            backgroundColor: `${chair == 'X' ? "black" : "rgb(116,112,112)"}`,
+            backgroundColor: `${chair == "X" ? "black" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
           onClick={(e) => {
+            setChange(!ischange);
             if (e.target.classList[0] === classes.choiceChair) {
-              e.target.classList.remove(classes.choiceChair)
+              e.target.classList.remove(classes.choiceChair);
               const index = chairArray.indexOf(chair);
               if (index > -1) {
                 chairArray.splice(index, 1);
               }
-
+            } else {
+              e.target.classList.add(classes.choiceChair);
+              chairArray.push(chair);
             }
-            else {
-              e.target.classList.add(classes.choiceChair)
-              chairArray.push(chair)
-            }
-            console.log('ghế chọn', chairArray)
+            console.log("ghế chọn", chairArray);
           }}
           disabled={chairColor(chair)}
           variant="contained"
@@ -377,7 +367,7 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair == 'X' ? "no-drop" : "pointer"}`,
+            cursor: `${chair == "X" ? "no-drop" : "pointer"}`,
             width: "4.5%",
             minWidth: 30,
             height: 30,
@@ -385,23 +375,22 @@ function BookingPage() {
             borderRadius: "5px",
             border: "none",
             color: "white",
-            backgroundColor: `${chair == 'X' ? "black" : "rgb(116,112,112)"}`,
+            backgroundColor: `${chair == "X" ? "black" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
           onClick={(e) => {
+            setChange(!ischange);
             if (e.target.classList[0] === classes.choiceChair) {
-              e.target.classList.remove(classes.choiceChair)
+              e.target.classList.remove(classes.choiceChair);
               const index = chairArray.indexOf(chair);
               if (index > -1) {
                 chairArray.splice(index, 1);
               }
-
+            } else {
+              e.target.classList.add(classes.choiceChair);
+              chairArray.push(chair);
             }
-            else {
-              e.target.classList.add(classes.choiceChair)
-              chairArray.push(chair)
-            }
-            console.log('ghế chọn', chairArray)
+            console.log("ghế chọn", chairArray);
           }}
           disabled={chairColor(chair)}
           variant="contained"
@@ -417,7 +406,7 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair == 'X' ? "no-drop" : "pointer"}`,
+            cursor: `${chair == "X" ? "no-drop" : "pointer"}`,
             width: "4.5%",
             minWidth: 30,
             height: 30,
@@ -425,23 +414,23 @@ function BookingPage() {
             borderRadius: "5px",
             border: "none",
             color: "white",
-            backgroundColor: `${chair == 'X' ? "black" : "rgb(116,112,112)"}`,
+            backgroundColor: `${chair == "X" ? "black" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
           onClick={(e) => {
+            setChange(!ischange);
             if (e.target.classList[0] === classes.choiceChair) {
-              e.target.classList.remove(classes.choiceChair)
+              e.target.classList.remove(classes.choiceChair);
               const index = chairArray.indexOf(chair);
               if (index > -1) {
                 chairArray.splice(index, 1);
               }
+            } else {
+              e.target.classList.add(classes.choiceChair);
+              chairArray.push(chair);
+              renderTable();
             }
-            else {
-              e.target.classList.add(classes.choiceChair)
-              chairArray.push(chair)
-              renderTable()
-            }
-            console.log('ghế chọn', chairArray)
+            console.log("ghế chọn", chairArray);
           }}
           disabled={chairColor(chair)}
           variant="contained"
@@ -457,7 +446,7 @@ function BookingPage() {
         <button
           key={index}
           style={{
-            cursor: `${chair == 'X' ? "no-drop" : "pointer"}`,
+            cursor: `${chair == "X" ? "no-drop" : "pointer"}`,
             width: "4.5%",
             minWidth: 30,
             height: 30,
@@ -465,23 +454,22 @@ function BookingPage() {
             borderRadius: "5px",
             border: "none",
             color: "white",
-            backgroundColor: `${chair == 'X' ? "black" : "rgb(116,112,112)"}`,
+            backgroundColor: `${chair == "X" ? "black" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
           onClick={(e) => {
+            setChange(!ischange);
             if (e.target.classList[0] === classes.choiceChair) {
-              e.target.classList.remove(classes.choiceChair)
+              e.target.classList.remove(classes.choiceChair);
               const index = chairArray.indexOf(chair);
               if (index > -1) {
                 chairArray.splice(index, 1);
               }
-
+            } else {
+              e.target.classList.add(classes.choiceChair);
+              chairArray.push(chair);
             }
-            else {
-              e.target.classList.add(classes.choiceChair)
-              chairArray.push(chair)
-            }
-            console.log('ghế chọn', chairArray)
+            console.log("ghế chọn", chairArray);
           }}
           disabled={chairColor(chair)}
           variant="contained"
@@ -491,8 +479,6 @@ function BookingPage() {
       );
     });
   };
-
-
 
   let flag = true;
 
@@ -534,18 +520,21 @@ function BookingPage() {
     //   //dispatch(bookingTicketAction(biDanh, listChairChoice, history));
     // }
 
-    dispatch(bookingTicketAction(showTimeCode, biDanh, { danhSachGhe: chairArray }));
+    dispatch(
+      bookingTicketAction(showTimeCode, biDanh, { danhSachGhe: chairArray })
+    );
   };
 
   const renderTable = () => {
-
     //chairArray = ["A2", "B2"]
-    return chairArray?.map((chair, index) => {  //listChair
+    return chairArray?.map((chair, index) => {
+      //listChair
       if (chair) {
-        console.log('chairArray', chair)
+        console.log("chairArray", chair);
         return (
           <TableRow key={index}>
             <TableCell>{chair}</TableCell>
+            <TableCell>75000</TableCell>
           </TableRow>
         );
       }
@@ -583,7 +572,6 @@ function BookingPage() {
                       >
                         <TableHead></TableHead>
                         <TableBody>
-
                           <TableRow>{renderListChairA()}</TableRow>
                           <TableRow>{renderListChairB()}</TableRow>
                           <TableRow>{renderListChairC()}</TableRow>
@@ -609,8 +597,8 @@ function BookingPage() {
                   <p>{thongTinPhim?.tenRap?.tenRap}</p>
                   {/*  */}
                   <p>
-                    Ngày chiếu: {formatDate(thongTinPhim?.ngayChieu)} - Giờ chiếu:{" "}
-                    {formatTime(thongTinPhim?.ngayChieu)}
+                    Ngày chiếu: {formatDate(thongTinPhim?.ngayChieu)} - Giờ
+                    chiếu: {formatTime(thongTinPhim?.ngayChieu)}
                   </p>
                   <br />
                   <hr />
@@ -624,22 +612,20 @@ function BookingPage() {
                         <TableHead>
                           <TableRow>
                             <TableCell>Ghế</TableCell>
-                            <TableCell>Giá vé {console.log(chairArray.length, 'số vé')}</TableCell>
+                            <TableCell>
+                              Giá vé {console.log(chairArray.length, "số vé")}
+                            </TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
                           {renderTable()}
                           <TableRow>
                             <TableCell>Tổng tiền: </TableCell>
-                            <TableCell colSpan="1"></TableCell>
                             <TableCell>
-                              {listChair
-                                .filter((chair) => chair.dangChon)
-                                .reduce(
-                                  (tongTien, chair) =>
-                                    (tongTien += chair.giaVe),
-                                  0
-                                )}
+                              {chairArray.reduce(
+                                (tongTien, chair) => (tongTien += 75000),
+                                0
+                              )}
                             </TableCell>
                           </TableRow>
                         </TableBody>
