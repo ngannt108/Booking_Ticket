@@ -22,6 +22,7 @@ import {
   EditRounded,
   Face,
   InsertChart,
+  KeyboardTab,
   MovieCreation,
 } from "@material-ui/icons";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
@@ -222,7 +223,7 @@ export default function AdminPage() {
             </ListItem>
             <ListItem button onClick={() => signOut()}>
               <ListItemIcon>
-                <InsertChart />
+                <KeyboardTab />
               </ListItemIcon>
               <ListItemText primary="Đăng xuất" />
             </ListItem>

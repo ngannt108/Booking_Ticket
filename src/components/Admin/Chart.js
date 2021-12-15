@@ -62,22 +62,22 @@ export const ChartAdmin = () => {
                     <div className="featuredItem">
                         <span className="featuredTitle">Tổng doanh thu</span>
                         <div className="featuredMoneyContainer">
-                            <span className="featuredMoney">$4,415</span>
+                            <span className="featuredMoney"></span>
                             <span className="featuredMoneyRate">
-                                -1.4 <ArrowDownward className="featuredIcon negative" />
+                                {/* -1.4 <ArrowDownward className="featuredIcon negative" /> */}
                             </span>
                         </div>
-                        <span className="featuredSub">Compared to last month</span>
+
                     </div>
                     <div className="featuredItem">
-                        <span className="featuredTitle">Cost</span>
+                        <span className="featuredTitle"></span>
                         <div className="featuredMoneyContainer">
-                            <span className="featuredMoney">$2,225</span>
+                            <span className="featuredMoney"></span>
                             <span className="featuredMoneyRate">
-                                +2.4 <ArrowUpward className="featuredIcon" />
+                                {/* +2.4 <ArrowUpward className="featuredIcon" /> */}
                             </span>
                         </div>
-                        <span className="featuredSub">Compared to last month</span>
+
                     </div>
                 </div>
             </div>

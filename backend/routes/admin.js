@@ -26,12 +26,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 //Movie
-router.post(
-  "/upload",
-  Auth.checkPermission,
-  Auth.checkAdmin,
-  upload.single("file")
-);
+
 
 router.post(
   "/movie/:bidanh/showtime",
@@ -97,4 +92,10 @@ router.get(
   userController.getAllUser
 );
 
+router.post(
+  "/upload",
+  Auth.checkPermission,
+  Auth.checkAdmin,
+  upload.single("file")
+);
 module.exports = router;

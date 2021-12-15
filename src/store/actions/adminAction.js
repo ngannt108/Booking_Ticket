@@ -103,28 +103,27 @@ export const updateMovieAction = (
           Authorization: `Bearer ${token}`,
         },
       });
-
-
-      // axios({
-      //   url: "http://localhost:5000/admin/upload",
-      //   method: "POST",
-      //   data: fd,
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // }).then((e) => {
       if (res.status === 200) {
-
-        toast.success('Đã chỉnh sửa thông tin phim', { autoClose: 2000 });
-        // })
-        //   .catch((e) => {
-        //     toast.error("Lưu ảnh thất bại", { autoClose: 2000 });
-        //   })
-        setIsEdit(false)
-        dispatch({
-          type: UPDATE_MOVIE,
-          payload: [res.data],
-        });
+        if (fd != null) {
+          axios({
+            url: "http://localhost:5000/admin/upload",
+            method: "POST",
+            data: fd,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }).then((e) => {
+            setIsEdit(false)
+            dispatch({
+              type: UPDATE_MOVIE,
+              payload: [res.data],
+            });
+            toast.success('Đã chỉnh sửa thông tin phim', { autoClose: 2000 });
+          })
+            .catch((e) => {
+              toast.error("Chỉnh sửa ảnh thất bại", { autoClose: 2000 });
+            })
+        }
         dispatch(
           await getListMoviePageAction()
 
@@ -155,24 +154,26 @@ export const addNewMovieAction = (
         },
       });
       if (res.status === 200) {
-        // axios({
-        //   url: "http://localhost:5000/admin/upload",
-        //   method: "POST",
-        //   data: fd,
-        //   headers: {
-        //     Authorization: `Bearer ${token}`,
-        //   },
-        // }).then((e) => {
-        dispatch({
-          type: ADD_NEW_MOVIE,
-          payload: res.data,
-        });
-        toast.success('Tạo phim mới thành công', { autoClose: 2000 });
+        if (fd != null) {
+          axios({
+            url: "http://localhost:5000/admin/upload",
+            method: "POST",
+            data: fd,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }).then((e) => {
+            dispatch({
+              type: ADD_NEW_MOVIE,
+              payload: res.data,
+            });
+            toast.success('Tạo phim mới thành công', { autoClose: 2000 });
 
-        // })
-        //   .catch((e) => {
-        //     toast.error('Lưu thất bại', { autoClose: 2000 });
-        //   })
+          })
+            .catch((e) => {
+              toast.error('Lưu thất bại', { autoClose: 2000 });
+            })
+        }
 
         dispatch(
           await getListMoviePageAction()

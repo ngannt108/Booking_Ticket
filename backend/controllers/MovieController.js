@@ -38,7 +38,17 @@ class MovieController {
     Movie.find({ daXoa: false })
       .then((data) => {
         // console.log(data);
-        if (data.length != 0) res.status(200).json(data);
+        if (data.length != 0) {
+          const movieShowing = []
+          data.forEach((movie) => {
+            const formatDate = new Date(movie.ngayKhoiChieu)
+            const dateNow = new Date()
+            // console.log(formatDate.getDate(), formatDate.getMonth() + 3, dateNow.getMonth() + 1, dateNow.getDate())
+            if (formatDate.getMonth() + 3 >= dateNow.getMonth() + 1 && formatDate.getUTCDate() >= dateNow.getDate())
+              movieShowing.push(movie)
+          })
+          res.status(200).json(movieShowing);
+        }
         else {
           res.status(404).json("Chưa có phim nào");
           // const err = new Error('Chưa có phim nào');
@@ -53,6 +63,35 @@ class MovieController {
         // return next(err)
       });
   }
+
+  // showMovieShowing(req, res, next) {
+  //   Movie.find({ daXoa: false })
+  //     .then((data) => {
+  //       // console.log(data);
+  //       if (data.length != 0) {
+  //         const movieShowting = []
+  //         data.forEach((movie) => {
+  //           const formatDate = new Date(movie.ngayKhoiChieu)
+  //           console.log(formatDate)
+  //           if (formatDate.addMonths(2) > Date.now())
+  //             movieShowting.push(movie)
+  //         })
+  //         res.status(200).json(movieShowting);
+  //       }
+  //       else {
+  //         res.status(404).json("Chưa có phim nào");
+  //         // const err = new Error('Chưa có phim nào');
+  //         // err.statusCode = 404
+  //         // return next(err)
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       res.status(500).json("Hệ thống đang xử lý, vui lòng chờ");
+  //       // err = new Error('Hệ thống đang xử lý, vui lòng chờ');
+  //       // err.statusCode = 500
+  //       // return next(err)
+  //     });
+  // }
 
   showMovieByCluster(req, res, next) {
     Movie.find({ daXoa: false })
@@ -98,9 +137,7 @@ class MovieController {
 
   //[PUT] /movie/edit/:bidanh
   edit(req, res, next) {
-    Movie.findOneAndUpdate({ biDanh: req.params.bidanh }, req.body, {
-      runValidator: true,
-    })
+    Movie.findOneAndUpdate({ biDanh: req.params.bidanh }, req.body)
       .then((data) => {
         if (data) {
           res.status(200).json("Cập nhật thành công");

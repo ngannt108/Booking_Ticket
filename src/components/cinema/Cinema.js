@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     borderRight: "1px solid rgba(224, 224, 224, 1)",
   },
   col2: {
-    width: "30%",
+    width: "20%",
     padding: 5,
     borderRight: "1px solid rgba(224, 224, 224, 1)",
   },
@@ -270,7 +270,7 @@ function Cinema() {
     ngayXem !== undefined &&
     suatChieu !== undefined
   ) {
-    localStorage.setItem("maLichChieu", JSON.stringify(maLichChieu));
+    //localStorage.setItem("maLichChieu", JSON.stringify(maLichChieu));
     history.push(`/${biDanh}/booking/${maLichChieu}`);
   }
 

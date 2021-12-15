@@ -10,14 +10,13 @@ import { ToastContainer } from "react-toastify";
 import ProfilePage from "./pages/profile-user/ProfilePage";
 import MovieDetailPage from "./pages/movie-detail/MovieDetailPage";
 import BookingPage from "./pages/booking/BookingPage";
+import NotFound from "./components/404NotFound";
 function App() {
   return (
     <>
       <BrowserRouter>
         <Switch>
-          <Route path="/" exact={true}>
-            <HomePage />
-          </Route>
+
 
           <Route path="/:biDanh/booking/:showTimeCode" exact={true}>
             <GuardBooking>
@@ -48,9 +47,11 @@ function App() {
               <AdminPage />
             </GuardAdminPage>
           </Route>
-
-          <Route path="/">
-            <Redirect to="/" />
+          <Route path="/" exact={true}>
+            <HomePage />
+          </Route>
+          <Route path="*">
+            <NotFound />
           </Route>
         </Switch>
       </BrowserRouter>
