@@ -76,7 +76,7 @@ function MovieDetailPage() {
             <h1>
               <div
                 style={{
-                  backgroundImage: `url(${movieDetail[0].hinhAnh})`,
+                  backgroundImage: `url('http://localhost:5000/uploads/${movieDetail[0].hinhAnh}')`,
                   backgroundSize: "cover",
                   backgroundPosition: "top",
                 }}
@@ -88,7 +88,7 @@ function MovieDetailPage() {
                       <Grid item xs={12} sm={5}>
                         <img
                           className={classes.img}
-                          src={movieDetail[0].hinhAnh}
+                          src={`http://localhost:5000/uploads/${movieDetail[0].hinhAnh}`}
                           alt=""
                         />
                       </Grid>

@@ -124,12 +124,12 @@ export default function MovieCard(props) {
     const action = openPopup(newProps);
     dispatch(action);
   };
-
+  //`url('http://localhost:5000/uploads/${props.movie.hinhAnh}')`  
   return (
     <div className={classes.movieCard}>
       <div
         className={classes.movieImg}
-        style={{ backgroundImage: `url('${props.movie.hinhAnh}')` }}
+        style={{ backgroundImage: `url('http://localhost:5000/uploads/${props.movie.hinhAnh}')` }}
         onClick={() => {
           history.push(`/movie-detail/${props.movie.biDanh}`);
         }}

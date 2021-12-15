@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage }).single('file');
 //Movie
 
 
@@ -96,6 +96,14 @@ router.post(
   "/upload",
   Auth.checkPermission,
   Auth.checkAdmin,
-  upload.single("file")
+  (req, res) => {
+    upload(req, res, (err) => {
+      if (err) {
+        return res.status(500).json(err)
+      }
+
+      return res.status(200).send(req.file)
+    })
+  }
 );
 module.exports = router;

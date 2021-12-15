@@ -203,21 +203,24 @@ export const Movie = () => {
   const uploadImage = async (event) => {
     //console.log("file  hình2 :", fd.event.target.files[0]);
     if (event.target.files[0] != null) { //  
+      let time = Date.now()
       setFileHinhAnh(event.target.files[0]);
-      setHinhAnh(Date.now() + "_" + event.target.files[0].name);
+      setHinhAnh(time + "_" + event.target.files[0].name);
       let url = URL.createObjectURL(event.target.files[0])
       setXemAnh(url)
+      setMovie({ ...movie, hinhAnh: time + "_" + event.target.files[0].name });
       //}
     }
   }
   const HandleChange = (e) => {
-    setMovie({ ...movie, hinhAnh, [e.target.name]: e.target.value }); //{
+    setMovie({ ...movie, [e.target.name]: e.target.value }); //{
     //     ...book,
     //     [e.target.name]: e.target.value,
     //     //hinhAnh: e.target.name.hinhAnh.files[0].name
     // }
+    console.log('hình ảnh vừa đổi', hinhAnh)
   };
-  console.log('hình ảnh vừa đổi', hinhAnh)
+
   const editMovie = async (e) => {
     e.preventDefault();
 
@@ -327,7 +330,6 @@ export const Movie = () => {
           //onChange={(e)}
           /> */}
           <div className="preview-img" style={{ backgroundImage: `url(${xemAnh})` }}>
-
           </div>
           <Input
             Label="Trailer"
@@ -403,7 +405,7 @@ export const Movie = () => {
           // setHinhAnh(Date.now() + "_" + event.target.files[0].name);
           // }}
           />
-          <Image className="preview-img" style={xemAnh ? { backgroundImage: `url(${xemAnh})` } : { backgroundImage: xemAnh }} />
+          <Image className="preview-img" style={xemAnh ? { backgroundImage: `url(${xemAnh})` } : ''} />
           {/* src={`http://localhost:5000/uploads/${hinhAnh}`} /> */}
 
           <Input
