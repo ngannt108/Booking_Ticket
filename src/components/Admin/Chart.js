@@ -11,6 +11,7 @@ import {
     ResponsiveContainer,
 } from "recharts";
 import { getListMoviePageAction } from "../../store/actions/adminAction";
+import axios from "axios";
 
 export const ChartAdmin = () => {
     const data = [
@@ -37,15 +38,35 @@ export const ChartAdmin = () => {
     ];
     const dispatch = useDispatch();
     const movies = useSelector((state) => state.admin.listMovie);
-    useEffect(() => {
+    const [total, setTotal] = useState('')
+    useEffect(async () => {
         dispatch(getListMoviePageAction())
+
+        const token = JSON.parse(localStorage.getItem("token"));
+        const res = await axios({
+            url: "http://localhost:5000/admin/goodSales",
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+
+        setTotal(res.data)
+
     }, []);
-    var count = 0;
+    let count = 0;
     movies.map((movie, index) => {
         const date = new Date(movie.ngayKhoiChieu)
         if (date <= Date.now())
             count++;
     })
+    const Format = (x) => {
+        return x.toLocaleString("it-IT", {
+            style: "currency",
+            currency: "VND",
+        });
+    };
+
     return (
         <>
             <div>
@@ -62,7 +83,7 @@ export const ChartAdmin = () => {
                     <div className="featuredItem">
                         <span className="featuredTitle">Tổng doanh thu</span>
                         <div className="featuredMoneyContainer">
-                            <span className="featuredMoney"></span>
+                            <span className="featuredMoney">{Format(total)}</span>
                             <span className="featuredMoneyRate">
                                 {/* -1.4 <ArrowDownward className="featuredIcon negative" /> */}
                             </span>

@@ -60,15 +60,35 @@ const fadeAwayStyle = { opacity: 0.5 };
 
 function LichChieu(props) {
   const { biDanh } = useParams();
+  const [movieDetail, setMovieDetail] = useState('')
   const classes = useStyles();
   const dispatch = useDispatch();
   //const maPhim = props?.maPhim;
   const history = useHistory();
 
-  //   useEffect(() => {
-  //     // dispatch(layThongTinLichChieuPhimAction(maPhim));
-  //     // dispatch(getMovieDetailAction(biDanh, setMovieDetail))
-  //   }, [maPhim, dispatch]);
+  const formatDate = (date) => {
+    if (date) {
+      const d = new Date(date); //d.toLocaleString("en-AU")//
+      return `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
+    }
+    return "";
+  };
+  const formatTime = (date) => {
+    if (date) {
+      const d = new Date(date); //d.toLocaleString("en-AU")//
+      const time = d.toLocaleString("en-AU", {
+        hour: "numeric",
+        minute: "numeric",
+      });
+      return time;
+    }
+    return "";
+  };
+
+  useEffect(() => {
+    //     // dispatch(layThongTinLichChieuPhimAction(maPhim));
+    dispatch(getMovieDetailAction(biDanh, setMovieDetail))
+  }, []);  //maPhim, dispatch]
 
   const heThongRapChieu = useSelector((state) => {
     return state.cinema?.phim?.heThongRapChieu;
@@ -111,35 +131,44 @@ function LichChieu(props) {
   });
 
   console.log(cumRapChieu);
-
+  let tenCumRapChieu = []
+  tenCumRapChieu.push('')
+  let lichChieu = []
+  lichChieu.push('')
   const renderCol2 = () => {
-    return cumRapChieu?.map((cumRap, index) => {
+    return movieDetail?.lichChieu?.map((cumRap, index) => {  // cumRapChieu?.map((cumRap, index)
       const faded = selectedCol2Index != index;
-      return (
-        <TableRow key={index} style={faded ? fadeAwayStyle : null}>
-          <TableCell
-            onClick={() => {
-              layLichChieu(cumRap.maCumRap);
-              setSelectedCol2Index(index);
-            }}
-            className={classes.cumRap}
-          >
-            <p>{cumRap.tenCumRap}</p>
-          </TableCell>
-        </TableRow>
-      );
+      console.log('lịch chiếu', lichChieu)
+      console.log('tên rạp', tenCumRapChieu)
+      lichChieu.push(cumRap)
+      if (tenCumRapChieu.indexOf(cumRap.tenCumRap.tenCumRap) === -1) {
+        tenCumRapChieu.push(cumRap.tenCumRap.tenCumRap)
+        return (
+          <TableRow key={index} style={faded ? fadeAwayStyle : null}>
+            <TableCell
+              onClick={() => {
+                layLichChieu(cumRap.tenCumRap._id, cumRap);
+                setSelectedCol2Index(index);
+              }}
+              className={classes.cumRap}
+            >
+              <p>{cumRap.tenCumRap.tenCumRap}</p>
+            </TableCell>
+          </TableRow>
+        );
+      }
     });
   };
-
-  const layLichChieu = (maCumRap) => {
+  const [maCumRap, setMaCumRap] = useState()
+  const layLichChieu = (maCumRap, lichChieu) => {
     setNgayXem();
-    setSuatChieu();
+    setSuatChieu(lichChieu); //setSuatChieu()
+    setMaCumRap(maCumRap)
     //dispatch(layLichChieuAction(maCumRap));
   };
 
   const [ngayXem, setNgayXem] = useState();
   const [suatChieu, setSuatChieu] = useState();
-
   const ngayChieuPhim = useSelector((state) => {
     return state?.cinema?.ngayChieuPhim;
   });
@@ -153,9 +182,15 @@ function LichChieu(props) {
         >
           <Grid container spacing={3}>
             <Grid item xs={12}>
+              {/* {maCumRap !== undefined
+                ? renderNgayChieu()
+                : ""} */}
               {renderNgayChieu()}
             </Grid>
             <Grid item xs={12}>
+              {/* {suatChieu !== undefined
+                ? renderGioChieu()
+                : ""} */}
               {renderGioChieu()}
             </Grid>
           </Grid>
@@ -165,12 +200,16 @@ function LichChieu(props) {
   };
 
   const renderNgayChieu = () => {
-    return ngayChieuPhim?.map((ngay, index) => {
-      return (
-        <Button onClick={() => handleLayGioChieu(ngay)} key={index}>
-          {ngay}
-        </Button>
-      );
+    return lichChieu?.map((ngay, index) => { //ngayChieuPhim
+      console.log("lịch chiếu --", ngay.tenCumRap)
+
+      {
+        return (
+          <Button onClick={() => handleLayGioChieu(ngay.ngayChieu)} key={index}>
+            {formatDate(ngay.ngayChieu)}
+          </Button>
+        );
+      }
     });
   };
 
@@ -185,10 +224,11 @@ function LichChieu(props) {
   });
 
   const renderGioChieu = () => {
-    return gioChieuPhim.map((gio, index) => {
+    return lichChieu?.map((lich, index) => { //gioChieuPhim  gio
+
       return (
-        <Button onClick={() => handleLayMaLichChieu(gio)} key={index}>
-          {gio}
+        <Button onClick={() => handleLayMaLichChieu(lich.ngayChieu)} key={index}>
+          {formatTime(lich.ngayChieu)}
         </Button>
       );
     });

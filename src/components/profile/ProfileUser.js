@@ -91,10 +91,10 @@ function ProfileUser() {
               {profileUser.length > 0 ? (
                 <>
 
-                  <h1>Tên tài khoản: {profileUser[0].tentaiKhoan}</h1>
-                  <h1>Họ và tên: {profileUser[0].hoTen}</h1>
-                  <h1>Email: {profileUser[0].email}</h1>
-                  <h1>Số điện thoại: {profileUser[0].SDT}</h1>
+                  <h4>Tên tài khoản: {profileUser[0].tentaiKhoan}</h4>
+                  <h4>Họ và tên: {profileUser[0].hoTen}</h4>
+                  <h4>Email: {profileUser[0].email}</h4>
+                  <h4>Số điện thoại: {profileUser[0].SDT}</h4>
                 </>
               ) : (
                 ""

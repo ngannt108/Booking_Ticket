@@ -11,6 +11,7 @@ import ProfilePage from "./pages/profile-user/ProfilePage";
 import MovieDetailPage from "./pages/movie-detail/MovieDetailPage";
 import BookingPage from "./pages/booking/BookingPage";
 import NotFound from "./components/404NotFound";
+// import { SendMail } from "./pages/booking/SendMail";
 function App() {
   return (
     <>
@@ -50,6 +51,10 @@ function App() {
           <Route path="/" exact={true}>
             <HomePage />
           </Route>
+
+          {/* <Route path="/sendmail" exact={true}>
+            <SendMail />
+          </Route> */}
           <Route path="*">
             <NotFound />
           </Route>

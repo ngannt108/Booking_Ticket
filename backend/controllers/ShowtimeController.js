@@ -170,16 +170,40 @@ class ShowTimeController {
       .then(async () => {
         //res.status(200).json('Đặt vé thành công')
         showtime.gheDaChon = [...showtime.gheDaChon, ...GheDaChon]
+        const soLuong = GheDaChon.length
+
         const ticketBooking = await showtime.save()
-        if (ticketBooking)
-          res.status(200).json({ tongTien: showtime.giaVe * GheDaChon.length })
+        if (ticketBooking) {
+          const movie = await Movie.findOne({ biDanh: req.params.bidanh })
+          if (movie) {
+            movie.soLuongBan = movie.soLuongBan + soLuong
+            //console.log('so lượng vé bán', movie);
+            movie.save()
+              .then(() => res.status(200).json({ tongTien: showtime.giaVe * GheDaChon.length }))
+              .catch()
+          }
+          // res.status(200).json({ tongTien: showtime.giaVe * GheDaChon.length })
+        }
         else res.status(500).json({ error: 'Chưa thể tiến hành đặt vé' })
         // .then()
         // .catch(err => res.status(500).json({ error: 'Chưa thể tiến hành đặt vé' }))
       })
       .catch(err => res.status(500).json({ error: 'Đặt vé thất bại' }))
 
+  }
 
+  goodSales(req, res) {
+    ShowTime.find({})
+      .then((data) => {
+        if (data.length > 0) {
+          let toTal = 0;
+          data.forEach((showtime) => {
+            toTal += showtime.gheDaChon.length * showtime.giaVe
+          })
+          res.status(200).json(toTal)
+        }
+      })
+      .catch(err => res.status(500).json({ error: "Thử lại sau" }))
 
   }
 

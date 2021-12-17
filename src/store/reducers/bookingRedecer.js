@@ -49,6 +49,7 @@ export const bookingReducer = (state = initialState, action) => {
       return { ...state };
     case DAT_VE_THANH_CONG: {
       state.listChair = [];
+
       return { ...state };
     }
     case SET_LOADING:

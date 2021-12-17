@@ -125,7 +125,7 @@ export default function Header() {
               scroll.scrollToTop();
             }}
           >
-            HD08
+            CGV
           </Typography>
 
           {isMobile ? (
@@ -276,7 +276,7 @@ export default function Header() {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
-                    <MenuItem onClick={handleProfile}>Profile</MenuItem>
+                    <MenuItem onClick={handleProfile}>Thông tin cá nhân</MenuItem>
                     <MenuItem onClick={handleSignOut}>Đăng xuất</MenuItem>
                   </Menu>
                 </>

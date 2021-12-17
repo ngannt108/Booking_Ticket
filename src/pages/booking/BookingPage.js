@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import Header from "../../components/header/Header";
@@ -19,6 +19,15 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Button, Container, Grid } from "@material-ui/core";
 import Swal from "sweetalert2";
+import { QR } from "./QR";
+import { Form, Image, Modal } from "react-bootstrap";
+import { Input } from "../../components/Input";
+import emailjs from 'emailjs-com'
+import './BookingPage.css'
+import { getProfileAction } from "../../store/actions/profileAction";
+import QRCode from 'qrcode'
+import Paypal from "./Paypal";
+// import { SendMail } from "./SendMail"
 
 const useStyles = makeStyles((theme) => ({
   BookingPage: {
@@ -60,12 +69,14 @@ function BookingPage() {
   useEffect(
     () => {
       dispatch(getTicketListAction(biDanh, showTimeCode));
+      dispatch(getMovieDetailAction(biDanh, setMovie))
+      dispatch(getProfileAction())
     },
     [
       /*dispatch, biDanh*/
     ]
   );
-  useEffect(() => {}, [ischange /*dispatch, biDanh*/]);
+  useEffect(() => { }, [ischange /*dispatch, biDanh*/]);
 
   const formatDate = (date) => {
     if (date) {
@@ -482,48 +493,238 @@ function BookingPage() {
 
   let flag = true;
 
-  // const handleOneRow = (bookedRow) => {
-  //   const day = bookedRow[0]["day"];
-
-  //   let binDemo = "";
-  //   for (let i = 0; i < 10; i++) {
-  //     if (dayGhe[day][i]["daDat"] === true) binDemo += "1";
-  //     else if (bookedRow.findIndex((e) => e["vitri"] === i) >= 0)
-  //       binDemo += "1";
-  //     else binDemo += "0";
+  // BOOKING
+  const [QR, setQR] = useState('')
+  const [imgQR, setImgQR] = useState('')
+  let Total = 0
+  const [totalPrice, setTotalPrice] = useState(0)
+  const [isSuccessPaypal, setIsSuccessPaypal] = useState(false)
+  // useEffect(async () => {
+  //   const qr = await QRCode.toDataURL('test thử').then(setQR);
+  //   if (qr) {
+  //     var image = document.createElement('image')
+  //     image.setAttribute("src", qr)
+  //     console.log(image, "HÌNH ẢNH")
+  //     setImgQR(image) //<Image src={QR} />
   //   }
 
-  //   if (binDemo.split("1").findIndex((e) => e === "0") >= 0) {
-  //     Swal.fire(
-  //       "Thông Báo",
-  //       "Không được chừa trống ghế ở giữa hoặc ở hai hàng ngoài cùng ",
-  //       "error"
-  //     );
-  //     flag = false;
-  //   }
-  // };
+  // }, [])
+
 
   const handleBooking = () => {
-    // const listChairChoice = listChair.filter((chair) => chair.dangChon);
-    // for (let i = 0; i < listChairChoice.length; i++) {
-    //   dayDat[listChairChoice[i]["day"]].push({
-    //     vitri: listChairChoice[i]["vitri"],
-    //     day: listChairChoice[i]["day"],
-    //   });
-    // }
-    // for (let i = 0; i < 10; i++) {
-    //   if (dayDat[i].length > 0) {
-    //     handleOneRow(dayDat[i]);
-    //   }
-    // }
-    // if (flag) {
-    //   //dispatch(bookingTicketAction(biDanh, listChairChoice, history));
+    if (chairArray) {
+      chairArray.forEach((chair) => {
+        Total += thongTinPhim?.giaVe
+      })
+      setTotalPrice(Total)
+    }
+    setConfirm(true)
+
+
+    //style={{ width: '40px', height: '40px' }}
+    // dispatch(
+    //   bookingTicketAction(showTimeCode, biDanh, { danhSachGhe: chairArray })
+    // );
+
+  };
+
+  console.log('đường dẫn', QR)
+  const renderQR = () => {
+    return (
+      <div>
+        <Image src={QR} />
+      </div>
+    )
+  }
+
+  const [isConfirm, setConfirm] = useState(false)
+  const profile = useSelector(state => state.profile.profileUser[0])
+
+  const send = async (e) => {
+    // dispatch(
+    //   bookingTicketAction(showTimeCode, biDanh, { danhSachGhe: chairArray })
+    // );
+
+    // emailjs.send('service_zbo2i1v', 'template_u22c938',
+    //   {
+    //     name: profile?.hoTen.toString(),
+    //     movieName: movie?.tenPhim.toString(),
+    //     showtimeDate: formatDate(thongTinPhim?.ngayChieu).toString(),
+    //     showtimeTime: formatTime(thongTinPhim?.ngayChieu).toString(),
+    //     cinemaClusterName: thongTinPhim?.tenCumRap.tenCumRap,
+    //     QRCode: "d"
+    //   },
+    //   'user_fHd8DhFxCFsbFXqbnCExx')
+    //   .then((res) => console.log('thành công', res))
+    //   .catch(err => console.log('thất bại', err))
+    // console.log('QR CODE ', imgQR);
+
+
+    // emailjs.sendForm('service_zbo2i1v', 'template_u22c938', e.target, 'user_fHd8DhFxCFsbFXqbnCExx')
+    //   .then((res) => console.log('thành công', res))
+    //   .catch(err => console.log('thất bại', err)) //sendForm onSubmit={send}  e.target
+    //console.log('**đã gửi mail**')
+    // if (result) {
+    //   setIsSuccess(true)
+
     // }
 
-    dispatch(
-      bookingTicketAction(showTimeCode, biDanh, { danhSachGhe: chairArray })
+
+  }
+  let imageQRcode
+  useEffect(async () => {
+    if (isSuccessPaypal == true) {
+
+      dispatch(bookingTicketAction(showTimeCode, biDanh, { danhSachGhe: chairArray }));
+      // console.log('kết quả', result)
+      const qr = await QRCode.toDataURL('test').then(setQR);
+      // if (result) 
+      {
+        // if (qr != false) {
+        //   console.log('QR', qr)
+        //   imageQRcode = document.createElement('image')
+        //   imageQRcode.setAttribute("src", QR)
+        //   console.log(imageQRcode, "HÌNH ẢNH")
+        // setImgQR(imageQRcode) //<Image src={QR} />        
+        // }
+
+        emailjs.send('service_zbo2i1v', 'template_u22c938',
+          {
+            name: profile?.hoTen,
+            movieName: movie?.tenPhim,
+            showtimeDate: formatDate(thongTinPhim?.ngayChieu).toString(),
+            showtimeTime: formatTime(thongTinPhim?.ngayChieu).toString(),
+            cinemaClusterName: thongTinPhim?.tenCumRap?.tenCumRap,
+            QRCode: 'imageQRcode'
+          },
+          'user_fHd8DhFxCFsbFXqbnCExx')
+          .then((res) => console.log('thành công', res))
+          .catch(err => console.log('thất bại', err))
+        setConfirm(false) //đóng modal
+        setIsSuccessPaypal(false)
+      }
+    }
+  }, [isSuccessPaypal])
+
+  //PAYPAL
+  const Paypal = ({ total }) => {
+    const paypal = useRef();
+    //const [isSuccess, setIsSucess] = useState(false)
+    console.log('tổng tiền', total)
+    // const totalBill = useSelector(state => state.user.totalCurrentBill)
+    // const [bill, setBill] = useState('')
+    // console.log(totalBill)
+    useEffect(async () => {
+      window.paypal
+        .Buttons({
+          createOrder: (data, actions, err) => {
+            return actions.order.create({
+              intent: "CAPTURE",
+              purchase_units: [
+                {
+                  description: "Thanh toán vé phim",
+                  amount: {
+                    currency_code: 'CAD',
+                    value: (total / 23000).toFixed(2),  //Math.round
+                  },
+                },
+              ],
+            });
+          },
+          onApprove: async (data, actions) => {
+            const order = await actions.order.capture();
+            console.log(order);
+            setIsSuccessPaypal(true)
+            //dispatch(bookingTicketAction(showTimeCode, biDanh, { danhSachGhe: chairArray }));
+          },
+          onError: (err) => {
+            console.log(err);
+          },
+        })
+        .render(paypal.current);
+
+
+    }, []);
+
+    return (
+      <div>
+        <div ref={paypal}></div>
+      </div>
     );
+  }
+
+  const Format = (x) => {
+    return x.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    });
   };
+  const modalConfirm = () => {
+
+    return (
+      <>
+        <Modal show={isConfirm} onHide={() => setConfirm(false)}>
+          <Modal.Header>
+            <Modal.Title>Xác nhận mua vé</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form className="confirm" onSubmit={send}>
+              <Input
+                Label="Tên khách hàng"
+                value={profile?.hoTen}
+                type="text"
+                name="name"
+                disabled='true'
+              />
+              {/* {console.log('khách hàng', name)} */}
+              <Input
+                Label="Tên phim"
+                value={movie?.tenPhim}
+                type="text"
+                name="movieName"
+                disabled='true'
+              />
+              <Input
+                Label="Lịch chiếu"
+                value={formatDate(thongTinPhim?.ngayChieu)}
+                type="text"
+                name="showtimeDate"
+                disabled='true'
+              />
+              <Input
+                Label="Lịch chiếu"
+                value={formatTime(thongTinPhim?.ngayChieu)}
+                type="text"
+                name="showtimeTime"
+                disabled='true'
+              />
+              <Input
+                Label="Rạp phim"
+                value={thongTinPhim?.tenCumRap?.tenCumRap}
+                type="text"
+                name="cinemaClusterName"
+                disabled='true'
+              />
+              <h6>Tổng tiền cần thanh toán {Format(totalPrice)}</h6>
+              <Paypal total={totalPrice} />
+              {/* variant="primary" */}
+              {/* <Button className="btn btn-success" type="submit">
+                Xác nhận
+              </Button> */}
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            {/* <button className="btn btn-success" onClick={send}>
+             Xác nhận
+           </button> */}
+            <button className="btn btn-danger" onClick={() => setConfirm(false)}>
+              Hủy
+            </button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    )
+  }
 
   const renderTable = () => {
     //chairArray = ["A2", "B2"]
@@ -534,7 +735,7 @@ function BookingPage() {
         return (
           <TableRow key={index}>
             <TableCell>{chair}</TableCell>
-            <TableCell>75000</TableCell>
+            <TableCell>{thongTinPhim?.giaVe}</TableCell>
           </TableRow>
         );
       }
@@ -593,6 +794,7 @@ function BookingPage() {
                     height="auto"
                   />
                   {/* <p>Tên phim: {thongTinPhim?.tenPhim}</p> */}
+                  <p>Tên phim: {movie?.tenPhim}</p>
                   <p>Cụm rạp: {thongTinPhim?.tenCumRap?.tenCumRap}</p>
                   <p>{thongTinPhim?.tenRap?.tenRap}</p>
                   {/*  */}
@@ -623,7 +825,7 @@ function BookingPage() {
                             <TableCell>Tổng tiền: </TableCell>
                             <TableCell>
                               {chairArray.reduce(
-                                (tongTien, chair) => (tongTien += 75000),
+                                (tongTien, chair) => (tongTien += thongTinPhim?.giaVe),
                                 0
                               )}
                             </TableCell>
@@ -640,12 +842,19 @@ function BookingPage() {
                       color="primary"
                       size="large"
                     >
-                      Booking
+                      Đặt vé
                     </Button>
                   </div>
                 </Grid>
               </Grid>
             </Container>
+            {isConfirm == true
+              ? modalConfirm()
+              : ""}
+            {/* {isConfirm == true
+              ? renderQR()
+              : ""} */}
+
           </div>
         </div>
       )}

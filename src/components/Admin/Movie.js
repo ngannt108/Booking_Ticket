@@ -213,7 +213,10 @@ export const Movie = () => {
     }
   }
   const HandleChange = (e) => {
-    setMovie({ ...movie, [e.target.name]: e.target.value }); //{
+    setMovie({ ...movie, [e.target.name]: e.target.value });
+
+
+    //{
     //     ...book,
     //     [e.target.name]: e.target.value,
     //     //hinhAnh: e.target.name.hinhAnh.files[0].name
@@ -272,10 +275,10 @@ export const Movie = () => {
           <Modal.Body>Bạn có chắc muốn xóa phim {tenPhim} không?</Modal.Body>
           <Modal.Footer>
             <button className="btn btn-warning" onClick={confirmDelete}>
-              Delete
+              Xóa
             </button>
             <button className="btn btn-danger" onClick={hideModal}>
-              Cancel
+              Hủy
             </button>
           </Modal.Footer>
         </Modal>
@@ -349,10 +352,10 @@ export const Movie = () => {
         <p style={{ marginLeft: "20px", color: "red" }}>{error}</p>
         <Modal.Footer>
           <button className="btn btn-success" onClick={addMovie}>
-            Submit
+            Xác nhận
           </button>
           <button className="btn btn-danger" onClick={() => setIsAdd(false)}>
-            Cancel
+            Hủy
           </button>
         </Modal.Footer>
       </Modal>
@@ -420,10 +423,10 @@ export const Movie = () => {
         <p style={{ marginLeft: "20px", color: "red" }}>{error}</p>
         <Modal.Footer>
           <button className="btn btn-success" onClick={editMovie}>
-            Submit
+            Xác nhận
           </button>
           <button className="btn btn-danger" onClick={() => setIsEdit(false)}>
-            Cancel
+            Hủy
           </button>
         </Modal.Footer>
       </Modal>

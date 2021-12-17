@@ -106,4 +106,11 @@ router.post(
     })
   }
 );
+router.get(
+  "/goodSales",
+  Auth.checkPermission,
+  Auth.checkAdmin,
+  showtimeController.goodSales
+);
+
 module.exports = router;

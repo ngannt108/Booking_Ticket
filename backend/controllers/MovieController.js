@@ -41,10 +41,11 @@ class MovieController {
         if (data.length != 0) {
           const movieShowing = []
           data.forEach((movie) => {
-            const formatDate = new Date(movie.ngayKhoiChieu)
+            // const formatDate = new Date(movie.ngayKhoiChieu)
             const dateNow = new Date()
-            // console.log(formatDate.getDate(), formatDate.getMonth() + 3, dateNow.getMonth() + 1, dateNow.getDate())
-            if (formatDate.getMonth() + 3 >= dateNow.getMonth() + 1 && formatDate.getUTCDate() >= dateNow.getDate())
+            // // console.log(formatDate.getDate(), formatDate.getMonth() + 3, dateNow.getMonth() + 1, dateNow.getDate())
+            // if (formatDate.getMonth() + 2 >= dateNow.getMonth() && formatDate.getDate() >= dateNow.getDate())
+            if (movie.ngayKetThuc > dateNow)
               movieShowing.push(movie)
           })
           res.status(200).json(movieShowing);
@@ -119,7 +120,7 @@ class MovieController {
           }
 
           )
-          console.log('dữ liệu của phim', phim)
+          // console.log('dữ liệu của phim', phim)
           res.status(200).json(phim);
           // res.status(404).json(phim);
         } else {
@@ -213,6 +214,7 @@ class MovieController {
     const movie = new Movie(req.body);
     console.log("ngày chiếu", ngaykhoichieu);
     movie.ngayKhoiChieu = ngaykhoichieu; //.toISOString()
+    movie.ngayKetThuc = ngaykhoichieu.setMonth(ngaykhoichieu.getMonth() + 2)
     movie
       .save()
       .then(() => res.status(200).json(movie))

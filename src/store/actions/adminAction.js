@@ -46,7 +46,7 @@ export const getListMoviePageAction = () => {
         url: `http://localhost:5000/movie`,
         method: "GET",
       });
-      console.log('phim', res.data);
+      // console.log('phim', res.data);
       dispatch({
         type: GET_LIST_MOVIE_PAGE,
         payload: res.data,
