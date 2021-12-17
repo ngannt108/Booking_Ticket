@@ -39,13 +39,13 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     height: "100%",
   },
-  col1: {
-    width: 96.5,
-    padding: 5,
-    borderRight: "1px solid rgba(224, 224, 224, 1)",
-  },
+  // col1: {
+  //   width: 96.5,
+  //   padding: 5,
+  //   borderRight: "1px solid rgba(224, 224, 224, 1)",
+  // },
   col2: {
-    width: "30%",
+    width: "20%",
     padding: 5,
     borderRight: "1px solid rgba(224, 224, 224, 1)",
   },
@@ -167,7 +167,7 @@ function Cinema() {
                 {console.log("movie detail", movieDetail)}
                 <div>
                   {movieDetail.tenPhim === movie.tenPhim &&
-                    ngayXem !== undefined //ngayXem !== undefined
+                  ngayXem !== undefined //ngayXem !== undefined
                     ? renderGioChieu()
                     : ""}
                 </div>
@@ -243,7 +243,7 @@ function Cinema() {
         return (
           <Button
             onClick={() => {
-              setMaLichChieu(lich._id)
+              setMaLichChieu(lich._id);
               setSuatChieu(lich.ngayChieu);
             }}
           >

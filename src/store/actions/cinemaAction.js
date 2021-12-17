@@ -13,7 +13,7 @@ export const getCinemaClusterAction = () => {
   return async (dispatch) => {
     try {
       const res = await axios({
-        url: `http://localhost:5000/admin/movie/movietheater`, //https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${maRap}`,
+        url: `http://localhost:5000/admin/movie/movietheater`,
         method: "GET",
       });
       dispatch({
@@ -32,7 +32,7 @@ export const getCinemaMovieAction = () => {
   return async (dispatch) => {
     try {
       const res = await axios({
-        url: `http://localhost:5000/admin/movie/movietheater`, // `https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinLichChieuHeThongRap?maHeThongRap=${maRap}&maNhom=GP01`,
+        url: `http://localhost:5000/admin/movie/movietheater`,
         method: "GET",
       });
       dispatch({
@@ -50,7 +50,7 @@ export const getMovieAction = (rap) => {
   return async (dispatch) => {
     try {
       const res = await axios({
-        url: `http://localhost:5000/movie/cluster/${rap}`, // `https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinLichChieuHeThongRap?maHeThongRap=${maRap}&maNhom=GP01`,
+        url: `http://localhost:5000/movie/cluster/${rap}`,
         method: "GET",
       });
       dispatch({
@@ -70,23 +70,6 @@ export const layChiTietAction = (gio, ngayXem) => {
     payload: [gio, ngayXem],
   };
 };
-
-// export const getDanhSachRapAction = (maHeThongRap, maCumRap) => {
-//   return async (dispatch) => {
-//     try {
-//       const res = await axios({
-//         url: `https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${maHeThongRap}`,
-//         method: "GET",
-//       });
-//       dispatch({
-//         type: GET_DANH_SACH_RAP,
-//         payload: [res.data, maCumRap],
-//       });
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-// };
 
 export const lamMoiTrangAction = () => {
   return {
