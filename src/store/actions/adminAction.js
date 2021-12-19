@@ -83,6 +83,7 @@ export const deleteMovieAction = (
         payload: biDanh,
       });
     } catch (error) {
+      toast.error('Vẫn đang có lịch chiếu ở thời điểm sắp tới, chưa thể xóa phim', { autoClose: 2000 });
       //alert(error.response.data);
       console.log(error);
     }

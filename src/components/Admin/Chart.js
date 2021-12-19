@@ -9,39 +9,47 @@ import {
     CartesianGrid,
     Tooltip,
     ResponsiveContainer,
+    YAxis,
+    Legend,
+    BarChart,
+    Bar,
+    PieChart,
+    Pie,
 } from "recharts";
 import { getListMoviePageAction } from "../../store/actions/adminAction";
+import { getListUserPageAction } from "../../store/actions/adminAction";
 import axios from "axios";
 
 export const ChartAdmin = () => {
-    const data = [
-        {
-            name: 'January',
-            Iphone: 4000
-        },
-        {
-            name: "March",
-            Iphone: 1000,
-        },
-        {
-            name: "May",
-            Iphone: 4000,
-        },
-        {
-            name: "July",
-            Iphone: 800,
-        },
-        {
-            name: "October",
-            Iphone: 1500,
-        },
-    ];
+    // const data = [
+    //     {
+    //         name: 'January',
+    //         Iphone: 4000
+    //     },
+    //     {
+    //         name: "March",
+    //         Iphone: 1000,
+    //     },
+    //     {
+    //         name: "May",
+    //         Iphone: 4000,
+    //     },
+    //     {
+    //         name: "July",
+    //         Iphone: 800,
+    //     },
+    //     {
+    //         name: "October",
+    //         Iphone: 1500,
+    //     },
+    // ];
     const dispatch = useDispatch();
     const movies = useSelector((state) => state.admin.listMovie);
     const [total, setTotal] = useState('')
+    const [topMovies, setTopMovies] = useState('')
     useEffect(async () => {
         dispatch(getListMoviePageAction())
-
+        dispatch(getListUserPageAction())
         const token = JSON.parse(localStorage.getItem("token"));
         const res = await axios({
             url: "http://localhost:5000/admin/goodSales",
@@ -51,8 +59,18 @@ export const ChartAdmin = () => {
             },
         })
 
-        setTotal(res.data)
-
+        const response = await axios({
+            url: "http://localhost:5000/admin/movie/topMovies",
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        if (response.status === 200)
+            setTopMovies(response.data.data)
+        if (res.status === 200)
+            setTotal(res.data)
+        console.log('top phim', topMovies)
     }, []);
     let count = 0;
     movies.map((movie, index) => {
@@ -66,6 +84,7 @@ export const ChartAdmin = () => {
             currency: "VND",
         });
     };
+    const users = useSelector((state) => state.admin.listUser);
 
     return (
         <>
@@ -85,16 +104,18 @@ export const ChartAdmin = () => {
                         <div className="featuredMoneyContainer">
                             <span className="featuredMoney">{Format(total)}</span>
                             <span className="featuredMoneyRate">
+
                                 {/* -1.4 <ArrowDownward className="featuredIcon negative" /> */}
                             </span>
                         </div>
 
                     </div>
                     <div className="featuredItem">
-                        <span className="featuredTitle"></span>
+                        <span className="featuredTitle">Khách có tài khoản</span>
                         <div className="featuredMoneyContainer">
-                            <span className="featuredMoney"></span>
+                            <span className="featuredMoney">{users.length}</span>
                             <span className="featuredMoneyRate">
+                                KHÁCH
                                 {/* +2.4 <ArrowUpward className="featuredIcon" /> */}
                             </span>
                         </div>
@@ -104,14 +125,35 @@ export const ChartAdmin = () => {
             </div>
             <div className="chart">
                 <h3 className="chartTitle">Phim được yêu thích</h3>
+
                 <ResponsiveContainer width="100%" aspect={4 / 1}>
-                    <LineChart data={data}>
-                        <XAxis dataKey="name" stroke="#5550bd" />
-                        <Line type="monotone" dataKey="name" stroke="#5550bd" />
+                    <BarChart
+                        width={1000}
+                        height={50}
+                        data={topMovies}
+                        margin={{
+                            top: 20,
+                            right: 10,
+                            left: 20,
+                            bottom: 5,
+                        }}
+                        barSize={60}
+                    >
+                        <XAxis
+                            dataKey="tenPhim"
+                            scale="" //point
+                            // margin={{ left: 40 }}
+                            padding={{ left: 40, right: 10 }}
+                            ticks={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+                        />
+                        <YAxis />
                         <Tooltip />
-                        {/* {grid && <CartesianGrid stroke="#e0dfdf" strokeDasharray="5 5" />} */}
-                    </LineChart>
+                        <Legend />
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <Bar name="Số lượng vé bán" dataKey="soLuongBan" fill="#8884d8" background={{ fill: "#eee" }} />
+                    </BarChart>
                 </ResponsiveContainer>
+
             </div>
         </>
     )

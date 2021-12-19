@@ -105,8 +105,8 @@ class MovieController {
             countDuplicate = 0
             showtime.lichChieu.forEach((cumRap) => {
               //res.status(404).json(cumRap);
-
-              if (cumRap.tenCumRap === req.params.maCumRap) {
+              const date = new Date(cumRap.ngayChieu)
+              if (cumRap.tenCumRap === req.params.maCumRap && date > Date.now()) {
                 countDuplicate++
                 console.log('biến đếm', countDuplicate)
               }
@@ -226,7 +226,7 @@ class MovieController {
       });
   }
   //[GET] topMoives
-  top20Movies(req, res, next) {
+  top10Movies(req, res, next) {
     Movie.find({ soLuongBan: { $gt: 0 } })
       .sort({ soLuongBan: -1 })
       .limit(10)
@@ -235,15 +235,13 @@ class MovieController {
           res
             .status(200)
             .json({
-              message: "Top 20 phim được xem nhiều của rạp",
-              top10: data,
+              data
             });
         else
           res
-            .status(200)
+            .status(404)
             .json({
-              message: "Top 20 phim được xem nhiều của rạp",
-              top10: "Chưa có sách nào được bán",
+              message: "Top 10 phim được xem nhiều của rạp"
             });
       })
       .catch((err) => {

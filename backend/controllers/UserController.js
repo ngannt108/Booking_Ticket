@@ -2,6 +2,7 @@ const User = require("../models/User");
 const TicketBooking = require("../models/TicketBooking");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Showtime = require("../models/Showtime");
 
 class UserController {
   // với re là reqiure và res là response
@@ -192,6 +193,52 @@ class UserController {
         // err.statusCode = 500
         // return next(err)
       });
+  }
+
+  cancelBooking(req, res) {
+    TicketBooking.findOne({ _id: req.params.IDTicket })
+      .populate('maLichChieu')
+      .then((data) => {
+        if (data) {
+          let showtimeID
+          const time = new Date(data.maLichChieu.ngayChieu)
+          const now = new Date()
+          const n = now.setHours(now.getHours() + 1)
+          const minute = now.setMinutes(now.getMinutes() + 30)
+          // console.log('hiện tại', now.getHours(), now.getMinutes())
+          // console.log('hiện tại sau khi cộng 1 tiếng', now.toTimeString())
+          //console.log('lịch chiếu', data.maLichChieu)
+          if (time >= now) {
+            showtimeID = data.maLichChieu._id
+            data.daHuy = true;
+            let listChair = []
+            data.danhSachVe.map((ghe) => {
+              listChair.push(ghe.maGhe)
+            })
+            console.log('danh sach ghe', listChair);
+            data.save()
+              .then(() => {
+                console.log('ID', showtimeID)
+                Showtime.findOne({ _id: showtimeID })
+                  .then((showtime) => {
+                    if (showtime) {
+                      listChair.map((ghe) => {
+                        const index = showtime.gheDaChon.indexOf(ghe);
+                        if (index > -1) {
+                          showtime.gheDaChon.splice(index, 1);
+                        }
+                      })
+                      showtime.save().then(() => res.status(200).json('Hoàn vé thành công'))
+                        .catch(err => res.status(400).json())
+                    }
+                  })
+                  .catch(err => res.status(400).json())
+              })
+              .catch(err => res.status(400).json())
+          }
+          else res.status(400).json({ error: 'Không thể hoàn vé gần sát giờ chiếu' })
+        }
+      })
   }
 }
 module.exports = new UserController();

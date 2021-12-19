@@ -46,7 +46,7 @@ router.get(
   "/movie/topMovies",
   Auth.checkPermission,
   Auth.checkAdmin,
-  movieController.top20Movies
+  movieController.top10Movies
 );
 router.get(
   "/movie/movietheater",

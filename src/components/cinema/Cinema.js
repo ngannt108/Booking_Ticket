@@ -91,9 +91,9 @@ function Cinema() {
             className={classes.cumRap}
           >
             <p>{cluster.tenCumRap}</p>
-            <p style={{ fontSize: 12, color: "rgba(0,0,0, .4)" }}>
+            {/* <p style={{ fontSize: 12, color: "rgba(0,0,0, .4)" }}>
               {cluster.diaChi}
-            </p>
+            </p> */}
           </TableCell>
         </TableRow>
       );
@@ -205,7 +205,10 @@ function Cinema() {
       ngaychieu.map((ngay) => {
         if (formatDate(ngay) == formatDate(lich.ngayChieu)) isExist = true;
       });
-      if (isExist == false && lich.tenCumRap._id === maCumRap) {
+      // && lich.ngayChieu > new Date()
+      const date = new Date(lich.ngayChieu)
+      //console.log('ngày hiện tại', Date.now(), 'ngày chiếu', date)
+      if (isExist == false && lich.tenCumRap._id === maCumRap && date > Date.now()) {
         ngaychieu.push(lich.ngayChieu);
         return (
           <Button
@@ -226,6 +229,7 @@ function Cinema() {
           </Button>
         );
       }
+
       //}
       //console.log("ngày chiếu trong trang chủ", ngaychieu, index);
     });

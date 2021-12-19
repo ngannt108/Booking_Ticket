@@ -124,6 +124,7 @@ function BookingPage() {
   // console.log('ghế trong rạp', listChair)
   // console.log('ghế đã chọn trong rạp', listChairBooked)
   // debugger;
+
   for (var i = 0; i < listChairBooked.length; i++) {
     for (var j = 0; j < listChair.length; j++) {
       if (listChairBooked[i] === listChair[j]) {
@@ -540,37 +541,6 @@ function BookingPage() {
   const [isConfirm, setConfirm] = useState(false)
   const profile = useSelector(state => state.profile.profileUser[0])
 
-  const send = async (e) => {
-    // dispatch(
-    //   bookingTicketAction(showTimeCode, biDanh, { danhSachGhe: chairArray })
-    // );
-
-    // emailjs.send('service_zbo2i1v', 'template_u22c938',
-    //   {
-    //     name: profile?.hoTen.toString(),
-    //     movieName: movie?.tenPhim.toString(),
-    //     showtimeDate: formatDate(thongTinPhim?.ngayChieu).toString(),
-    //     showtimeTime: formatTime(thongTinPhim?.ngayChieu).toString(),
-    //     cinemaClusterName: thongTinPhim?.tenCumRap.tenCumRap,
-    //     QRCode: "d"
-    //   },
-    //   'user_fHd8DhFxCFsbFXqbnCExx')
-    //   .then((res) => console.log('thành công', res))
-    //   .catch(err => console.log('thất bại', err))
-    // console.log('QR CODE ', imgQR);
-
-
-    // emailjs.sendForm('service_zbo2i1v', 'template_u22c938', e.target, 'user_fHd8DhFxCFsbFXqbnCExx')
-    //   .then((res) => console.log('thành công', res))
-    //   .catch(err => console.log('thất bại', err)) //sendForm onSubmit={send}  e.target
-    //console.log('**đã gửi mail**')
-    // if (result) {
-    //   setIsSuccess(true)
-
-    // }
-
-
-  }
   let imageQRcode
   useEffect(async () => {
     if (isSuccessPaypal == true) {
@@ -668,7 +638,7 @@ function BookingPage() {
             <Modal.Title>Xác nhận mua vé</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form className="confirm" onSubmit={send}>
+            <Form className="confirm">
               <Input
                 Label="Tên khách hàng"
                 value={profile?.hoTen}
