@@ -5,7 +5,7 @@ import {
   getListMoviePageAction,
 } from "../../store/actions/adminAction";
 import { NavLink } from "react-router-dom";
-import { Modal } from "react-bootstrap";
+import { Image, Modal } from "react-bootstrap";
 import MUIDataTable from "mui-datatables";
 import { Cancel, EditRounded } from "@material-ui/icons";
 import "./Movie.css";
@@ -17,6 +17,7 @@ import {
   updateMovieAction,
 } from "../../store/actions/adminAction";
 import { getMovieDetailAction } from "../../store/actions/movieAction";
+import axios from "axios";
 
 export const Movie = () => {
   const formatDate = (date) => {
@@ -113,7 +114,8 @@ export const Movie = () => {
                   setIsEdit(true),
                   setError(""),
                   getDetail(tableMeta.rowData[1]),
-                  setHinhAnh(tableMeta.rowData[3])
+                  setHinhAnh(tableMeta.rowData[3]),
+                  setXemAnh(`http://localhost:5000/uploads/${tableMeta.rowData[3]}`)
                 )}
               ></EditRounded>
               {/* </NavLink> */}
@@ -151,6 +153,7 @@ export const Movie = () => {
   const [ngayKhoiChieu, setNgayKhoiChieu] = useState("");
   const [hinhAnh, setHinhAnh] = useState("");
   const [filehinhAnh, setFileHinhAnh] = useState(null);
+  const [xemAnh, setXemAnh] = useState(null);
   const [moTa, setMoTa] = useState("");
   const [trailer, setTrailer] = useState("");
   const [thoiLuong, setThoiLuong] = useState("");
@@ -165,6 +168,7 @@ export const Movie = () => {
     setMoTa("");
     setIsAdd(false);
     setError("");
+    setXemAnh('')
   };
 
   const getDetail = (biDanh) => {
@@ -192,17 +196,34 @@ export const Movie = () => {
     //const update = JSON.stringify(updatebook)
     //await setHinhAnh(ramdom+'_'+hinhAnh)
     const fd = new FormData();
-    //if (filehinhAnh != null) fd.append("file", filehinhAnh, hinhAnh);
+    if (filehinhAnh != null) fd.append("file", filehinhAnh, hinhAnh);
     dispatch(addNewMovieAction(newmovie, fd, setError, setIsAdd));
+    setXemAnh('')
   };
-
+  const uploadImage = async (event) => {
+    //console.log("file  hình2 :", fd.event.target.files[0]);
+    if (event.target.files[0] != null) { //  
+      let time = Date.now()
+      setFileHinhAnh(event.target.files[0]);
+      setHinhAnh(time + "_" + event.target.files[0].name);
+      let url = URL.createObjectURL(event.target.files[0])
+      setXemAnh(url)
+      setMovie({ ...movie, hinhAnh: time + "_" + event.target.files[0].name });
+      //}
+    }
+  }
   const HandleChange = (e) => {
-    setMovie({ ...movie, hinhAnh, [e.target.name]: e.target.value }); //{
+    setMovie({ ...movie, [e.target.name]: e.target.value });
+
+
+    //{
     //     ...book,
     //     [e.target.name]: e.target.value,
     //     //hinhAnh: e.target.name.hinhAnh.files[0].name
     // }
+    console.log('hình ảnh vừa đổi', hinhAnh)
   };
+
   const editMovie = async (e) => {
     e.preventDefault();
 
@@ -212,7 +233,7 @@ export const Movie = () => {
 
     console.log(">>phim sau khi update:", movie);
     const fd = new FormData();
-    //if (filehinhAnh != null) fd.append("file", filehinhAnh, hinhAnh);
+    if (filehinhAnh != null) fd.append("file", filehinhAnh, hinhAnh);
     dispatch(updateMovieAction(biDanh, movie, fd, setError, setIsEdit));
   };
 
@@ -249,15 +270,15 @@ export const Movie = () => {
       <div className="model">
         <Modal show={isOpen} onHide={hideModal}>
           <Modal.Header>
-            <Modal.Title>Xóa thông tin sách</Modal.Title>
+            <Modal.Title>Xóa thông tin phim</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Bạn có chắc muốn xóa sách {tenPhim} không?</Modal.Body>
+          <Modal.Body>Bạn có chắc muốn xóa phim {tenPhim} không?</Modal.Body>
           <Modal.Footer>
             <button className="btn btn-warning" onClick={confirmDelete}>
-              Delete
+              Xóa
             </button>
             <button className="btn btn-danger" onClick={hideModal}>
-              Cancel
+              Hủy
             </button>
           </Modal.Footer>
         </Modal>
@@ -291,20 +312,28 @@ export const Movie = () => {
             onChange={(e) => setMoTa(e.target.value)}
           />
           <Input
-            type="text" //file"
+            type="file" //file" text
             accept=".jpg, .png"
             Label="Hình ảnh"
-            name="hinhAnh" //"file"
+            name="file" //"file" hinhAnh
             // value={hinhAnh}
-            onChange={(event) => {
-              setHinhAnh(event.target.value);
+            onChange={uploadImage
+              //setHinhAnh(event.target.value);
               // console.log("file  hình:", event.target.files);
-              // //setHinhAnh(event.target.files[0].name);
-              // setFileHinhAnh(event.target.files[0]);
+              //setHinhAnh(event.target.files[0].name);
+              //    setFileHinhAnh(event.target.files[0]);
               // console.log("file  hình2 :", filehinhAnh);
-              // setHinhAnh(Date.now() + "_" + event.target.files[0].name);
-            }}
+              //    setHinhAnh(Date.now() + "_" + event.target.files[0].name);
+
+            }
           />
+          {/* <Image className="preview-img"
+
+            src={`${xemAnh}`}
+          //onChange={(e)}
+          /> */}
+          <div className="preview-img" style={{ backgroundImage: `url(${xemAnh})` }}>
+          </div>
           <Input
             Label="Trailer"
             placeholder=""
@@ -323,10 +352,10 @@ export const Movie = () => {
         <p style={{ marginLeft: "20px", color: "red" }}>{error}</p>
         <Modal.Footer>
           <button className="btn btn-success" onClick={addMovie}>
-            Submit
+            Xác nhận
           </button>
           <button className="btn btn-danger" onClick={() => setIsAdd(false)}>
-            Cancel
+            Hủy
           </button>
         </Modal.Footer>
       </Modal>
@@ -365,21 +394,23 @@ export const Movie = () => {
             name="moTa"
           />
           <Input
-            type="text" //file"
+            type="file" //file"
             accept=".jpg, .png"
             Label="Hình ảnh"
-            name="hinhAnh" //"file"
-            value={movie.hinhAnh}
-            onChange={HandleChange}
-            // onChange={(event) => {
+            name="file" //"file"           
+            onChange={uploadImage}
+          // onChange={(event) => {
 
-            // console.log("file  hình:", event.target.files);
-            // //setHinhAnh(event.target.files[0].name);
-            // setFileHinhAnh(event.target.files[0]);
-            // console.log("file  hình2 :", filehinhAnh);
-            // setHinhAnh(Date.now() + "_" + event.target.files[0].name);
-            // }}
+          // console.log("file  hình:", event.target.files);
+          // //setHinhAnh(event.target.files[0].name);
+          // setFileHinhAnh(event.target.files[0]);
+          // console.log("file  hình2 :", filehinhAnh);
+          // setHinhAnh(Date.now() + "_" + event.target.files[0].name);
+          // }}
           />
+          <Image className="preview-img" style={xemAnh ? { backgroundImage: `url(${xemAnh})` } : ''} />
+          {/* src={`http://localhost:5000/uploads/${hinhAnh}`} /> */}
+
           <Input
             Label="Trailer"
             placeholder=""
@@ -392,10 +423,10 @@ export const Movie = () => {
         <p style={{ marginLeft: "20px", color: "red" }}>{error}</p>
         <Modal.Footer>
           <button className="btn btn-success" onClick={editMovie}>
-            Submit
+            Xác nhận
           </button>
           <button className="btn btn-danger" onClick={() => setIsEdit(false)}>
-            Cancel
+            Hủy
           </button>
         </Modal.Footer>
       </Modal>

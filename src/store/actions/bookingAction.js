@@ -96,7 +96,7 @@ export const bookingTicketAction = (IDshowtime, biDanh, { danhSachGhe }) => {
       dispatch(setBtnLoadingAction(isLoading));
       Swal.fire(
         "Thông Báo",
-        "Bạn đã đặt vé thành công, tổng tiền là: " + Format(res.data.tongTien),
+        "Bạn đã đặt vé thành công",//, tổng tiền đã là: " + Format(res.data.tongTien),
         "success"
       );
       setTimeout(() => {

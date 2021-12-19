@@ -25,3 +25,10 @@ textarea {
 .image-item {
   width: 80px;
 }
+.preview-img{
+  display:flex;
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+
+}

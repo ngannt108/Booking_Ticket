@@ -58,10 +58,10 @@ export const User = () => {
 
     const dispatch = useDispatch();
     const users = useSelector((state) => state.admin.listUser);
-    const [tentaiKhoan, setTentaiKhoan] = useState("");
-    const [email, setEmail] = useState("");
-    const [hoTen, setHoTen] = useState("");
-    const [SDT, setSDT] = useState("");
+    // const [tentaiKhoan, setTentaiKhoan] = useState("");
+    // const [email, setEmail] = useState("");
+    // const [hoTen, setHoTen] = useState("");
+    // const [SDT, setSDT] = useState("");
 
     useEffect(() => {
         dispatch(getListUserPageAction())

@@ -267,9 +267,9 @@ function AddShowTime() {
               fullWidth
               disabled={
                 biDanh !== "" &&
-                maCumRap !== "" &&
-                maRap !== "" &&
-                ngayChieuPhim !== ""
+                  maCumRap !== "" &&
+                  maRap !== "" &&
+                  ngayChieuPhim !== ""
                   ? false
                   : true
               }
@@ -283,7 +283,7 @@ function AddShowTime() {
         <h5 style={{ margin: "50px" }}>
           Ngày chiếu khởi {formatDate(movieDetail.ngayKhoiChieu)}
         </h5>
-        <Grid item md={7}>
+        <Grid item md={8}>
           <TableContainer component={Paper}>
             <Table className="table" aria-label="simple table">
               <TableHead>
@@ -297,36 +297,36 @@ function AddShowTime() {
               </TableHead>
               {Array.isArray(movieDetail.lichChieu)
                 ? movieDetail.lichChieu.map((showtime) => (
-                    <TableBody>
-                      <>
-                        <TableCell>
-                          <div className="fixoverflow">
-                            {showtime.tenCumRap.tenCumRap}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="fixoverflow">
-                            {showtime.tenRap.tenRap}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="fixoverflow">
-                            {formatDate(showtime.ngayChieu)}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="fixoverflow">
-                            {formatTime(showtime.ngayChieu)}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="fixoverflow">
-                            {formatTime(showtime.gioKetThuc)}
-                          </div>
-                        </TableCell>
-                      </>
-                    </TableBody>
-                  ))
+                  <TableBody>
+                    <>
+                      <TableCell>
+                        <div className="fixoverflow">
+                          {showtime.tenCumRap.tenCumRap}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="fixoverflow">
+                          {showtime.tenRap.tenRap}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="fixoverflow">
+                          {formatDate(showtime.ngayChieu)}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="fixoverflow">
+                          {formatTime(showtime.ngayChieu)}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="fixoverflow">
+                          {formatTime(showtime.gioKetThuc)}
+                        </div>
+                      </TableCell>
+                    </>
+                  </TableBody>
+                ))
                 : []}
             </Table>
           </TableContainer>

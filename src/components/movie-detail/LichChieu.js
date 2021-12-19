@@ -60,15 +60,36 @@ const fadeAwayStyle = { opacity: 0.5 };
 
 function LichChieu(props) {
   const { biDanh } = useParams();
+  const [movieDetail, setMovieDetail] = useState('')
+  const [maLichChieu, setMaLichChieu] = useState("");
   const classes = useStyles();
   const dispatch = useDispatch();
   //const maPhim = props?.maPhim;
   const history = useHistory();
 
-  //   useEffect(() => {
-  //     // dispatch(layThongTinLichChieuPhimAction(maPhim));
-  //     // dispatch(getMovieDetailAction(biDanh, setMovieDetail))
-  //   }, [maPhim, dispatch]);
+  const formatDate = (date) => {
+    if (date) {
+      const d = new Date(date); //d.toLocaleString("en-AU")//
+      return `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
+    }
+    return "";
+  };
+  const formatTime = (date) => {
+    if (date) {
+      const d = new Date(date); //d.toLocaleString("en-AU")//
+      const time = d.toLocaleString("en-AU", {
+        hour: "numeric",
+        minute: "numeric",
+      });
+      return time;
+    }
+    return "";
+  };
+
+  useEffect(() => {
+    //     // dispatch(layThongTinLichChieuPhimAction(maPhim));
+    dispatch(getMovieDetailAction(biDanh, setMovieDetail))
+  }, []);  //maPhim, dispatch]
 
   const heThongRapChieu = useSelector((state) => {
     return state.cinema?.phim?.heThongRapChieu;
@@ -77,30 +98,30 @@ function LichChieu(props) {
   // ------------------------------------ COL-1 -----------------------------------------
   // const [selectedCol1Index, setSelectedCol1Index] = useState(null);
   // const renderCol1 = () => {
-  //     return heThongRapChieu?.map((rap, index) => {
-  //         const faded = selectedCol1Index != index;
-  //         return (
-  //             <TableRow key={index} style={faded ? fadeAwayStyle : null}>
-  //                 <TableCell style={{ padding: 10 }}>
-  //                     <Button
-  //                         onClick={() => {
-  //                             handleLayCumRapChieu(rap.maHeThongRap);
-  //                             setSelectedCol1Index(index);
-  //                             setSelectedCol2Index(null);
-  //                         }}
-  //                     >
-  //                         <img width="50px" src={rap.logo} alt="" />
-  //                     </Button>
-  //                 </TableCell>
-  //             </TableRow>
-  //         );
-  //     });
+  //   return heThongRapChieu?.map((rap, index) => {
+  //     const faded = selectedCol1Index != index;
+  //     return (
+  //       <TableRow key={index} style={faded ? fadeAwayStyle : null}>
+  //         <TableCell style={{ padding: 10 }}>
+  //           <Button
+  //             onClick={() => {
+  //               handleLayCumRapChieu(rap.maHeThongRap);
+  //               setSelectedCol1Index(index);
+  //               setSelectedCol2Index(null);
+  //             }}
+  //           >
+  //             <img width="50px" src={rap.logo} alt="" />
+  //           </Button>
+  //         </TableCell>
+  //       </TableRow>
+  //     );
+  //   });
   // };
 
   // const handleLayCumRapChieu = (maHeThongRap) => {
-  //     setNgayXem();
-  //     setSuatChieu();
-  //     // dispatch(layCumRapChieuAction(maHeThongRap));
+  //   setNgayXem();
+  //   setSuatChieu();
+  //   // dispatch(layCumRapChieuAction(maHeThongRap));
   // };
 
   // ------------------------------------ COL-2 -----------------------------------------
@@ -111,35 +132,46 @@ function LichChieu(props) {
   });
 
   console.log(cumRapChieu);
-
+  let tenCumRapChieu = []
+  tenCumRapChieu.push('')
+  let lichChieu = []
+  lichChieu.push('')
+  console.log('chi tiết về phim', movieDetail)
   const renderCol2 = () => {
-    return cumRapChieu?.map((cumRap, index) => {
+    return movieDetail?.lichChieu?.map((cumRap, index) => {  // cumRapChieu?.map((cumRap, index)
       const faded = selectedCol2Index != index;
-      return (
-        <TableRow key={index} style={faded ? fadeAwayStyle : null}>
-          <TableCell
-            onClick={() => {
-              layLichChieu(cumRap.maCumRap);
-              setSelectedCol2Index(index);
-            }}
-            className={classes.cumRap}
-          >
-            <p>{cumRap.tenCumRap}</p>
-          </TableCell>
-        </TableRow>
-      );
+      console.log('lịch chiếu', lichChieu)
+      console.log('tên rạp', tenCumRapChieu)
+      lichChieu.push(cumRap)
+      if (tenCumRapChieu.indexOf(cumRap.tenCumRap.tenCumRap) === -1) {
+        tenCumRapChieu.push(cumRap.tenCumRap.tenCumRap)
+        return (
+          <TableRow key={index} style={faded ? fadeAwayStyle : null}>
+            <TableCell
+              onClick={() => {
+                layLichChieu(cumRap.tenCumRap._id, cumRap);
+                setSelectedCol2Index(index);
+              }}
+              className={classes.cumRap}
+            >
+              <p>{cumRap.tenCumRap.tenCumRap}</p>
+            </TableCell>
+          </TableRow>
+        );
+      }
     });
   };
 
-  const layLichChieu = (maCumRap) => {
+  const [maCumRap, setMaCumRap] = useState()
+  const layLichChieu = (maCumRap, lichChieu) => {
     setNgayXem();
-    setSuatChieu();
-    //dispatch(layLichChieuAction(maCumRap));
+    setSuatChieu(lichChieu); //setSuatChieu()
+    setMaCumRap(maCumRap)
+    // dispatch(layLichChieuAction(maCumRap));
   };
 
   const [ngayXem, setNgayXem] = useState();
   const [suatChieu, setSuatChieu] = useState();
-
   const ngayChieuPhim = useSelector((state) => {
     return state?.cinema?.ngayChieuPhim;
   });
@@ -153,9 +185,15 @@ function LichChieu(props) {
         >
           <Grid container spacing={3}>
             <Grid item xs={12}>
+              {/* {maCumRap !== undefined
+                ? renderNgayChieu()
+                : ""} */}
               {renderNgayChieu()}
             </Grid>
             <Grid item xs={12}>
+              {/* {suatChieu !== undefined
+                ? renderGioChieu()
+                : ""} */}
               {renderGioChieu()}
             </Grid>
           </Grid>
@@ -163,14 +201,26 @@ function LichChieu(props) {
       </TableRow>
     );
   };
-
+  var ngaychieu = [];
+  ngaychieu.push("");
   const renderNgayChieu = () => {
-    return ngayChieuPhim?.map((ngay, index) => {
-      return (
-        <Button onClick={() => handleLayGioChieu(ngay)} key={index}>
-          {ngay}
-        </Button>
-      );
+    return lichChieu?.map((lich, index) => { //ngayChieuPhim
+      console.log("id cụm rạp --", lich)
+      var isExist = false;
+      if (lich.tenCumRap?._id == maCumRap) {
+        ngaychieu.map((ngay) => {
+          if (formatDate(ngay) == formatDate(lich.ngayChieu)) isExist = true;
+        });
+        const date = new Date(lich.ngayChieu)
+        if (isExist == false && lich.tenCumRap._id === maCumRap && date > Date.now()) {
+          ngaychieu.push(lich.ngayChieu);
+          return (
+            <Button onClick={() => handleLayGioChieu(lich.ngayChieu)} key={index}>
+              {formatDate(lich.ngayChieu)}
+            </Button>
+          );
+        }
+      }
     });
   };
 
@@ -185,31 +235,34 @@ function LichChieu(props) {
   });
 
   const renderGioChieu = () => {
-    return gioChieuPhim.map((gio, index) => {
-      return (
-        <Button onClick={() => handleLayMaLichChieu(gio)} key={index}>
-          {gio}
-        </Button>
-      );
+    return lichChieu?.map((lich, index) => { //gioChieuPhim  gio
+      //if (lich.ngayChieu == ngayXem)
+      if (formatDate(lich.ngayChieu) === formatDate(ngayXem) && lich.tenCumRap?._id === maCumRap)
+        return (
+          <Button onClick={() => handleLayMaLichChieu(lich)} key={index}>
+            {formatTime(lich.ngayChieu)}
+          </Button>
+        );
     });
   };
 
   const handleLayMaLichChieu = (gio) => {
-    setSuatChieu(gio);
+    setSuatChieu(gio.ngayChieu);
+    setMaLichChieu(gio._id)
     //  dispatch(layMaLichChieuPhimAction(ngayXem, gio));
   };
 
-  const maLichChieu = useSelector((state) => {
-    return state?.cinema?.maLichChieu?.maLichChieu;
-  });
+  // const maLichChieu = useSelector((state) => {
+  //   return state?.cinema?.maLichChieu?.maLichChieu;
+  // });
 
   if (
     maLichChieu !== undefined &&
     ngayXem !== undefined &&
     suatChieu !== undefined
   ) {
-    localStorage.setItem("maLichChieu", JSON.stringify(maLichChieu));
-    history.push(`/booking/${maLichChieu}`);
+    //localStorage.setItem("maLichChieu", JSON.stringify(maLichChieu));
+    history.push(`/${biDanh}/booking/${maLichChieu}`);
   }
 
   return (

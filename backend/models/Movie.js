@@ -12,6 +12,7 @@ const Movie = new Schema({
   moTa: { type: String },
   trailer: { type: String },
   ngayKhoiChieu: { type: Date, required: true },
+  ngayKetThuc: { type: Date },
   lichChieu: { type: Array, ref: "Showtime", default: [] },//[Showtime],
   thoiLuong: { type: Number },
   // thoiLuong: { type: Number, required: [true, 'Bạn chưa chọn thời lượng phim'] },

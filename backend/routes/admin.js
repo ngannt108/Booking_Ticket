@@ -24,14 +24,9 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage }).single('file');
 //Movie
-router.post(
-  "/upload",
-  Auth.checkPermission,
-  Auth.checkAdmin,
-  upload.single("file")
-);
+
 
 router.post(
   "/movie/:bidanh/showtime",
@@ -51,7 +46,7 @@ router.get(
   "/movie/topMovies",
   Auth.checkPermission,
   Auth.checkAdmin,
-  movieController.top20Movies
+  movieController.top10Movies
 );
 router.get(
   "/movie/movietheater",
@@ -95,6 +90,27 @@ router.get(
   Auth.checkPermission,
   Auth.checkAdmin,
   userController.getAllUser
+);
+
+router.post(
+  "/upload",
+  Auth.checkPermission,
+  Auth.checkAdmin,
+  (req, res) => {
+    upload(req, res, (err) => {
+      if (err) {
+        return res.status(500).json(err)
+      }
+
+      return res.status(200).send(req.file)
+    })
+  }
+);
+router.get(
+  "/goodSales",
+  Auth.checkPermission,
+  Auth.checkAdmin,
+  showtimeController.goodSales
 );
 
 module.exports = router;

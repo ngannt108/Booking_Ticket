@@ -38,7 +38,18 @@ class MovieController {
     Movie.find({ daXoa: false })
       .then((data) => {
         // console.log(data);
-        if (data.length != 0) res.status(200).json(data);
+        if (data.length != 0) {
+          const movieShowing = []
+          data.forEach((movie) => {
+            // const formatDate = new Date(movie.ngayKhoiChieu)
+            const dateNow = new Date()
+            // // console.log(formatDate.getDate(), formatDate.getMonth() + 3, dateNow.getMonth() + 1, dateNow.getDate())
+            // if (formatDate.getMonth() + 2 >= dateNow.getMonth() && formatDate.getDate() >= dateNow.getDate())
+            if (movie.ngayKetThuc > dateNow)
+              movieShowing.push(movie)
+          })
+          res.status(200).json(movieShowing);
+        }
         else {
           res.status(404).json("Chưa có phim nào");
           // const err = new Error('Chưa có phim nào');
@@ -54,6 +65,35 @@ class MovieController {
       });
   }
 
+  // showMovieShowing(req, res, next) {
+  //   Movie.find({ daXoa: false })
+  //     .then((data) => {
+  //       // console.log(data);
+  //       if (data.length != 0) {
+  //         const movieShowting = []
+  //         data.forEach((movie) => {
+  //           const formatDate = new Date(movie.ngayKhoiChieu)
+  //           console.log(formatDate)
+  //           if (formatDate.addMonths(2) > Date.now())
+  //             movieShowting.push(movie)
+  //         })
+  //         res.status(200).json(movieShowting);
+  //       }
+  //       else {
+  //         res.status(404).json("Chưa có phim nào");
+  //         // const err = new Error('Chưa có phim nào');
+  //         // err.statusCode = 404
+  //         // return next(err)
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       res.status(500).json("Hệ thống đang xử lý, vui lòng chờ");
+  //       // err = new Error('Hệ thống đang xử lý, vui lòng chờ');
+  //       // err.statusCode = 500
+  //       // return next(err)
+  //     });
+  // }
+
   showMovieByCluster(req, res, next) {
     Movie.find({ daXoa: false })
       .populate("lichChieu")
@@ -65,8 +105,8 @@ class MovieController {
             countDuplicate = 0
             showtime.lichChieu.forEach((cumRap) => {
               //res.status(404).json(cumRap);
-
-              if (cumRap.tenCumRap === req.params.maCumRap) {
+              const date = new Date(cumRap.ngayChieu)
+              if (cumRap.tenCumRap === req.params.maCumRap && date > Date.now()) {
                 countDuplicate++
                 console.log('biến đếm', countDuplicate)
               }
@@ -80,7 +120,7 @@ class MovieController {
           }
 
           )
-          console.log('dữ liệu của phim', phim)
+          // console.log('dữ liệu của phim', phim)
           res.status(200).json(phim);
           // res.status(404).json(phim);
         } else {
@@ -98,9 +138,7 @@ class MovieController {
 
   //[PUT] /movie/edit/:bidanh
   edit(req, res, next) {
-    Movie.findOneAndUpdate({ biDanh: req.params.bidanh }, req.body, {
-      runValidator: true,
-    })
+    Movie.findOneAndUpdate({ biDanh: req.params.bidanh }, req.body)
       .then((data) => {
         if (data) {
           res.status(200).json("Cập nhật thành công");
@@ -176,6 +214,7 @@ class MovieController {
     const movie = new Movie(req.body);
     console.log("ngày chiếu", ngaykhoichieu);
     movie.ngayKhoiChieu = ngaykhoichieu; //.toISOString()
+    movie.ngayKetThuc = ngaykhoichieu.setMonth(ngaykhoichieu.getMonth() + 2)
     movie
       .save()
       .then(() => res.status(200).json(movie))
@@ -187,7 +226,7 @@ class MovieController {
       });
   }
   //[GET] topMoives
-  top20Movies(req, res, next) {
+  top10Movies(req, res, next) {
     Movie.find({ soLuongBan: { $gt: 0 } })
       .sort({ soLuongBan: -1 })
       .limit(10)
@@ -196,15 +235,13 @@ class MovieController {
           res
             .status(200)
             .json({
-              message: "Top 20 phim được xem nhiều của rạp",
-              top10: data,
+              data
             });
         else
           res
-            .status(200)
+            .status(404)
             .json({
-              message: "Top 20 phim được xem nhiều của rạp",
-              top10: "Chưa có sách nào được bán",
+              message: "Top 10 phim được xem nhiều của rạp"
             });
       })
       .catch((err) => {

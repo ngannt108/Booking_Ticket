@@ -69,10 +69,12 @@ function Cinema() {
   const [selectedCol2Index, setSelectedCol2Index] = useState(null);
   const cinemaCluster = useSelector((state) => state.cinema.cinemaCluster);
   console.log("cụm rạp", cinemaCluster);
-  const handleChoiceMovie = (maCumRap) => {
+  const [maCumRap, setMaCumRap] = useState('')
+  const handleChoiceMovie = (cumRap) => {
+    setMaCumRap(cumRap)
     //cluster
     //dispatch(getListMoviePageAction())
-    dispatch(getMovieAction(maCumRap)); //cluster
+    dispatch(getMovieAction(cumRap)); //cluster
   };
 
   const renderCol2 = () => {
@@ -89,9 +91,9 @@ function Cinema() {
             className={classes.cumRap}
           >
             <p>{cluster.tenCumRap}</p>
-            <p style={{ fontSize: 12, color: "rgba(0,0,0, .4)" }}>
+            {/* <p style={{ fontSize: 12, color: "rgba(0,0,0, .4)" }}>
               {cluster.diaChi}
-            </p>
+            </p> */}
           </TableCell>
         </TableRow>
       );
@@ -135,10 +137,11 @@ function Cinema() {
     return state.cinema?.gioChieu;
   });
 
-  console.log("phim theo lịch chiếu", cinemaMovie);
+  //console.log("phim theo lịch chiếu", cinemaMovie);
   const renderCol3 = () => {
     return cinemaMovie?.map((movie, index) => {
       //cinemaMovie?.danhSachPhim?.map((movie, index)
+
       return (
         <TableRow key={index}>
           <TableCell style={{ height: 110, minHeight: 110, padding: 5 }}>
@@ -152,7 +155,7 @@ function Cinema() {
                   justifyContent: "center",
                 }}
               >
-                <img width="50px" src={movie.hinhAnh} alt="" />
+                <img width="50px" src={`http://localhost:5000/uploads/${movie.hinhAnh}`} alt="" />
               </Grid>
               <Grid item xs={9}>
                 <Button onClick={() => handleLayTenPhim(movie.biDanh)}>
@@ -202,7 +205,10 @@ function Cinema() {
       ngaychieu.map((ngay) => {
         if (formatDate(ngay) == formatDate(lich.ngayChieu)) isExist = true;
       });
-      if (isExist == false) {
+      // && lich.ngayChieu > new Date()
+      const date = new Date(lich.ngayChieu)
+      //console.log('ngày hiện tại', Date.now(), 'ngày chiếu', date)
+      if (isExist == false && lich.tenCumRap._id === maCumRap && date > Date.now()) {
         ngaychieu.push(lich.ngayChieu);
         return (
           <Button
@@ -217,14 +223,15 @@ function Cinema() {
               setActiveIndex(index);
             }}
           >
-            {console.log("laylich", formatDate(lich))}
+            {/* {console.log("laylich", formatDate(lich))} */}
             {formatDate(lich.ngayChieu)}
             {/* //.ngayChieu)} */}
           </Button>
         );
       }
+
       //}
-      console.log("ngày chiếu trong trang chủ", ngaychieu, index);
+      //console.log("ngày chiếu trong trang chủ", ngaychieu, index);
     });
   };
 
@@ -239,7 +246,7 @@ function Cinema() {
 
   const renderGioChieu = () => {
     return movieDetail.lichChieu?.map((lich, index) => {
-      if (formatDate(lich.ngayChieu) === formatDate(ngayXem)) {
+      if (formatDate(lich.ngayChieu) === formatDate(ngayXem) && lich.tenCumRap._id === maCumRap) {
         return (
           <Button
             onClick={() => {
@@ -270,7 +277,7 @@ function Cinema() {
     ngayXem !== undefined &&
     suatChieu !== undefined
   ) {
-    localStorage.setItem("maLichChieu", JSON.stringify(maLichChieu));
+    //localStorage.setItem("maLichChieu", JSON.stringify(maLichChieu));
     history.push(`/${biDanh}/booking/${maLichChieu}`);
   }
 
