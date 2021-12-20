@@ -24,7 +24,8 @@ const Showtime = new Schema({
         // hangH: { type: Array, default: [] },
 
     },
-    giaVe: { type: Number, required: [true] }
+    giaVe: { type: Number, required: [true] },
+
     // cumRapChieu:[{
     //     lichChieu:[{
     //         maRap:{type: String},

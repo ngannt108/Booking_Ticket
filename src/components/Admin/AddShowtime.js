@@ -116,11 +116,21 @@ function AddShowTime() {
     //     lichChieu.maRap !== "" &&
     //     lichChieu.giaVe !== ""
     // )
+    const dateFormat = new Date(ngayChieuPhim)
+    console.log("Ngày hiện tại", dateFormat)
+    console.log("khung giờ", dateFormat.getHours())
+    let TicketPrice = 0
+    if (dateFormat.getDay() == 1 || dateFormat.getDay() == 2 || dateFormat.getDay() == 4)
+      if (dateFormat.getHours() < 12)
+        TicketPrice = 70000
+      else TicketPrice = 85000
+    else if (dateFormat.getDay() == 3) TicketPrice = 75000
+    else TicketPrice = 105000
     const lichChieuCuaPhim = {
       tenCumRap: maCumRap,
       tenRap: maRap,
       ngayChieu: ngayChieuPhim,
-      giaVe: 75000,
+      giaVe: TicketPrice,
     };
 
     console.log("--*_____*--");

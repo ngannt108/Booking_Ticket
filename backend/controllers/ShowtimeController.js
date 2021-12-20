@@ -2,8 +2,10 @@ const Movie = require("../models/Movie");
 const ShowTime = require("../models/Showtime");
 const Room = require("../models/Room");
 const Movietheater = require("../models/Movietheater");
-const TicketBooking = require("../models/TicketBooking");
-const jwt = require("jsonwebtoken");
+const TicketBooking = require('../models/TicketBooking');
+const jwt = require('jsonwebtoken');
+const sendEmail = require("../services/emailServices");
+const emailServices = require("../services/emailServices");
 
 class ShowTimeController {
   //[POST] /movie/:bidanh/showtime
@@ -156,38 +158,37 @@ class ShowTimeController {
         DanhSachve.push({ maGhe: dsGhe, giaGhe: showtime.giaVe });
         GheDaChon.push(dsGhe);
       });
-    else res.status(400).json({ error: "Vui lòng kiểm tra lại lịch chiếu" });
-    const movie = await Movie.findOne({ biDanh: req.params.bidanh });
+    else (res.status(400).json({ error: 'Vui lòng kiểm tra lại lịch chiếu' }))
+    const movie = await Movie.findOne({ biDanh: req.params.bidanh })
     //console.log('movie', movie)
     const booking = new TicketBooking({
       maLichChieu: IDShowTime,
       danhSachVe: DanhSachve,
       tentaiKhoan: req.user,
-      phim: movie._id,
-    });
-    // console.log('**Trong tình trạng đặt vé', DanhSachve)
+      phim: movie._id
+    })
+
+    //console.log('**Trong tình trạng đặt vé', booking)
     // console.log('**Trong tình trạng đặt vé', GheDaChon)
     booking
       .save()
       .then(async () => {
         //res.status(200).json('Đặt vé thành công')
-        showtime.gheDaChon = [...showtime.gheDaChon, ...GheDaChon];
-        const soLuong = GheDaChon.length;
+        showtime.gheDaChon = [...showtime.gheDaChon, ...GheDaChon]
+        const soLuong = GheDaChon.length
+        // const movie = await Movie.findOne({ biDanh: req.params.bidanh })
 
         const ticketBooking = await showtime.save();
         if (ticketBooking) {
-          // const movie = await Movie.findOne({ biDanh: req.params.bidanh });
+          // const movie = await Movie.findOne({ biDanh: req.params.bidanh })
           if (movie) {
             movie.soLuongBan = movie.soLuongBan + soLuong;
             //console.log('so lượng vé bán', movie);
-            movie
-              .save()
-              .then(() =>
-                res
-                  .status(200)
-                  .json({ tongTien: showtime.giaVe * GheDaChon.length })
-              )
-              .catch();
+            movie.save()
+              .then(() => {
+                res.status(200).json({ tongTien: showtime.giaVe * GheDaChon.length })
+              })
+              .catch()
           }
           // res.status(200).json({ tongTien: showtime.giaVe * GheDaChon.length })
         } else res.status(500).json({ error: "Chưa thể tiến hành đặt vé" });
