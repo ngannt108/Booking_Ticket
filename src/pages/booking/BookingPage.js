@@ -26,7 +26,8 @@ import emailjs from 'emailjs-com'
 import './BookingPage.css'
 import { getProfileAction } from "../../store/actions/profileAction";
 import QRCode from 'qrcode'
-import Paypal from "./Paypal";
+// import Paypal from "./Paypal";
+import axios from "axios";
 // import { SendMail } from "./SendMail"
 
 const useStyles = makeStyles((theme) => ({
@@ -133,7 +134,7 @@ function BookingPage() {
     }
   }
 
-  const [isValid, setIsValid] = useState(true);
+  const [isValid, setIsValid] = useState(false);
 
   //const [chairArray, setChairArray] = useState([])
   // let chairArray = [];
@@ -522,6 +523,7 @@ function BookingPage() {
     setConfirm(true)
 
 
+
     //style={{ width: '40px', height: '40px' }}
     // dispatch(
     //   bookingTicketAction(showTimeCode, biDanh, { danhSachGhe: chairArray })
@@ -543,33 +545,54 @@ function BookingPage() {
 
   let imageQRcode
   useEffect(async () => {
+
+    await QRCode.toDataURL('test').then(setQR);
+    const dataBooking = {
+      name: profile?.hoTen,
+      movieName: movie?.tenPhim,
+      showtimeDate: formatDate(thongTinPhim?.ngayChieu).toString(),
+      showtimeTime: formatTime(thongTinPhim?.ngayChieu).toString(),
+      cinemaClusterName: thongTinPhim?.tenCumRap?.tenCumRap,
+      QRCode: QR
+    }
+
     if (isSuccessPaypal == true) {
+      const token = JSON.parse(localStorage.getItem("token"));
+      const res = await axios({
+        url: `http://localhost:5000/user/sendEmailBooking`,
+        method: "POST",
+        data: dataBooking,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
 
       dispatch(bookingTicketAction(showTimeCode, biDanh, { danhSachGhe: chairArray }));
       // console.log('kết quả', result)
-      const qr = await QRCode.toDataURL('test').then(setQR);
+      // QRCode.toDataURL('test').then(setQR);
       // if (result) 
       {
-        // if (qr != false) {
+        // if (qr) {
         //   console.log('QR', qr)
         //   imageQRcode = document.createElement('image')
         //   imageQRcode.setAttribute("src", QR)
         //   console.log(imageQRcode, "HÌNH ẢNH")
-        // setImgQR(imageQRcode) //<Image src={QR} />        
-        // }
+        //setImgQR(imageQRcode) //<Image src={QR} />        
+        //}
 
-        emailjs.send('service_zbo2i1v', 'template_u22c938',
-          {
-            name: profile?.hoTen,
-            movieName: movie?.tenPhim,
-            showtimeDate: formatDate(thongTinPhim?.ngayChieu).toString(),
-            showtimeTime: formatTime(thongTinPhim?.ngayChieu).toString(),
-            cinemaClusterName: thongTinPhim?.tenCumRap?.tenCumRap,
-            QRCode: 'imageQRcode'
-          },
-          'user_fHd8DhFxCFsbFXqbnCExx')
-          .then((res) => console.log('thành công', res))
-          .catch(err => console.log('thất bại', err))
+        // emailjs.send('service_zbo2i1v', 'template_u22c938',
+        //   {
+        //     name: profile?.hoTen,
+        //     movieName: movie?.tenPhim,
+        //     showtimeDate: formatDate(thongTinPhim?.ngayChieu).toString(),
+        //     showtimeTime: formatTime(thongTinPhim?.ngayChieu).toString(),
+        //     cinemaClusterName: thongTinPhim?.tenCumRap?.tenCumRap,
+        //     QRCode: 'imageQRcode'
+        //   },
+        //   'user_fHd8DhFxCFsbFXqbnCExx')
+        //   .then((res) => console.log('thành công', res))
+        //   .catch(err => console.log('thất bại', err))
         setConfirm(false) //đóng modal
         setIsSuccessPaypal(false)
       }
@@ -806,7 +829,7 @@ function BookingPage() {
                   </div>
                   <div style={{ textAlign: "center", margin: "30px" }}>
                     <Button
-                      disabled={isValid}
+                      disabled={chairArray.length > 0 ? false : true}
                       onClick={handleBooking}
                       variant="contained"
                       color="primary"

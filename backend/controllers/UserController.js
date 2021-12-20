@@ -93,17 +93,26 @@ class UserController {
   }
 
   //[GET] user/:id/history
-  history(req, res, next) {
+  history(req, res) {
     //CHẠY ĐƯỢC, NHƯNG NẾU LẤY MỖI thời gian và thông tin lịch chiếu thì 'undetifined'
     TicketBooking.find({ tentaiKhoan: req.user })
-      .populate("tentaiKhoan")
+      // .populate("tentaiKhoan")
+      .populate("phim")
       .populate("maLichChieu")
+      .populate({
+        path: "maLichChieu",
+        populate: { path: "tenCumRap" },
+      })
+      .populate({
+        path: "maLichChieu",
+        populate: { path: "tenRap" },
+      })
       .then((data) => {
-        console.log(data.maLichChieu);
+        console.log(data);
         if (data)
           res
             .status(200)
-            .json({ data: data.thoiGianDat, movie: data.maLichChieu });
+            .json(data);
         else {
           res.status(404).json({ error: "Vui lòng thử lại" });
           // const err = new Error('Vui lòng thử lại');
@@ -112,9 +121,7 @@ class UserController {
         }
       })
       .catch((err) => {
-        //err = new Error('Chỉnh sửa thất bại, không tìm thấy người dùng');
-        err.statusCode = 404;
-        return next(err);
+        res.status(500).json({ error: "Vui lòng thử lại" });
       });
     // const userhistory = await ticket.find({ 'tentaiKhoan._id': req.params.id })
     // console.log('lịch sử', userhistory)

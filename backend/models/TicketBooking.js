@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const User = require('./User')
-const Showtime = require('./Showtime')
+const Showtime = require('./Showtime');
+const Movie = require('./Movie');
 const Ticketbooking = new Schema({
     maLichChieu: { type: String, ref: Showtime },
     danhSachVe: [{
@@ -11,6 +12,7 @@ const Ticketbooking = new Schema({
     tentaiKhoan: { type: String, ref: User },
     thoiGianDat: { type: Date, default: Date.now() },
     daHuy: { type: Boolean, default: false },
+    phim: { type: String, ref: Movie }
     // createAt:{type: Date, default:Date.now},
     // updateAt:{type: Date, default:Date.now},
 
