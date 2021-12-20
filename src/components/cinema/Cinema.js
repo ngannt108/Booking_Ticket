@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
   cumRap: {
     cursor: "pointer",
     fontWeight: 700,
+    color: "#01d101",
   },
 }));
 
@@ -69,9 +70,9 @@ function Cinema() {
   const [selectedCol2Index, setSelectedCol2Index] = useState(null);
   const cinemaCluster = useSelector((state) => state.cinema.cinemaCluster);
   console.log("cụm rạp", cinemaCluster);
-  const [maCumRap, setMaCumRap] = useState('')
+  const [maCumRap, setMaCumRap] = useState("");
   const handleChoiceMovie = (cumRap) => {
-    setMaCumRap(cumRap)
+    setMaCumRap(cumRap);
     //cluster
     //dispatch(getListMoviePageAction())
     dispatch(getMovieAction(cumRap)); //cluster
@@ -91,9 +92,6 @@ function Cinema() {
             className={classes.cumRap}
           >
             <p>{cluster.tenCumRap}</p>
-            {/* <p style={{ fontSize: 12, color: "rgba(0,0,0, .4)" }}>
-              {cluster.diaChi}
-            </p> */}
           </TableCell>
         </TableRow>
       );
@@ -155,11 +153,15 @@ function Cinema() {
                   justifyContent: "center",
                 }}
               >
-                <img width="50px" src={`http://localhost:5000/uploads/${movie.hinhAnh}`} alt="" />
+                <img
+                  width="50px"
+                  src={`http://localhost:5000/uploads/${movie.hinhAnh}`}
+                  alt=""
+                />
               </Grid>
               <Grid item xs={9}>
                 <Button onClick={() => handleLayTenPhim(movie.biDanh)}>
-                  <h4>{movie.tenPhim}</h4>
+                  <h4 style={{ color: "#01d101" }}>{movie.tenPhim}</h4>
                 </Button>
                 <div>
                   {movieDetail.tenPhim === movie.tenPhim
@@ -206,9 +208,13 @@ function Cinema() {
         if (formatDate(ngay) == formatDate(lich.ngayChieu)) isExist = true;
       });
       // && lich.ngayChieu > new Date()
-      const date = new Date(lich.ngayChieu)
+      const date = new Date(lich.ngayChieu);
       //console.log('ngày hiện tại', Date.now(), 'ngày chiếu', date)
-      if (isExist == false && lich.tenCumRap._id === maCumRap && date > Date.now()) {
+      if (
+        isExist == false &&
+        lich.tenCumRap._id === maCumRap &&
+        date > Date.now()
+      ) {
         ngaychieu.push(lich.ngayChieu);
         return (
           <Button
@@ -246,7 +252,10 @@ function Cinema() {
 
   const renderGioChieu = () => {
     return movieDetail.lichChieu?.map((lich, index) => {
-      if (formatDate(lich.ngayChieu) === formatDate(ngayXem) && lich.tenCumRap._id === maCumRap) {
+      if (
+        formatDate(lich.ngayChieu) === formatDate(ngayXem) &&
+        lich.tenCumRap._id === maCumRap
+      ) {
         return (
           <Button
             onClick={() => {

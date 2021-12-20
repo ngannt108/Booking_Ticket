@@ -1,20 +1,20 @@
 [
     {
-        "maPhim": 1329,
-        "tenPhim": "Bàn tay diệt quỷ",
-        "url": "./images/ban-tay-diet-quy.png",
-        "trailer": "https://www.youtube.com/embed/uqJ9u7GSaYM"
+        "biDanh": "dune-hanh-tinh-cat",
+        "tenPhim": "DUNE - HÀNH TINH CÁT",
+        "url": "./images/dune.jpg",
+        "trailer": "https://www.youtube.com/embed/p5BxPH6PXl0"
     },
     {
-        "maPhim": 1344,
-        "tenPhim": "Lật mặt 48h",
-        "url": "./images/lat-mat-48h.png",
-        "trailer": "https://www.youtube.com/embed/kBY2k3G6LsM"
+        "biDanh": "spider-man-no-way-home",
+        "tenPhim": "SPIDER-MAN: NO WAY HOME",
+        "url": "./images/spider.jpg",
+        "trailer": "https://www.youtube.com/embed/daHCu_jU5mQ"
     },
     {
-        "maPhim": 1404,
-        "tenPhim": "Trạng tí",
-        "url": "./images/trang-ti.jpg",
-        "trailer": "https://www.youtube.com/embed/l2XBzUZidig"
+        "biDanh": "the-matrix",
+        "tenPhim": "THE MATRIX",
+        "url": "./images/matrix.png",
+        "trailer": "https://www.youtube.com/embed/ol3DnQ2sFoo"
     }
 ]

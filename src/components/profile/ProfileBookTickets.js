@@ -45,16 +45,15 @@ function ProfileBookTickets() {
     return chairBooked?.map((lichChieu, index) => {
       return (
         <TableRow key={index}>
-          <TableCell style={{ cursor: "pointer" }}
+          <TableCell
+            style={{ cursor: "pointer" }}
             onClick={() => {
               layChiTietVe(lichChieu._id);
-            }}>
+            }}
+          >
             <p>Tên phim: {lichChieu.phim.tenPhim}</p>
-            <p>Giá vé: {lichChieu.maLichChieu.giaVe}</p>
-            <p
-              style={{ color: "red" }}
-
-            >
+            <p>Giá vé: {lichChieu?.maLichChieu?.giaVe}</p>
+            <p style={{ color: "red" }}>
               Ngày đặt:{" "}
               {format("MM/dd/yy - hh:mm", new Date(lichChieu.thoiGianDat))}
             </p>
