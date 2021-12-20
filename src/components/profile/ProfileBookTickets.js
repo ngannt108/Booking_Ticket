@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import format from "date-format";
 import Table from "@material-ui/core/Table";
@@ -9,7 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-// import { getBookTicketChairAction } from "../../store/actions/profileAction";
+import { getBookTicketChairAction } from "../../store/actions/profileAction";
 
 const useStyles = makeStyles((theme) => ({
   fixoverflow: {
@@ -21,31 +21,43 @@ const useStyles = makeStyles((theme) => ({
 function ProfileBookTickets() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const profileUser = useSelector((state) => {
-    return state?.profile?.profileUser;
+  const chairBooked = useSelector((state) => {
+    return state.profile.chairBookTicket;
   });
+  console.log("chairbooked: ", chairBooked);
+
+  const [chairBookedHistory, setChairBookedHistory] = useState();
 
   // ------------------------------   COL-1   --------------------
-  const layDanhSachGhe = (maVe) => {
-    // console.log(maVe);
-    // dispatch(getBookTicketChairAction(maVe));
+  const layChiTietVe = (id) => {
+    chairBooked.map((lichChieu, index) => {
+      if (lichChieu._id === id) {
+        console.log("lichChieu", lichChieu._id);
+        setChairBookedHistory(lichChieu);
+      }
+    });
   };
+  useEffect(() => {
+    dispatch(getBookTicketChairAction());
+  }, []);
+
   const renderLichSuDatVe = () => {
-    return profileUser?.thongTinDatVe?.map((ve, index) => {
+    return chairBooked?.map((lichChieu, index) => {
       return (
         <TableRow key={index}>
           <TableCell>
-            <p>Tên phim: {ve.tenPhim}</p>
-            <p>Giá vé: {ve.giaVe}</p>
+            <p>Tên phim: {lichChieu.phim.tenPhim}</p>
+            <p>Giá vé: {lichChieu.maLichChieu.giaVe}</p>
             <p
               style={{ cursor: "pointer", color: "red" }}
               onClick={() => {
-                layDanhSachGhe(ve.maVe);
+                layChiTietVe(lichChieu._id);
               }}
             >
-              Ngày đặt: {format("MM/dd/yy - hh:mm", new Date(ve.ngayDat))}
+              Ngày đặt:{" "}
+              {format("MM/dd/yy - hh:mm", new Date(lichChieu.thoiGianDat))}
             </p>
-            <p>Thời lượng: {ve.thoiLuongPhim} phút</p>
+            <p>Thời lượng: {lichChieu.phim.thoiLuong} phút</p>
           </TableCell>
         </TableRow>
       );
@@ -56,45 +68,68 @@ function ProfileBookTickets() {
   const chairBookTicket = useSelector((state) => {
     return state.profile.chairBookTicket;
   });
-  // console.log(chairBookTicket);
+
+  const Format = (x) => {
+    return x.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    });
+  };
+  console.log("chair", chairBookedHistory);
   const renderGheDaDat = () => {
-    return chairBookTicket?.map((ghe, index) => {
+    if (chairBookedHistory !== undefined) {
       return (
-        <TableRow key={index}>
+        <TableRow>
           <TableCell>
-            <p>Tên rạp: {ghe.tenHeThongRap}</p>
-            <p>{ghe.tenRap}</p>
-            <p>Ghế: {ghe.tenGhe}</p>
+            <p>
+              Tên rạp: {chairBookedHistory?.maLichChieu?.tenCumRap?.tenCumRap}
+            </p>
+            <p>{chairBookedHistory?.maLichChieu?.tenRap?.tenRap}</p>
+            <p>
+              Ngày chiếu:{" "}
+              {format(
+                "MM/dd/yy - hh:mm",
+                new Date(chairBookedHistory?.maLichChieu?.ngayChieu)
+              )}
+            </p>
+            <p>Giá vé: {Format(chairBookedHistory?.maLichChieu?.giaVe)}</p>
+            {chairBookedHistory?.danhSachVe.map((tenGhe) => {
+              return (
+                <p>
+                  Ghế: <span style={{ color: "#01d101" }}>{tenGhe?.maGhe}</span>
+                </p>
+              );
+            })}
           </TableCell>
         </TableRow>
       );
-    });
+    }
   };
 
-  // return (
-  //   <div>
-  //     <TableContainer component={Paper}>
-  //       <Table className={classes.table} aria-label="simple table">
-  //         <TableHead>
-  //           <TableRow>
-  //             <TableCell>Phim đã đặt</TableCell>
-  //             <TableCell>Ghế đã đặt</TableCell>
-  //           </TableRow>
-  //         </TableHead>
-  //         <TableBody>
-  //           <TableRow>
-  //             <TableCell>
-  //               <div className={classes.fixoverflow}>{renderLichSuDatVe()}</div>
-  //             </TableCell>
-  //             <TableCell>
-  //               <div className={classes.fixoverflow}>{renderGheDaDat()}</div>
-  //             </TableCell>
-  //           </TableRow>
-  //         </TableBody>
-  //       </Table>
-  //     </TableContainer>
-  //   </div>
-  // );
+  return (
+    <div>
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Phim đã đặt</TableCell>
+              <TableCell>Ghế đã đặt</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell>
+                <div className={classes.fixoverflow}>{renderLichSuDatVe()}</div>
+              </TableCell>
+              <TableCell>
+                <div className={classes.fixoverflow}>{renderGheDaDat()}</div>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+  );
 }
 
 export default ProfileBookTickets;

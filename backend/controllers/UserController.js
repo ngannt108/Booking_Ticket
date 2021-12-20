@@ -97,13 +97,19 @@ class UserController {
     //CHẠY ĐƯỢC, NHƯNG NẾU LẤY MỖI thời gian và thông tin lịch chiếu thì 'undetifined'
     TicketBooking.find({ tentaiKhoan: req.user })
       .populate("tentaiKhoan")
+      .populate("phim")
       .populate("maLichChieu")
+      .populate({
+        path: "maLichChieu",
+        populate: { path: "tenCumRap" },
+      })
+      .populate({
+        path: "maLichChieu",
+        populate: { path: "tenRap" },
+      })
       .then((data) => {
         console.log(data.maLichChieu);
-        if (data)
-          res
-            .status(200)
-            .json({ data: data.thoiGianDat, movie: data.maLichChieu });
+        if (data) res.status(200).json(data);
         else {
           res.status(404).json({ error: "Vui lòng thử lại" });
           // const err = new Error('Vui lòng thử lại');
@@ -197,28 +203,29 @@ class UserController {
 
   cancelBooking(req, res) {
     TicketBooking.findOne({ _id: req.params.IDTicket })
-      .populate('maLichChieu')
+      .populate("maLichChieu")
       .then((data) => {
         if (data) {
-          let showtimeID
-          const time = new Date(data.maLichChieu.ngayChieu)
-          const now = new Date()
-          const n = now.setHours(now.getHours() + 1)
-          const minute = now.setMinutes(now.getMinutes() + 30)
+          let showtimeID;
+          const time = new Date(data.maLichChieu.ngayChieu);
+          const now = new Date();
+          const n = now.setHours(now.getHours() + 1);
+          const minute = now.setMinutes(now.getMinutes() + 30);
           // console.log('hiện tại', now.getHours(), now.getMinutes())
           // console.log('hiện tại sau khi cộng 1 tiếng', now.toTimeString())
           //console.log('lịch chiếu', data.maLichChieu)
           if (time >= now) {
-            showtimeID = data.maLichChieu._id
+            showtimeID = data.maLichChieu._id;
             data.daHuy = true;
-            let listChair = []
+            let listChair = [];
             data.danhSachVe.map((ghe) => {
-              listChair.push(ghe.maGhe)
-            })
-            console.log('danh sach ghe', listChair);
-            data.save()
+              listChair.push(ghe.maGhe);
+            });
+            console.log("danh sach ghe", listChair);
+            data
+              .save()
               .then(() => {
-                console.log('ID', showtimeID)
+                console.log("ID", showtimeID);
                 Showtime.findOne({ _id: showtimeID })
                   .then((showtime) => {
                     if (showtime) {
@@ -227,18 +234,22 @@ class UserController {
                         if (index > -1) {
                           showtime.gheDaChon.splice(index, 1);
                         }
-                      })
-                      showtime.save().then(() => res.status(200).json('Hoàn vé thành công'))
-                        .catch(err => res.status(400).json())
+                      });
+                      showtime
+                        .save()
+                        .then(() => res.status(200).json("Hoàn vé thành công"))
+                        .catch((err) => res.status(400).json());
                     }
                   })
-                  .catch(err => res.status(400).json())
+                  .catch((err) => res.status(400).json());
               })
-              .catch(err => res.status(400).json())
-          }
-          else res.status(400).json({ error: 'Không thể hoàn vé gần sát giờ chiếu' })
+              .catch((err) => res.status(400).json());
+          } else
+            res
+              .status(400)
+              .json({ error: "Không thể hoàn vé gần sát giờ chiếu" });
         }
-      })
+      });
   }
 }
 module.exports = new UserController();

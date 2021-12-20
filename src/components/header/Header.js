@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     position: "fixed",
     width: "100%",
     zIndex: 10,
+    backgroundImg: "../../assets/images/background/background.jpg",
   },
   menuButton: {
     marginRight: theme.spacing(0),
@@ -39,18 +40,19 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "700",
   },
   appbar: {
-    background: "white",
-    color: "#b4b4b4",
+    background: "black",
+    color: "#01d101",
   },
   toolbar: {
     display: "flex",
     justifyContent: "space-between",
   },
   menuItem: {
-    color: "#b4b4b4",
+    color: "#01d101",
     margin: "0 10px",
     fontSize: 15,
     textDecoration: "none",
+    fontWeight: "bold",
   },
   arrowIcon: {
     marginLeft: theme.spacing(1),
@@ -154,10 +156,18 @@ export default function Header() {
                       id="panel1a-header"
                     >
                       <Button onClick={handleClick}>
-                        <Avatar style={{ marginRight: 5 }}>
+                        <Avatar
+                          style={{
+                            marginRight: 5,
+                            color: "black",
+                            backgroundColor: "#01d101",
+                          }}
+                        >
                           {userName.charAt(0)}
                         </Avatar>
-                        <span style={{ color: "#b4b4b4" }}>{userName}</span>
+                        <span style={{ color: "#01d101", fontWeight: "bold" }}>
+                          {userName}
+                        </span>
                       </Button>
                     </AccordionSummary>
                     <AccordionDetails>
@@ -264,10 +274,18 @@ export default function Header() {
               {userName ? (
                 <>
                   <Button onClick={handleClick}>
-                    <Avatar style={{ marginRight: 5 }}>
+                    <Avatar
+                      style={{
+                        marginRight: 5,
+                        color: "black",
+                        backgroundColor: "#01d101",
+                      }}
+                    >
                       {userName.charAt(0)}
                     </Avatar>
-                    <span>{userName}</span>
+                    <span style={{ color: "#01d101", fontWeight: "bold" }}>
+                      {userName}
+                    </span>
                   </Button>
                   <Menu
                     id="simple-menu"
@@ -276,7 +294,9 @@ export default function Header() {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
-                    <MenuItem onClick={handleProfile}>Thông tin cá nhân</MenuItem>
+                    <MenuItem onClick={handleProfile}>
+                      Thông tin cá nhân
+                    </MenuItem>
                     <MenuItem onClick={handleSignOut}>Đăng xuất</MenuItem>
                   </Menu>
                 </>

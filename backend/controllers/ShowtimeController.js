@@ -2,8 +2,8 @@ const Movie = require("../models/Movie");
 const ShowTime = require("../models/Showtime");
 const Room = require("../models/Room");
 const Movietheater = require("../models/Movietheater");
-const TicketBooking = require('../models/TicketBooking');
-const jwt = require('jsonwebtoken');
+const TicketBooking = require("../models/TicketBooking");
+const jwt = require("jsonwebtoken");
 
 class ShowTimeController {
   //[POST] /movie/:bidanh/showtime
@@ -44,12 +44,10 @@ class ShowTimeController {
         ) {
           count++;
           console.log("đếm", count);
-          return res
-            .status(400)
-            .json({
-              error:
-                "Không thể tạo lịch chiếu cho phim do rạp đang có lịch chiếu khác",
-            });
+          return res.status(400).json({
+            error:
+              "Không thể tạo lịch chiếu cho phim do rạp đang có lịch chiếu khác",
+          });
         }
       });
       if (count == 0) {
@@ -148,48 +146,55 @@ class ShowTimeController {
   async ticketBooking(req, res) {
     // const token = req.headers.authorization.split(" ")[1];
     // const user = jwt.verify(token, 'user');
-    const IDShowTime = req.params.IDshowtime
-    const ticket = req.body.danhSachGhe
-    var DanhSachve = []
-    var GheDaChon = []
-    const showtime = await ShowTime.findById(IDShowTime)
+    const IDShowTime = req.params.IDshowtime;
+    const ticket = req.body.danhSachGhe;
+    var DanhSachve = [];
+    var GheDaChon = [];
+    const showtime = await ShowTime.findById(IDShowTime);
     if (showtime)
-      ticket.forEach(dsGhe => {
-        DanhSachve.push({ maGhe: dsGhe, giaGhe: showtime.giaVe })
-        GheDaChon.push(dsGhe)
+      ticket.forEach((dsGhe) => {
+        DanhSachve.push({ maGhe: dsGhe, giaGhe: showtime.giaVe });
+        GheDaChon.push(dsGhe);
       });
-    else (res.status(400).json({ error: 'Vui lòng kiểm tra lại lịch chiếu' }))
+    else res.status(400).json({ error: "Vui lòng kiểm tra lại lịch chiếu" });
+    const movie = await Movie.findOne({ biDanh: req.params.bidanh });
+    //console.log('movie', movie)
     const booking = new TicketBooking({
       maLichChieu: IDShowTime,
       danhSachVe: DanhSachve,
-      tentaiKhoan: req.user
-    })
+      tentaiKhoan: req.user,
+      phim: movie._id,
+    });
     // console.log('**Trong tình trạng đặt vé', DanhSachve)
     // console.log('**Trong tình trạng đặt vé', GheDaChon)
-    booking.save()
+    booking
+      .save()
       .then(async () => {
         //res.status(200).json('Đặt vé thành công')
-        showtime.gheDaChon = [...showtime.gheDaChon, ...GheDaChon]
-        const soLuong = GheDaChon.length
+        showtime.gheDaChon = [...showtime.gheDaChon, ...GheDaChon];
+        const soLuong = GheDaChon.length;
 
-        const ticketBooking = await showtime.save()
+        const ticketBooking = await showtime.save();
         if (ticketBooking) {
-          const movie = await Movie.findOne({ biDanh: req.params.bidanh })
+          // const movie = await Movie.findOne({ biDanh: req.params.bidanh });
           if (movie) {
-            movie.soLuongBan = movie.soLuongBan + soLuong
+            movie.soLuongBan = movie.soLuongBan + soLuong;
             //console.log('so lượng vé bán', movie);
-            movie.save()
-              .then(() => res.status(200).json({ tongTien: showtime.giaVe * GheDaChon.length }))
-              .catch()
+            movie
+              .save()
+              .then(() =>
+                res
+                  .status(200)
+                  .json({ tongTien: showtime.giaVe * GheDaChon.length })
+              )
+              .catch();
           }
           // res.status(200).json({ tongTien: showtime.giaVe * GheDaChon.length })
-        }
-        else res.status(500).json({ error: 'Chưa thể tiến hành đặt vé' })
+        } else res.status(500).json({ error: "Chưa thể tiến hành đặt vé" });
         // .then()
         // .catch(err => res.status(500).json({ error: 'Chưa thể tiến hành đặt vé' }))
       })
-      .catch(err => res.status(500).json({ error: 'Đặt vé thất bại' }))
-
+      .catch((err) => res.status(500).json({ error: "Đặt vé thất bại" }));
   }
 
   goodSales(req, res) {
@@ -198,14 +203,12 @@ class ShowTimeController {
         if (data.length > 0) {
           let toTal = 0;
           data.forEach((showtime) => {
-            toTal += showtime.gheDaChon.length * showtime.giaVe
-          })
-          res.status(200).json(toTal)
+            toTal += showtime.gheDaChon.length * showtime.giaVe;
+          });
+          res.status(200).json(toTal);
         }
       })
-      .catch(err => res.status(500).json({ error: "Thử lại sau" }))
-
+      .catch((err) => res.status(500).json({ error: "Thử lại sau" }));
   }
-
 }
 module.exports = new ShowTimeController();

@@ -20,7 +20,7 @@ export const getProfileAction = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("thông tin người dùng", res.data);
+      // console.log("thông tin người dùng", res.data);
       dispatch({
         type: GET_PROFILE, //CHANGE_PASSWORD
         payload: res.data,
@@ -31,12 +31,27 @@ export const getProfileAction = () => {
   };
 };
 
-// export const getBookTicketChairAction = (maVe) => {
-//   return {
-//     type: GET_BOOK_TICKET_CHAIR,
-//     payload: maVe,
-//   };
-// };
+export const getBookTicketChairAction = () => {
+  return async (dispatch) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+      const res = await axios({
+        method: "GET",
+        url: "http://localhost:5000/user/history",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("history: ", res.data);
+      dispatch({
+        type: GET_BOOK_TICKET_CHAIR,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
 export const updateProfileUserAction = (user) => {
   return async (dispatch) => {
@@ -87,7 +102,7 @@ export const changePasswordAction = (user) => {
       alert("Thay đổi mật khẩu thành công");
     } catch (error) {
       alert(error.response.data.error); //"Thay đổi mật khẩu thất bại"
-      console.log('lỗi:', error);
+      console.log("lỗi:", error);
     }
   };
 };

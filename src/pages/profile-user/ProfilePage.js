@@ -18,8 +18,10 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import clsx from "clsx";
+import { KeyboardTab } from "@material-ui/icons";
 import ProfileUser from "../../components/profile/ProfileUser";
 import ProfileBookTickets from "../../components/profile/ProfileBookTickets";
+import { useHistory } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -96,6 +98,7 @@ export default function ProfilePage() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [option, setOption] = useState(true);
+  const history = useHistory();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -103,6 +106,10 @@ export default function ProfilePage() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const backToHome = () => {
+    history.push("/");
   };
 
   return (
@@ -177,6 +184,12 @@ export default function ProfilePage() {
                 <InboxIcon />
               </ListItemIcon>
               <ListItemText primary="Lịch sử đặt vé" />
+            </ListItem>
+            <ListItem button onClick={() => backToHome()}>
+              <ListItemIcon>
+                <KeyboardTab />
+              </ListItemIcon>
+              <ListItemText primary="Trở về trang chủ" />
             </ListItem>
           </List>
         </Drawer>

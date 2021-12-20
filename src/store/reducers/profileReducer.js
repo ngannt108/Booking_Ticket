@@ -23,12 +23,7 @@ export const profileReducer = (state = initialState, { type, payload }) => {
       return { ...state };
     }
     case GET_BOOK_TICKET_CHAIR: {
-      const newProfileUser = [...state.profileUser.thongTinDatVe];
-      //   console.log(newProfileUser);
-      //   console.log(payload);
-      const index = newProfileUser.findIndex((ve) => ve.maVe === payload);
-      //   console.log(index);
-      state.chairBookTicket = newProfileUser[index].danhSachGhe;
+      state.chairBookTicket = payload;
       //   console.log(state.chairBookTicket);
       return { ...state };
     }
