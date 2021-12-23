@@ -123,23 +123,6 @@ class UserController {
       .catch((err) => {
         res.status(500).json({ error: "Vui lòng thử lại" });
       });
-    // const userhistory = await ticket.find({ 'tentaiKhoan._id': req.params.id })
-    // console.log('lịch sử', userhistory)
-    // .then((data) => {
-    //     console.log(data)
-    //     if (data)
-    //         res.status(200).json("Lịch sử bao gồm:", data)
-    //     else {
-    //         const err = new Error('Vui lòng thử lại');
-    //         err.statusCode = 404
-    //         return next(err)
-    //     }
-    // })
-    // .catch(err => {
-    //     //err = new Error('Chỉnh sửa thất bại, không tìm thấy người dùng');
-    //     err.statusCode = 404
-    //     return next(err)
-    // })
   }
 
   //[GET] /admin/user
@@ -176,9 +159,7 @@ class UserController {
               .then((updateinfo) => res.status(200).json(updateinfo))
               .catch((err) => {
                 res.status(500).json({ error: "Cập nhật thất bại" });
-                // err = new Error('Cập nhật thất bại');
-                // err.statusCode = 500
-                // return next(err)
+
               });
           } else {
             res.status(500).json({ error: "Mật khẩu chưa đồng nhất" });
@@ -195,10 +176,7 @@ class UserController {
       })
       .catch((err) => {
         res.status(500).json({ error: "Vui lòng thử lại" });
-        // err = new Error('Vui lòng thử lại');
-        // // err = new Error('Hệ thống đang xử lý, hãy chờ giây lát');
-        // err.statusCode = 500
-        // return next(err)
+
       });
   }
 

@@ -9,5 +9,6 @@ const User = new Schema({
   hoTen: { type: String },
   SDT: { type: String },
   maLoaiNguoiDung: { type: String, default: '1' },
+  diemThuong: { type: Number, default: '0' },
 }, { timestamps: true });
 module.exports = mongoose.model('User', User);

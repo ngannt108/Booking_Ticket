@@ -15,6 +15,7 @@ router.get('/history', Auth.checkPermission, Auth.checkUser, userController.hist
 router.put('/editPassword', Auth.checkPermission, Auth.checkUser, validationChangePassword, isRequestValidated, userController.editPassword);
 router.get('/cancelBooking/:IDTicket', Auth.checkPermission, Auth.checkUser, userController.cancelBooking);
 router.post('/sendEmailBooking', Auth.checkPermission, Auth.checkUser, emailServices.sendEmail);
+router.get('/reminderEmail', emailServices.sendReminderMail);
 router.get('/', Auth.checkPermission, Auth.checkUser, userController.info);
 router.put('/', Auth.checkPermission, Auth.checkUser, validationUser, isRequestValidated, userController.edit);
 

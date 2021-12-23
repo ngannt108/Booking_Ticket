@@ -83,7 +83,7 @@ function BookingPage() {
       /*dispatch, biDanh*/
     ]
   );
-  useEffect(() => {}, [ischange /*dispatch, biDanh*/]);
+  useEffect(() => { }, [ischange /*dispatch, biDanh*/]);
 
   const formatDate = (date) => {
     if (date) {
@@ -210,8 +210,10 @@ function BookingPage() {
                 chairArray.splice(index, 1);
               }
             } else {
-              e.target.classList.add(classes.choiceChair);
-              chairArray.push(chair);
+              if (chairArray.length < 8) {
+                e.target.classList.add(classes.choiceChair);
+                chairArray.push(chair);
+              }
             }
             console.log("ghế chọn", chairArray);
           }}
@@ -250,8 +252,10 @@ function BookingPage() {
                 chairArray.splice(index, 1);
               }
             } else {
-              e.target.classList.add(classes.choiceChair);
-              chairArray.push(chair);
+              if (chairArray.length < 8) {
+                e.target.classList.add(classes.choiceChair);
+                chairArray.push(chair);
+              }
             }
             console.log("ghế chọn", chairArray);
           }}
@@ -289,8 +293,10 @@ function BookingPage() {
                 chairArray.splice(index, 1);
               }
             } else {
-              e.target.classList.add(classes.choiceChair);
-              chairArray.push(chair);
+              if (chairArray.length < 8) {
+                e.target.classList.add(classes.choiceChair);
+                chairArray.push(chair);
+              }
             }
             console.log("ghế chọn", chairArray);
           }}
@@ -328,8 +334,10 @@ function BookingPage() {
                 chairArray.splice(index, 1);
               }
             } else {
-              e.target.classList.add(classes.choiceChair);
-              chairArray.push(chair);
+              if (chairArray.length < 8) {
+                e.target.classList.add(classes.choiceChair);
+                chairArray.push(chair);
+              }
             }
             console.log("ghế chọn", chairArray);
           }}
@@ -367,8 +375,10 @@ function BookingPage() {
                 chairArray.splice(index, 1);
               }
             } else {
-              e.target.classList.add(classes.choiceChair);
-              chairArray.push(chair);
+              if (chairArray.length < 8) {
+                e.target.classList.add(classes.choiceChair);
+                chairArray.push(chair);
+              }
             }
             console.log("ghế chọn", chairArray);
           }}
@@ -406,8 +416,10 @@ function BookingPage() {
                 chairArray.splice(index, 1);
               }
             } else {
-              e.target.classList.add(classes.choiceChair);
-              chairArray.push(chair);
+              if (chairArray.length < 8) {
+                e.target.classList.add(classes.choiceChair);
+                chairArray.push(chair);
+              }
             }
             console.log("ghế chọn", chairArray);
           }}
@@ -445,9 +457,11 @@ function BookingPage() {
                 chairArray.splice(index, 1);
               }
             } else {
-              e.target.classList.add(classes.choiceChair);
-              chairArray.push(chair);
-              renderTable();
+              if (chairArray.length < 8) {
+                e.target.classList.add(classes.choiceChair);
+                chairArray.push(chair);
+              }
+              //renderTable();
             }
             console.log("ghế chọn", chairArray);
           }}
@@ -485,8 +499,10 @@ function BookingPage() {
                 chairArray.splice(index, 1);
               }
             } else {
-              e.target.classList.add(classes.choiceChair);
-              chairArray.push(chair);
+              if (chairArray.length < 8) {
+                e.target.classList.add(classes.choiceChair);
+                chairArray.push(chair);
+              }
             }
             console.log("ghế chọn", chairArray);
           }}
@@ -547,57 +563,66 @@ function BookingPage() {
 
   let imageQRcode;
   useEffect(async () => {
-    await QRCode.toDataURL("test").then(setQR);
-    const dataBooking = {
-      name: profile?.hoTen,
-      movieName: movie?.tenPhim,
-      showtimeDate: formatDate(thongTinPhim?.ngayChieu).toString(),
-      showtimeTime: formatTime(thongTinPhim?.ngayChieu).toString(),
-      cinemaClusterName: thongTinPhim?.tenCumRap?.tenCumRap,
-      QRCode: QR,
-    };
-
-    if (isSuccessPaypal == true) {
-      dispatch(
-        bookingTicketAction(showTimeCode, biDanh, { danhSachGhe: chairArray })
-      );
-      const token = JSON.parse(localStorage.getItem("token"));
-      const res = await axios({
-        url: `http://localhost:5000/user/sendEmailBooking`,
-        method: "POST",
-        data: dataBooking,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      // console.log('kết quả', result)
-      // QRCode.toDataURL('test').then(setQR);
-      // if (result)
-      {
-        // if (qr) {
-        //   console.log('QR', qr)
-        //   imageQRcode = document.createElement('image')
-        //   imageQRcode.setAttribute("src", QR)
-        //   console.log(imageQRcode, "HÌNH ẢNH")
-        //setImgQR(imageQRcode) //<Image src={QR} />
-        //}
-
-        // emailjs.send('service_zbo2i1v', 'template_u22c938',
-        //   {
-        //     name: profile?.hoTen,
-        //     movieName: movie?.tenPhim,
-        //     showtimeDate: formatDate(thongTinPhim?.ngayChieu).toString(),
-        //     showtimeTime: formatTime(thongTinPhim?.ngayChieu).toString(),
-        //     cinemaClusterName: thongTinPhim?.tenCumRap?.tenCumRap,
-        //     QRCode: 'imageQRcode'
-        //   },
-        //   'user_fHd8DhFxCFsbFXqbnCExx')
-        //   .then((res) => console.log('thành công', res))
-        //   .catch(err => console.log('thất bại', err))
+    let dataBooking
+    const qr = await QRCode.toDataURL(`Họ tên: ${profile?.hoTen}, suất phim: ${movie?.tenPhim}, chiếu lúc ${formatDate(thongTinPhim?.ngayChieu).toString()}, Ghế:${chairArray}, Cụm rạp: ${thongTinPhim?.tenCumRap?.tenCumRap}, ${thongTinPhim?.tenRap?.tenRap}`)
+      .then(); //setQR
+    if (qr !== false) {
+      dataBooking = {
+        name: profile?.hoTen,
+        movieName: movie?.tenPhim,
+        showtimeDate: formatDate(thongTinPhim?.ngayChieu).toString(),
+        showtimeTime: formatTime(thongTinPhim?.ngayChieu).toString(),
+        cinemaClusterName: thongTinPhim?.tenCumRap?.tenCumRap,
+        QRCode: qr,
+      };
+      if (isSuccessPaypal == true) {
+        console.log('Reward point', RewardPoints)
+        const success = await dispatch(
+          bookingTicketAction(showTimeCode, biDanh, chairArray, RewardPoints) //{ danhSachGhe: 
+        );
+        if (success != false) {
+          const token = JSON.parse(localStorage.getItem("token"));
+          const res = await axios({
+            url: `http://localhost:5000/user/sendEmailBooking`,
+            method: "POST",
+            data: dataBooking,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        }
         setConfirm(false); //đóng modal
         setIsSuccessPaypal(false);
       }
+    }
+
+
+
+    // console.log('kết quả', result)
+    // QRCode.toDataURL('test').then(setQR);
+    // if (result)
+    {
+      // if (qr) {
+      //   console.log('QR', qr)
+      //   imageQRcode = document.createElement('image')
+      //   imageQRcode.setAttribute("src", QR)
+      //   console.log(imageQRcode, "HÌNH ẢNH")
+      //setImgQR(imageQRcode) //<Image src={QR} />
+      //}
+
+      // emailjs.send('service_zbo2i1v', 'template_u22c938',
+      //   {
+      //     name: profile?.hoTen,
+      //     movieName: movie?.tenPhim,
+      //     showtimeDate: formatDate(thongTinPhim?.ngayChieu).toString(),
+      //     showtimeTime: formatTime(thongTinPhim?.ngayChieu).toString(),
+      //     cinemaClusterName: thongTinPhim?.tenCumRap?.tenCumRap,
+      //     QRCode: 'imageQRcode'
+      //   },
+      //   'user_fHd8DhFxCFsbFXqbnCExx')
+      //   .then((res) => console.log('thành công', res))
+      //   .catch(err => console.log('thất bại', err))
+
     }
   }, [isSuccessPaypal]);
 
@@ -652,6 +677,12 @@ function BookingPage() {
       currency: "VND",
     });
   };
+  const handleFormRewardPoints = (e) => {
+    e.preventDefault();
+    setUseRewardPoints(true)
+    setRewardPoints(profile?.diemThuong > totalPrice / 1000 ? totalPrice / 1000 : profile?.diemThuong)
+    // setUseRewardPoints(e.target.value)
+  }
   const modalConfirm = () => {
     return (
       <>
@@ -697,8 +728,20 @@ function BookingPage() {
                 name="cinemaClusterName"
                 disabled="true"
               />
+
+              <h6>Điểm tích lũy hiện tại {profile?.diemThuong}</h6>
+              <button
+                className="btn btn-success"
+                onClick={(e) => handleFormRewardPoints(e)}
+                disabled={profile?.diemThuong >= 20 ? false : true}
+              >
+                Thanh toán bằng điểm thưởng (Điểm tích lũy lớn hơn 20)
+              </button>
+              {RewardPoints >= 20 ? <h6>Bạn đã sử dụng {RewardPoints} điểm để thanh toán</h6> : ""}
               <h6>Tổng tiền cần thanh toán {Format(totalPrice)}</h6>
-              <Paypal total={totalPrice} />
+              {totalPrice == 0 ? <><button className="btn btn-success" onClick={() => setIsSuccessPaypal(true)}>
+                Xác nhận mua vé
+              </button></> : <Paypal total={totalPrice} />}
               {/* variant="primary" */}
               {/* <Button className="btn btn-success" type="submit">
                 Xác nhận
@@ -720,6 +763,76 @@ function BookingPage() {
       </>
     );
   };
+  const [useRewardPoints, setUseRewardPoints] = useState(false)
+  const [RewardPoints, setRewardPoints] = useState(0)
+  const afterDiscount = (e) => {
+    e.preventDefault();
+    setTotalPrice(totalPrice - RewardPoints * 1000)
+    setUseRewardPoints(false)
+
+  }
+  const modalRewardPoints = () => {
+    return (
+      <>
+        <Modal show={useRewardPoints} onHide={() => (setUseRewardPoints(false))}>
+          <Modal.Header>
+            <Modal.Title>Điểm tích lũy của bạn</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form style={{ height: '550px' }} className="confirm">
+              <Input
+                Label="Tên khách hàng"
+                value={profile?.hoTen}
+                type="text"
+                name="name"
+                disabled="true"
+              />
+              {/* {console.log('khách hàng', name)} */}
+              <Input
+                Label="Điểm tích lũy"
+                value={profile?.diemThuong || '0'}
+                type="text"
+                name="rewardPoints"
+                disabled="true"
+              />
+              <Input
+                Label="Chọn điểm thanh toán"
+                min='20'
+                max={profile?.diemThuong > totalPrice / 1000 ? totalPrice / 1000 : profile?.diemThuong}
+                value={RewardPoints}
+                type="number"
+                name="rewardPoints"
+                disabled={profile?.diemThuong >= 2 ? false : true}
+                onChange={(e) => setRewardPoints(e.target.value)}
+              />
+              <button
+                className="btn btn-success"
+                onClick={(e) => afterDiscount(e)}
+              >
+                Xác nhận
+              </button>
+              <button
+                className="btn btn-danger"
+                onClick={() => (setUseRewardPoints(false), setRewardPoints(0))}
+              >
+                Hủy
+              </button>
+              {/* variant="primary" */}
+              {/* <Button className="btn btn-success" type="submit">
+                Xác nhận
+              </Button> */}
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  };
+
+
+
 
   const renderTable = () => {
     //chairArray = ["A2", "B2"]
@@ -852,6 +965,7 @@ function BookingPage() {
               </Grid>
             </Container>
             {isConfirm == true ? modalConfirm() : ""}
+            {useRewardPoints == true ? modalRewardPoints() : ""}
             {/* {isConfirm == true
               ? renderQR()
               : ""} */}

@@ -11,8 +11,17 @@ import ProfilePage from "./pages/profile-user/ProfilePage";
 import MovieDetailPage from "./pages/movie-detail/MovieDetailPage";
 import BookingPage from "./pages/booking/BookingPage";
 import NotFound from "./components/404NotFound";
+import { useEffect } from "react";
+import axios from "axios";
 // import { SendMail } from "./pages/booking/SendMail";
 function App() {
+  useEffect(async () => {
+    const res = await axios({
+      url: `http://localhost:5000/user/reminderEmail`,
+      method: "GET",
+    });
+  }, []);
+
   return (
     <>
       <BrowserRouter>
