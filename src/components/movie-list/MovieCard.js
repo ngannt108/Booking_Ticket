@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 4,
   },
   movieTittle: {
+    color: "white",
     height: 48,
     fontWeight: 500,
     letterSpacing: 1,
@@ -75,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
     "-webkit-box-orient": "vertical",
   },
   time: {
+    color: "white",
     fontSize: 14,
     padding: "0 10px",
   },
@@ -88,13 +90,13 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     height: "100%",
     paddingTop: 10,
-    background: "white",
+    // background: "white",
     display: "none",
   },
   btn: {
     width: "100%",
     padding: "10px 0",
-    background: "#fb4226",
+    background: "#01d101",
     fontSize: 16,
     letterSpacing: 2,
     color: "white",

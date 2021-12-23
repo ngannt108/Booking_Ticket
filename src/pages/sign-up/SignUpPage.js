@@ -30,16 +30,17 @@ const useStyles = makeStyles({
   },
   paper: {
     color: "white",
-    padding: 50,
-    maxWidth: 360,
+    padding: 30,
+    maxWidth: 600,
+    height: 600,
     position: "relative",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    backgroundColor: "rgba(5,8,95, .9)",
+    backgroundColor: "rgb(78 5 114)",
   },
   tittle: {
-    padding: "30px 0 60px",
+    padding: "30px 0 30px",
   },
 });
 
@@ -79,7 +80,7 @@ export default function Signin() {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const [error, setError] = useState('')
+  const [error, setError] = useState("");
 
   const [authSignUp, setAuthSignUp] = useState({
     taiKhoan: "",
@@ -113,61 +114,83 @@ export default function Signin() {
           <Grid align="center" className={classes.tittle}>
             <h2>Sign Up</h2>
           </Grid>
-          <div style={inputStyle}>
-            <FormLabel style={{ color: "white" }}>Tài khoản:</FormLabel>
-            <CssTextField
-              fullWidth
-              required
-              name="taiKhoan"
-              onChange={handleChange}
-            ></CssTextField>
-          </div>
-          <div style={inputStyle}>
-            <FormLabel style={{ color: "white" }}>Mật khẩu:</FormLabel>
-            <CssTextField
-              type="password"
-              fullWidth
-              required
-              name="matKhau"
-              onChange={handleChange}
-            ></CssTextField>
-          </div>
-          <div style={inputStyle}>
-            <FormLabel style={{ color: "white" }}>Nhập lại mật khẩu:</FormLabel>
-            <CssTextField
-              type="password"
-              fullWidth
-              required
-              name="nhapLaiMatKhau"
-              onChange={handleChange}
-            ></CssTextField>
-          </div>
-          <div style={inputStyle}>
-            <FormLabel style={{ color: "white" }}>Email:</FormLabel>
-            <CssTextField
-              fullWidth
-              required
-              name="email"
-              onChange={handleChange}
-            ></CssTextField>
-          </div>
-          <div style={inputStyle}>
-            <FormLabel style={{ color: "white" }}>Số điện thoại:</FormLabel>
-            <CssTextField
-              fullWidth
-              required
-              name="SDT"
-              onChange={handleChange}
-            ></CssTextField>
-          </div>
-          <div style={inputStyle}>
-            <FormLabel style={{ color: "white" }}>Họ tên:</FormLabel>
-            <CssTextField
-              fullWidth
-              required
-              name="hoTen"
-              onChange={handleChange}
-            ></CssTextField>
+          <div className="row">
+            <div className="col-sm-6">
+              <div className="row">
+                <div style={inputStyle}>
+                  <FormLabel style={{ color: "white" }}>Tài khoản:</FormLabel>
+                  <CssTextField
+                    style={{ width: "250px" }}
+                    required
+                    name="taiKhoan"
+                    onChange={handleChange}
+                  ></CssTextField>
+                </div>
+              </div>
+              <div className="row">
+                <div style={inputStyle}>
+                  <FormLabel style={{ color: "white" }}>Mật khẩu:</FormLabel>
+                  <CssTextField
+                    type="password"
+                    style={{ width: "250px" }}
+                    required
+                    name="matKhau"
+                    onChange={handleChange}
+                  ></CssTextField>
+                </div>
+              </div>
+              <div className="row">
+                <div style={inputStyle}>
+                  <FormLabel style={{ color: "white" }}>
+                    Nhập lại mật khẩu:
+                  </FormLabel>
+                  <CssTextField
+                    type="password"
+                    style={{ width: "250px" }}
+                    required
+                    name="nhapLaiMatKhau"
+                    onChange={handleChange}
+                  ></CssTextField>
+                </div>
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="row">
+                <div style={inputStyle}>
+                  <FormLabel style={{ color: "white" }}>Email:</FormLabel>
+                  <CssTextField
+                    style={{ width: "250px" }}
+                    required
+                    name="email"
+                    onChange={handleChange}
+                  ></CssTextField>
+                </div>
+              </div>
+              <div className="row">
+                <div style={inputStyle}>
+                  <FormLabel style={{ color: "white" }}>
+                    Số điện thoại:
+                  </FormLabel>
+                  <CssTextField
+                    style={{ width: "250px" }}
+                    required
+                    name="SDT"
+                    onChange={handleChange}
+                  ></CssTextField>
+                </div>
+              </div>
+              <div className="row">
+                <div style={inputStyle}>
+                  <FormLabel style={{ color: "white" }}>Họ tên:</FormLabel>
+                  <CssTextField
+                    style={{ width: "250px" }}
+                    required
+                    name="hoTen"
+                    onChange={handleChange}
+                  ></CssTextField>
+                </div>
+              </div>
+            </div>
           </div>
 
           <FormControlLabel

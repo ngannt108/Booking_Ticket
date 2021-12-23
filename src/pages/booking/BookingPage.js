@@ -32,7 +32,13 @@ import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   BookingPage: {
-    paddingTop: "100px",
+    paddingTop: "136px",
+    backgroundImage:
+      "url(https://i.pinimg.com/originals/4c/3a/50/4c3a501aca8f297c80c9355609ab025a.jpg)",
+    backgroundSize: "100% auto",
+  },
+  textColor: {
+    color: "white",
   },
   choiceChair: {
     backgroundColor: "#6645fd !important",
@@ -759,6 +765,7 @@ function BookingPage() {
                       <Table
                         className={classes.table}
                         aria-label="simple table"
+                        style={{ backgroundColor: "black" }}
                       >
                         <TableHead></TableHead>
                         <TableBody>
@@ -783,11 +790,17 @@ function BookingPage() {
                     height="auto"
                   />
                   {/* <p>Tên phim: {thongTinPhim?.tenPhim}</p> */}
-                  <p>Tên phim: {movie?.tenPhim}</p>
-                  <p>Cụm rạp: {thongTinPhim?.tenCumRap?.tenCumRap}</p>
-                  <p>{thongTinPhim?.tenRap?.tenRap}</p>
+                  <p className={classes.textColor}>
+                    Tên phim: {movie?.tenPhim}
+                  </p>
+                  <p className={classes.textColor}>
+                    Cụm rạp: {thongTinPhim?.tenCumRap?.tenCumRap}
+                  </p>
+                  <p className={classes.textColor}>
+                    {thongTinPhim?.tenRap?.tenRap}
+                  </p>
                   {/*  */}
-                  <p>
+                  <p className={classes.textColor}>
                     Ngày chiếu: {formatDate(thongTinPhim?.ngayChieu)} - Giờ
                     chiếu: {formatTime(thongTinPhim?.ngayChieu)}
                   </p>

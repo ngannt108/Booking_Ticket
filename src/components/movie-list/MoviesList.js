@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
   label: {
     fontWeight: 700,
+    color: "white",
   },
 }));
 
@@ -23,7 +24,12 @@ export default function MoviesList() {
 
   return (
     <div id="lich-chieu" className={classes.moviesList}>
-      <Tabs value={selectedTab} onChange={handleChange} centered>
+      <Tabs
+        TabIndicatorProps={{ style: { background: "#01d101" } }}
+        value={selectedTab}
+        onChange={handleChange}
+        centered
+      >
         <Tab className={classes.label} label="Đang chiếu" />
       </Tabs>
       {selectedTab === 0 && <ShowingMovies />}

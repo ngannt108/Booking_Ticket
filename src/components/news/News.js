@@ -61,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
   label: {
     fontWeight: 700,
+    color: "white",
   },
 }));
 
@@ -587,6 +588,7 @@ export default function News() {
   return (
     <div id="tin-tuc" className="news" className={classes.News}>
       <Tabs
+        TabIndicatorProps={{ style: { background: "#01d101" } }}
         value={render}
         onChange={handleChange}
         centered

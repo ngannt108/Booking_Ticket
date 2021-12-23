@@ -21,10 +21,17 @@ export const signInAction = (auth, history) => {
         JSON.stringify(data.maLoaiNguoiDung)
       );
       localStorage.setItem("taiKhoan", JSON.stringify(data.tentaiKhoan));
+      const maLichChieu = JSON.parse(localStorage.getItem("maLichChieu"));
+      const biDanh = JSON.parse(localStorage.getItem("biDanh"));
+
       // đẩy userLogin lên store
       if (JSON.parse(localStorage.getItem("maLoaiNguoiDung")) === "0") {
         history.push("/admin");
-      } else history.push("/");
+      } else if (maLichChieu !== undefined && biDanh !== undefined) {
+        history.push(`${biDanh}/booking/${maLichChieu}`);
+      } else {
+        history.push("/");
+      }
       dispatch({
         type: SIGN_IN,
         payload: res.data, //authSignIn,
@@ -60,7 +67,7 @@ export const signUpAction = (auth, history, setError) => {
       history.push("/sign-in");
     } catch (error) {
       //Swal.fire("Thông Báo", "Bạn đã đăng kí không thành công", "error");
-      setError(error.response.data.error)
+      setError(error.response.data.error);
       console.log(error);
     }
   };

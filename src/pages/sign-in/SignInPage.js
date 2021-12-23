@@ -34,7 +34,7 @@ const useStyles = makeStyles({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    backgroundColor: "rgba(5,8,95, .9)",
+    backgroundColor: "rgb(78 5 114)",
   },
   tittle: {
     padding: "30px 0 60px",

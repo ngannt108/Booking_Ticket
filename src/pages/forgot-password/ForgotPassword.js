@@ -5,59 +5,59 @@ import {
   Button,
   Typography,
   Link,
-} from '@material-ui/core';
-import React from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+} from "@material-ui/core";
+import React from "react";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   signIn: {
-    position: 'relative',
-    width: '100vw',
-    height: '100vh',
+    position: "relative",
+    width: "100vw",
+    height: "100vh",
     fontsize: 15,
-    backgroundImage: 'url(images/bg2.jpg)',
-    backgroundPosition: 'center',
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
+    backgroundImage: "url(images/bg2.jpg)",
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
   },
   paper: {
-    color: 'white',
+    color: "white",
     padding: 50,
     maxWidth: 360,
-    position: 'relative',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    backgroundColor: 'rgba(5,8,95, .9)',
+    position: "relative",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "rgb(78 5 114)",
   },
   tittle: {
-    padding: '30px 0',
+    padding: "30px 0",
   },
 });
 
 const CssTextField = withStyles({
   root: {
-    '& .MuiInputBase-input': {
-      color: 'white',
+    "& .MuiInputBase-input": {
+      color: "white",
     },
-    '& .MuiInput-underline:before': {
-      borderBottomColor: 'rgba(0, 0, 0, 0.87)',
+    "& .MuiInput-underline:before": {
+      borderBottomColor: "rgba(0, 0, 0, 0.87)",
     },
-    '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-      borderBottomColor: 'white',
+    "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
+      borderBottomColor: "white",
     },
-    '& label.Mui-focused': {
-      color: 'white',
+    "& label.Mui-focused": {
+      color: "white",
     },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'white',
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "white",
     },
   },
 })(TextField);
 
 export default function Signin() {
   const classes = useStyles();
-  const inputStyle = { margin: '10px 0', '&>input': { color: 'white' } };
+  const inputStyle = { margin: "10px 0", "&>input": { color: "white" } };
 
   return (
     <Grid className={classes.signIn}>
@@ -71,7 +71,7 @@ export default function Signin() {
           </div>
 
           <Button
-            style={{ margin: '20px 0' }}
+            style={{ margin: "20px 0" }}
             type="submit"
             color="primary"
             variant="contained"

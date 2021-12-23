@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
     width: "20%",
     padding: 5,
     borderRight: "1px solid rgba(224, 224, 224, 1)",
+    // backgroundColor:
   },
   cumRap: {
     cursor: "pointer",
@@ -286,7 +287,8 @@ function Cinema() {
     ngayXem !== undefined &&
     suatChieu !== undefined
   ) {
-    //localStorage.setItem("maLichChieu", JSON.stringify(maLichChieu));
+    localStorage.setItem("maLichChieu", JSON.stringify(maLichChieu));
+    localStorage.setItem("biDanh", JSON.stringify(biDanh));
     history.push(`/${biDanh}/booking/${maLichChieu}`);
   }
 

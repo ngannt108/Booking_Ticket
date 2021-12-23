@@ -52,17 +52,16 @@
 
 .news-dien-anh a {
   text-decoration: none;
-
   color: #000;
   font-weight: bold;
 }
 
 .news-dien-anh p:hover {
-  color: #fb4226;
+  color: #01d101;
 }
 
 .news-dien-anh p {
-  color: #4a4a4a;
+  color: white;
   transition: all 0.2s ease-in-out;
 }
 
@@ -76,8 +75,8 @@
 
 .btnShowMore button {
   font-size: 14px;
-  color: #949494;
-  border: 1px solid #949494;
+  color: white;
+  border: 1px solid white;
   border-radius: 4px;
   text-align: center;
   background: 0 0;
@@ -91,8 +90,8 @@
 }
 
 .btnShowMore button:hover {
-  background-color: #fb4226;
-  border-color: #fb4226;
+  background-color: #01d101;
+  border-color: #01d101;
   color: #fff !important;
 }
 
@@ -108,7 +107,7 @@
 }
 
 .news-button button:focus {
-  color: #fb4226;
+  color: #01d101;
 }
 
 .news-button button:hover {
