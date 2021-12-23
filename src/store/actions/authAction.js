@@ -27,7 +27,7 @@ export const signInAction = (auth, history) => {
       // đẩy userLogin lên store
       if (JSON.parse(localStorage.getItem("maLoaiNguoiDung")) === "0") {
         history.push("/admin");
-      } else if (maLichChieu !== undefined && biDanh !== undefined) {
+      } else if (maLichChieu !== null && biDanh !== null) {
         history.push(`${biDanh}/booking/${maLichChieu}`);
       } else {
         history.push("/");
@@ -36,12 +36,6 @@ export const signInAction = (auth, history) => {
         type: SIGN_IN,
         payload: res.data, //authSignIn,
       });
-      // chuyển trang
-      // if (maLichChieu !== null) {
-      // history.push(`/booking/${maLichChieu}`);
-      // } else {
-
-      //  }
       return res.data;
     } catch (error) {
       // console.log(error);

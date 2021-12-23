@@ -130,6 +130,7 @@ export default function AdminPage() {
       <div className={classes.root}>
         <CssBaseline />
         <AppBar
+          style={{ background: "black", color: "#01d101" }}
           position="fixed"
           className={clsx(classes.appBar, {
             [classes.appBarShift]: open,

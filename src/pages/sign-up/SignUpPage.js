@@ -218,6 +218,11 @@ export default function Signin() {
               Đăng nhập
             </Link>
           </Typography>
+          <Typography>
+            <Link href="/" color="inherit" underline="always">
+              Về trang chủ
+            </Link>
+          </Typography>
         </form>
       </Paper>
     </Grid>
