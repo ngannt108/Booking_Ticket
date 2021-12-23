@@ -158,6 +158,7 @@ export default function MovieCard(props) {
             className={classes.btn}
             onClick={() => {
               history.push(`/movie-detail/${props.movie.biDanh}`);
+              localStorage.setItem('biDanh', props.movie.biDanh)
               dispatch(lamMoiTrangAction());
             }}
           >

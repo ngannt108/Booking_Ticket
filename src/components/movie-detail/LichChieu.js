@@ -235,11 +235,11 @@ function LichChieu(props) {
   });
 
   const renderGioChieu = () => {
-    return lichChieu?.map((lich, index) => { //gioChieuPhim  gio
+    return lichChieu?.map((lich, index) => { //gioChieuPhim  gio  key={index}
       //if (lich.ngayChieu == ngayXem)
       if (formatDate(lich.ngayChieu) === formatDate(ngayXem) && lich.tenCumRap?._id === maCumRap)
         return (
-          <Button onClick={() => handleLayMaLichChieu(lich)} key={index}>
+          <Button onClick={() => handleLayMaLichChieu(lich)}>
             {formatTime(lich.ngayChieu)}
           </Button>
         );
@@ -249,6 +249,7 @@ function LichChieu(props) {
   const handleLayMaLichChieu = (gio) => {
     setSuatChieu(gio.ngayChieu);
     setMaLichChieu(gio._id)
+    localStorage.setItem('maLichChieu', gio._id)
     //  dispatch(layMaLichChieuPhimAction(ngayXem, gio));
   };
 

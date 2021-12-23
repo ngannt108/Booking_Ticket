@@ -85,7 +85,6 @@ export const ChartAdmin = () => {
         });
     };
     const users = useSelector((state) => state.admin.listUser);
-
     return (
         <>
             <div>

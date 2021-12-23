@@ -169,12 +169,18 @@ class ShowTimeController {
       });
     else (res.status(400).json({ error: 'Vui lòng kiểm tra lại lịch chiếu' }))
     const movie = await Movie.findOne({ biDanh: req.params.bidanh })
+    let tienThanhToan;
+    if (rewardPoints == 0) {
+      tienThanhToan = showtime.giaVe * GheDaChon.length;
+    }
+    else tienThanhToan = showtime.giaVe * GheDaChon.length - rewardPoints * 1000
     //console.log('movie', movie)
     const booking = new TicketBooking({
       maLichChieu: IDShowTime,
       danhSachVe: DanhSachve,
       tentaiKhoan: req.user,
-      phim: movie._id
+      phim: movie._id,
+      tienThanhToan: tienThanhToan,
     })
 
     //console.log('**Trong tình trạng đặt vé', booking)
@@ -227,12 +233,12 @@ class ShowTimeController {
   }
 
   goodSales(req, res) {
-    ShowTime.find({})
+    TicketBooking.find({})
       .then((data) => {
         if (data.length > 0) {
           let toTal = 0;
           data.forEach((showtime) => {
-            toTal += showtime.gheDaChon.length * showtime.giaVe;
+            toTal += showtime.tienThanhToan;
           });
           res.status(200).json(toTal);
         }

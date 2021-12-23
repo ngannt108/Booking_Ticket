@@ -522,6 +522,7 @@ function BookingPage() {
   const [imgQR, setImgQR] = useState("");
   let Total = 0;
   const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPriceBefore, setTotalPriceBefore] = useState(0);
   const [isSuccessPaypal, setIsSuccessPaypal] = useState(false);
   // useEffect(async () => {
   //   const qr = await QRCode.toDataURL('test thử').then(setQR);
@@ -540,6 +541,7 @@ function BookingPage() {
         Total += thongTinPhim?.giaVe;
       });
       setTotalPrice(Total);
+      setTotalPriceBefore(Total)
     }
     setConfirm(true);
 
@@ -767,7 +769,7 @@ function BookingPage() {
   const [RewardPoints, setRewardPoints] = useState(0)
   const afterDiscount = (e) => {
     e.preventDefault();
-    setTotalPrice(totalPrice - RewardPoints * 1000)
+    setTotalPrice(totalPriceBefore - RewardPoints * 1000)
     setUseRewardPoints(false)
 
   }

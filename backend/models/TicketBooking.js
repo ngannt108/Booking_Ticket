@@ -14,7 +14,8 @@ const Ticketbooking = new Schema({
   tentaiKhoan: { type: String, ref: User },
   thoiGianDat: { type: Date, default: Date.now() },
   daHuy: { type: Boolean, default: false },
-  phim: { type: String, ref: Movie }
+  phim: { type: String, ref: Movie },
+  tienThanhToan: { type: Number }
   // createAt:{type: Date, default:Date.now},
   // updateAt:{type: Date, default:Date.now},
 },
