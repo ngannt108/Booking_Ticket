@@ -69,7 +69,7 @@ export const choiceChairAction = (chair) => {
   };
 };
 
-export const bookingTicketAction = (IDshowtime, biDanh, { danhSachGhe }) => {
+export const bookingTicketAction = (IDshowtime, biDanh, danhSachGhe, diemThuong) => {
   let isLoading = true;
   return async (dispatch) => {
     dispatch(setBtnLoadingAction(isLoading));
@@ -87,7 +87,7 @@ export const bookingTicketAction = (IDshowtime, biDanh, { danhSachGhe }) => {
       const res = await axios({
         url: `http://localhost:5000/user/${biDanh}/showtime/${IDshowtime}`,
         method: "POST",
-        data: { danhSachGhe },
+        data: { danhSachGhe: danhSachGhe, diemThuong: diemThuong },
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -101,7 +101,7 @@ export const bookingTicketAction = (IDshowtime, biDanh, { danhSachGhe }) => {
       );
       setTimeout(() => {
         window.location.reload();
-      }, 2000);
+      }, 1000);
       dispatch(await getTicketListAction(biDanh, IDshowtime));
       dispatch({
         type: DAT_VE_THANH_CONG,

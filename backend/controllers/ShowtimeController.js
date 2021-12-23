@@ -6,6 +6,7 @@ const TicketBooking = require('../models/TicketBooking');
 const jwt = require('jsonwebtoken');
 const sendEmail = require("../services/emailServices");
 const emailServices = require("../services/emailServices");
+const User = require("../models/User");
 
 class ShowTimeController {
   //[POST] /movie/:bidanh/showtime
@@ -38,6 +39,12 @@ class ShowTimeController {
         tenRap: showtime.tenRap,
         tenCumRap: showtime.tenCumRap,
       });
+      const same = await ShowTime.find({
+        ngayChieu: showtime.ngayChieu,
+        tenCumRap: showtime.tenCumRap,
+      });
+      if (same.length > 0)
+        return res.status(400).json({ error: "Một rạp khác trong hệ thống rạp có phim trùng giờ chiếu, vui lòng chọn thời gian khác" });
       var count = 0;
       dupShowtime.forEach((st) => {
         if (
@@ -63,8 +70,8 @@ class ShowTimeController {
           const LichChieu = addShowtimeToMovie.lichChieu;
           addShowtimeToMovie.lichChieu = [...LichChieu, id];
           //  addShowtimeToMovie.soLuongBan = addShowtimeToMovie.soLuongBan + 1;
-          const Sucessful = await addShowtimeToMovie.save();
-          if (Sucessful) res.status(200).json("Tạo lịch chiếu thành công");
+          const Successful = await addShowtimeToMovie.save();
+          if (Successful) res.status(200).json("Tạo lịch chiếu thành công");
           else {
             res.status(400).json({ error: "Tạo lịch chiếu thất bại" });
             // const err = new Error('Tạo lịch chiếu thất bại');
@@ -150,6 +157,8 @@ class ShowTimeController {
     // const user = jwt.verify(token, 'user');
     const IDShowTime = req.params.IDshowtime;
     const ticket = req.body.danhSachGhe;
+    const rewardPoints = req.body.diemThuong
+    console.log('ĐIỂM THƯỞNG  **', rewardPoints)
     var DanhSachve = [];
     var GheDaChon = [];
     const showtime = await ShowTime.findById(IDShowTime);
@@ -187,6 +196,25 @@ class ShowTimeController {
             movie.save()
               .then(() => {
                 res.status(200).json({ tongTien: showtime.giaVe * GheDaChon.length })
+              })
+              .catch()
+            User.findOne({ _id: req.user })
+              .then((data) => {
+                if (data) {
+                  if (rewardPoints == 0) {
+                    console.log('ĐIỂM THƯỞNG', rewardPoints)
+                    data.diemThuong = data.diemThuong + Math.round((showtime.giaVe * GheDaChon.length) / 1000 * 0.05)
+                    data.save()
+                      .then()
+                      .catch()
+                  } else {
+                    console.log('ĐIỂM THƯỞNG', rewardPoints)
+                    data.diemThuong = data.diemThuong - rewardPoints + Math.round((showtime.giaVe * GheDaChon.length - rewardPoints * 1000) / 1000 * 0.05)
+                    data.save()
+                      .then()
+                      .catch()
+                  }
+                }
               })
               .catch()
           }

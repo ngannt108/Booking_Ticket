@@ -186,7 +186,7 @@ export const Movie = () => {
     const newmovie = {
       tenPhim,
       hinhAnh,
-      trailer,
+      trailer: "https://www.youtube.com/embed/" + trailer,
       ngayKhoiChieu,
       moTa,
       thoiLuong,
@@ -336,7 +336,7 @@ export const Movie = () => {
           </div>
           <Input
             Label="Trailer"
-            placeholder=""
+            placeholder="Nhập mã đường liên kết"
             value={trailer}
             type="text"
             onChange={(e) => setTrailer(e.target.value)}
