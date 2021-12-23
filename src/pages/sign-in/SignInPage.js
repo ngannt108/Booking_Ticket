@@ -37,23 +37,13 @@ const useStyles = makeStyles({
     backgroundColor: "rgb(78 5 114)",
   },
   tittle: {
-    padding: "30px 0 60px",
+    padding: "20px 0 30px",
   },
   error: {
     color: "red",
     height: 21,
   },
 });
-
-const WhiteCheckbox = withStyles({
-  root: {
-    color: "white",
-    "&$checked": {
-      color: "white",
-    },
-  },
-  checked: {},
-})((props) => <Checkbox color="default" {...props} />);
 
 const CssTextField = withStyles({
   root: {
@@ -139,12 +129,6 @@ export default function Signin() {
               onChange={handleChange}
             ></CssTextField>
           </div>
-
-          <FormControlLabel
-            control={<WhiteCheckbox name="checkedB" />}
-            label="Nhớ mật khẩu"
-          />
-
           <Button
             style={{ margin: "20px 0" }}
             type="submit"
@@ -164,6 +148,11 @@ export default function Signin() {
             <span>Chưa có tài khoản? </span>
             <Link href="/sign-up" color="inherit" underline="always">
               Đăng ký
+            </Link>
+          </Typography>
+          <Typography>
+            <Link href="/" color="inherit" underline="always">
+              Về trang chủ
             </Link>
           </Typography>
         </form>

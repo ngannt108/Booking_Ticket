@@ -28,6 +28,7 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    backgroundColor: "white",
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -117,6 +118,7 @@ export default function ProfilePage() {
       <div className={classes.root}>
         <CssBaseline />
         <AppBar
+          style={{ background: "black", color: "#01d101" }}
           position="fixed"
           className={clsx(classes.appBar, {
             [classes.appBarShift]: open,
@@ -151,6 +153,7 @@ export default function ProfilePage() {
               [classes.drawerClose]: !open,
             }),
           }}
+          style={{ background: "black" }}
         >
           <div className={classes.toolbar}>
             <IconButton onClick={handleDrawerClose}>

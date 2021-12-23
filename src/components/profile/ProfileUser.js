@@ -77,7 +77,6 @@ const inputStyle = { margin: "10px 0", "&>input": { color: "white" } };
 function ProfileUser() {
   useEffect(() => {
     dispatch(getProfileAction());
-
   }, []);
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -90,11 +89,11 @@ function ProfileUser() {
             <Grid item md={9}>
               {profileUser.length > 0 ? (
                 <>
-
                   <h4>Tên tài khoản: {profileUser[0].tentaiKhoan}</h4>
                   <h4>Họ và tên: {profileUser[0].hoTen}</h4>
                   <h4>Email: {profileUser[0].email}</h4>
                   <h4>Số điện thoại: {profileUser[0].SDT}</h4>
+                  <h4>Điểm thưởng: {profileUser[0].diemThuong}</h4>
                 </>
               ) : (
                 ""
@@ -133,6 +132,7 @@ function ProfileUser() {
     matKhau: "",
     email: "",
     SDT: "",
+    // diemThuong: 0,
     maLoaiNguoiDung: "1",
     hoTen: "",
   });
@@ -157,10 +157,10 @@ function ProfileUser() {
     // console.log("Chi tiết cập nhật", user);
   };
 
-  const changeUserPassword = (e
+  const changeUserPassword = (
+    e
     // matKhau, matKhauMoi, nhapLaiMatKhau
   ) => {
-
     setOpenChangePassword(true);
     console.log("Thông tin user lúc đầu: ", profileUser[0]);
     setUser({
@@ -189,10 +189,9 @@ function ProfileUser() {
     // console.log(name, value);
     setUser({
       ...user,
-      [name]: value
+      [name]: value,
     });
     console.log("Thông tin user: ", user);
-
   };
 
   const handleSubmit = (e) => {
@@ -221,7 +220,7 @@ function ProfileUser() {
     // //   Swal.fire("Thông báo", "Mật khẩu không trùng khớp", "error");
     // // }
   };
-  console.log('profileUser', profileUser)
+  console.log("profileUser", profileUser);
   const renderModal = () => {
     return (
       <Modal
@@ -350,7 +349,6 @@ function ProfileUser() {
             </Button>
           </form>
         </Fade>
-
       </Modal>
     );
   };
