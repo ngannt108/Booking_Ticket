@@ -171,7 +171,9 @@ export default function Header() {
                       </Button>
                     </AccordionSummary>
                     <AccordionDetails>
-                      <MenuItem onClick={handleProfile}>Profile</MenuItem>
+                      <MenuItem onClick={handleProfile}>
+                        Thông tin cá nhân
+                      </MenuItem>
                       <MenuItem onClick={handleSignOut}>Đăng xuất</MenuItem>
                     </AccordionDetails>
                   </Accordion>

@@ -4,20 +4,16 @@ import {
   deleteMovieAction,
   getListMoviePageAction,
 } from "../../store/actions/adminAction";
-import { NavLink } from "react-router-dom";
 import { Image, Modal } from "react-bootstrap";
 import MUIDataTable from "mui-datatables";
 import { Cancel, EditRounded } from "@material-ui/icons";
 import "./Movie.css";
-import { Grid } from "@material-ui/core";
-
 import { Input } from "../Input";
 import {
   addNewMovieAction,
   updateMovieAction,
 } from "../../store/actions/adminAction";
 import { getMovieDetailAction } from "../../store/actions/movieAction";
-import axios from "axios";
 
 export const Movie = () => {
   const formatDate = (date) => {
@@ -115,7 +111,9 @@ export const Movie = () => {
                   setError(""),
                   getDetail(tableMeta.rowData[1]),
                   setHinhAnh(tableMeta.rowData[3]),
-                  setXemAnh(`http://localhost:5000/uploads/${tableMeta.rowData[3]}`)
+                  setXemAnh(
+                    `http://localhost:5000/uploads/${tableMeta.rowData[3]}`
+                  )
                 )}
               ></EditRounded>
               {/* </NavLink> */}
@@ -168,7 +166,7 @@ export const Movie = () => {
     setMoTa("");
     setIsAdd(false);
     setError("");
-    setXemAnh('')
+    setXemAnh("");
   };
 
   const getDetail = (biDanh) => {
@@ -198,30 +196,30 @@ export const Movie = () => {
     const fd = new FormData();
     if (filehinhAnh != null) fd.append("file", filehinhAnh, hinhAnh);
     dispatch(addNewMovieAction(newmovie, fd, setError, setIsAdd));
-    setXemAnh('')
+    setXemAnh("");
   };
   const uploadImage = async (event) => {
     //console.log("file  hình2 :", fd.event.target.files[0]);
-    if (event.target.files[0] != null) { //  
-      let time = Date.now()
+    if (event.target.files[0] != null) {
+      //
+      let time = Date.now();
       setFileHinhAnh(event.target.files[0]);
       setHinhAnh(time + "_" + event.target.files[0].name);
-      let url = URL.createObjectURL(event.target.files[0])
-      setXemAnh(url)
+      let url = URL.createObjectURL(event.target.files[0]);
+      setXemAnh(url);
       setMovie({ ...movie, hinhAnh: time + "_" + event.target.files[0].name });
       //}
     }
-  }
+  };
   const HandleChange = (e) => {
     setMovie({ ...movie, [e.target.name]: e.target.value });
-
 
     //{
     //     ...book,
     //     [e.target.name]: e.target.value,
     //     //hinhAnh: e.target.name.hinhAnh.files[0].name
     // }
-    console.log('hình ảnh vừa đổi', hinhAnh)
+    console.log("hình ảnh vừa đổi", hinhAnh);
   };
 
   const editMovie = async (e) => {
@@ -317,14 +315,14 @@ export const Movie = () => {
             Label="Hình ảnh"
             name="file" //"file" hinhAnh
             // value={hinhAnh}
-            onChange={uploadImage
+            onChange={
+              uploadImage
               //setHinhAnh(event.target.value);
               // console.log("file  hình:", event.target.files);
               //setHinhAnh(event.target.files[0].name);
               //    setFileHinhAnh(event.target.files[0]);
               // console.log("file  hình2 :", filehinhAnh);
               //    setHinhAnh(Date.now() + "_" + event.target.files[0].name);
-
             }
           />
           {/* <Image className="preview-img"
@@ -332,8 +330,10 @@ export const Movie = () => {
             src={`${xemAnh}`}
           //onChange={(e)}
           /> */}
-          <div className="preview-img" style={{ backgroundImage: `url(${xemAnh})` }}>
-          </div>
+          <div
+            className="preview-img"
+            style={{ backgroundImage: `url(${xemAnh})` }}
+          ></div>
           <Input
             Label="Trailer"
             placeholder="Nhập mã đường liên kết"
@@ -397,18 +397,21 @@ export const Movie = () => {
             type="file" //file"
             accept=".jpg, .png"
             Label="Hình ảnh"
-            name="file" //"file"           
+            name="file" //"file"
             onChange={uploadImage}
-          // onChange={(event) => {
+            // onChange={(event) => {
 
-          // console.log("file  hình:", event.target.files);
-          // //setHinhAnh(event.target.files[0].name);
-          // setFileHinhAnh(event.target.files[0]);
-          // console.log("file  hình2 :", filehinhAnh);
-          // setHinhAnh(Date.now() + "_" + event.target.files[0].name);
-          // }}
+            // console.log("file  hình:", event.target.files);
+            // //setHinhAnh(event.target.files[0].name);
+            // setFileHinhAnh(event.target.files[0]);
+            // console.log("file  hình2 :", filehinhAnh);
+            // setHinhAnh(Date.now() + "_" + event.target.files[0].name);
+            // }}
           />
-          <Image className="preview-img" style={xemAnh ? { backgroundImage: `url(${xemAnh})` } : ''} />
+          <Image
+            className="preview-img"
+            style={xemAnh ? { backgroundImage: `url(${xemAnh})` } : ""}
+          />
           {/* src={`http://localhost:5000/uploads/${hinhAnh}`} /> */}
 
           <Input

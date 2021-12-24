@@ -60,7 +60,7 @@ const fadeAwayStyle = { opacity: 0.5 };
 
 function LichChieu(props) {
   const { biDanh } = useParams();
-  const [movieDetail, setMovieDetail] = useState('')
+  const [movieDetail, setMovieDetail] = useState("");
   const [maLichChieu, setMaLichChieu] = useState("");
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -88,8 +88,8 @@ function LichChieu(props) {
 
   useEffect(() => {
     //     // dispatch(layThongTinLichChieuPhimAction(maPhim));
-    dispatch(getMovieDetailAction(biDanh, setMovieDetail))
-  }, []);  //maPhim, dispatch]
+    dispatch(getMovieDetailAction(biDanh, setMovieDetail));
+  }, []); //maPhim, dispatch]
 
   const heThongRapChieu = useSelector((state) => {
     return state.cinema?.phim?.heThongRapChieu;
@@ -132,19 +132,20 @@ function LichChieu(props) {
   });
 
   console.log(cumRapChieu);
-  let tenCumRapChieu = []
-  tenCumRapChieu.push('')
-  let lichChieu = []
-  lichChieu.push('')
-  console.log('chi tiết về phim', movieDetail)
+  let tenCumRapChieu = [];
+  tenCumRapChieu.push("");
+  let lichChieu = [];
+  lichChieu.push("");
+  console.log("chi tiết về phim", movieDetail);
   const renderCol2 = () => {
-    return movieDetail?.lichChieu?.map((cumRap, index) => {  // cumRapChieu?.map((cumRap, index)
+    return movieDetail?.lichChieu?.map((cumRap, index) => {
+      // cumRapChieu?.map((cumRap, index)
       const faded = selectedCol2Index != index;
-      console.log('lịch chiếu', lichChieu)
-      console.log('tên rạp', tenCumRapChieu)
-      lichChieu.push(cumRap)
+      console.log("lịch chiếu", lichChieu);
+      console.log("tên rạp", tenCumRapChieu);
+      lichChieu.push(cumRap);
       if (tenCumRapChieu.indexOf(cumRap.tenCumRap.tenCumRap) === -1) {
-        tenCumRapChieu.push(cumRap.tenCumRap.tenCumRap)
+        tenCumRapChieu.push(cumRap.tenCumRap.tenCumRap);
         return (
           <TableRow key={index} style={faded ? fadeAwayStyle : null}>
             <TableCell
@@ -162,11 +163,11 @@ function LichChieu(props) {
     });
   };
 
-  const [maCumRap, setMaCumRap] = useState()
+  const [maCumRap, setMaCumRap] = useState();
   const layLichChieu = (maCumRap, lichChieu) => {
     setNgayXem();
     setSuatChieu(lichChieu); //setSuatChieu()
-    setMaCumRap(maCumRap)
+    setMaCumRap(maCumRap);
     // dispatch(layLichChieuAction(maCumRap));
   };
 
@@ -204,18 +205,26 @@ function LichChieu(props) {
   var ngaychieu = [];
   ngaychieu.push("");
   const renderNgayChieu = () => {
-    return lichChieu?.map((lich, index) => { //ngayChieuPhim
-      console.log("id cụm rạp --", lich)
+    return lichChieu?.map((lich, index) => {
+      //ngayChieuPhim
+      console.log("id cụm rạp --", lich);
       var isExist = false;
       if (lich.tenCumRap?._id == maCumRap) {
         ngaychieu.map((ngay) => {
           if (formatDate(ngay) == formatDate(lich.ngayChieu)) isExist = true;
         });
-        const date = new Date(lich.ngayChieu)
-        if (isExist == false && lich.tenCumRap._id === maCumRap && date > Date.now()) {
+        const date = new Date(lich.ngayChieu);
+        if (
+          isExist == false &&
+          lich.tenCumRap._id === maCumRap &&
+          date > Date.now()
+        ) {
           ngaychieu.push(lich.ngayChieu);
           return (
-            <Button onClick={() => handleLayGioChieu(lich.ngayChieu)} key={index}>
+            <Button
+              onClick={() => handleLayGioChieu(lich.ngayChieu)}
+              key={index}
+            >
               {formatDate(lich.ngayChieu)}
             </Button>
           );
@@ -235,9 +244,13 @@ function LichChieu(props) {
   });
 
   const renderGioChieu = () => {
-    return lichChieu?.map((lich, index) => { //gioChieuPhim  gio  key={index}
+    return lichChieu?.map((lich, index) => {
+      //gioChieuPhim  gio  key={index}
       //if (lich.ngayChieu == ngayXem)
-      if (formatDate(lich.ngayChieu) === formatDate(ngayXem) && lich.tenCumRap?._id === maCumRap)
+      if (
+        formatDate(lich.ngayChieu) === formatDate(ngayXem) &&
+        lich.tenCumRap?._id === maCumRap
+      )
         return (
           <Button onClick={() => handleLayMaLichChieu(lich)}>
             {formatTime(lich.ngayChieu)}
@@ -248,8 +261,8 @@ function LichChieu(props) {
 
   const handleLayMaLichChieu = (gio) => {
     setSuatChieu(gio.ngayChieu);
-    setMaLichChieu(gio._id)
-    localStorage.setItem('maLichChieu', gio._id)
+    setMaLichChieu(gio._id);
+    // localStorage.setItem('maLichChieu', gio._id)
     //  dispatch(layMaLichChieuPhimAction(ngayXem, gio));
   };
 

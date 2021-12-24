@@ -83,7 +83,7 @@ function BookingPage() {
       /*dispatch, biDanh*/
     ]
   );
-  useEffect(() => { }, [ischange /*dispatch, biDanh*/]);
+  useEffect(() => {}, [ischange /*dispatch, biDanh*/]);
 
   const formatDate = (date) => {
     if (date) {
@@ -541,7 +541,7 @@ function BookingPage() {
         Total += thongTinPhim?.giaVe;
       });
       setTotalPrice(Total);
-      setTotalPriceBefore(Total)
+      setTotalPriceBefore(Total);
     }
     setConfirm(true);
 
@@ -565,9 +565,16 @@ function BookingPage() {
 
   let imageQRcode;
   useEffect(async () => {
-    let dataBooking
-    const qr = await QRCode.toDataURL(`Họ tên: ${profile?.hoTen}, suất phim: ${movie?.tenPhim}, chiếu lúc ${formatDate(thongTinPhim?.ngayChieu).toString()}, Ghế:${chairArray}, Cụm rạp: ${thongTinPhim?.tenCumRap?.tenCumRap}, ${thongTinPhim?.tenRap?.tenRap}`)
-      .then(); //setQR
+    let dataBooking;
+    const qr = await QRCode.toDataURL(
+      `Họ tên: ${profile?.hoTen}, suất phim: ${
+        movie?.tenPhim
+      }, chiếu lúc ${formatDate(
+        thongTinPhim?.ngayChieu
+      ).toString()}, Ghế:${chairArray}, Cụm rạp: ${
+        thongTinPhim?.tenCumRap?.tenCumRap
+      }, ${thongTinPhim?.tenRap?.tenRap}`
+    ).then(); //setQR
     if (qr !== false) {
       dataBooking = {
         name: profile?.hoTen,
@@ -578,9 +585,9 @@ function BookingPage() {
         QRCode: qr,
       };
       if (isSuccessPaypal == true) {
-        console.log('Reward point', RewardPoints)
+        console.log("Reward point", RewardPoints);
         const success = await dispatch(
-          bookingTicketAction(showTimeCode, biDanh, chairArray, RewardPoints) //{ danhSachGhe: 
+          bookingTicketAction(showTimeCode, biDanh, chairArray, RewardPoints) //{ danhSachGhe:
         );
         if (success != false) {
           const token = JSON.parse(localStorage.getItem("token"));
@@ -598,8 +605,6 @@ function BookingPage() {
       }
     }
 
-
-
     // console.log('kết quả', result)
     // QRCode.toDataURL('test').then(setQR);
     // if (result)
@@ -611,7 +616,6 @@ function BookingPage() {
       //   console.log(imageQRcode, "HÌNH ẢNH")
       //setImgQR(imageQRcode) //<Image src={QR} />
       //}
-
       // emailjs.send('service_zbo2i1v', 'template_u22c938',
       //   {
       //     name: profile?.hoTen,
@@ -624,7 +628,6 @@ function BookingPage() {
       //   'user_fHd8DhFxCFsbFXqbnCExx')
       //   .then((res) => console.log('thành công', res))
       //   .catch(err => console.log('thất bại', err))
-
     }
   }, [isSuccessPaypal]);
 
@@ -681,10 +684,14 @@ function BookingPage() {
   };
   const handleFormRewardPoints = (e) => {
     e.preventDefault();
-    setUseRewardPoints(true)
-    setRewardPoints(profile?.diemThuong > totalPrice / 1000 ? totalPrice / 1000 : profile?.diemThuong)
+    setUseRewardPoints(true);
+    setRewardPoints(
+      profile?.diemThuong > totalPrice / 1000
+        ? totalPrice / 1000
+        : profile?.diemThuong
+    );
     // setUseRewardPoints(e.target.value)
-  }
+  };
   const modalConfirm = () => {
     return (
       <>
@@ -739,11 +746,24 @@ function BookingPage() {
               >
                 Thanh toán bằng điểm thưởng (Điểm tích lũy lớn hơn 20)
               </button>
-              {RewardPoints >= 20 ? <h6>Bạn đã sử dụng {RewardPoints} điểm để thanh toán</h6> : ""}
+              {RewardPoints >= 20 ? (
+                <h6>Bạn đã sử dụng {RewardPoints} điểm để thanh toán</h6>
+              ) : (
+                ""
+              )}
               <h6>Tổng tiền cần thanh toán {Format(totalPrice)}</h6>
-              {totalPrice == 0 ? <><button className="btn btn-success" onClick={() => setIsSuccessPaypal(true)}>
-                Xác nhận mua vé
-              </button></> : <Paypal total={totalPrice} />}
+              {totalPrice == 0 ? (
+                <>
+                  <button
+                    className="btn btn-success"
+                    onClick={() => setIsSuccessPaypal(true)}
+                  >
+                    Xác nhận mua vé
+                  </button>
+                </>
+              ) : (
+                <Paypal total={totalPrice} />
+              )}
               {/* variant="primary" */}
               {/* <Button className="btn btn-success" type="submit">
                 Xác nhận
@@ -765,23 +785,22 @@ function BookingPage() {
       </>
     );
   };
-  const [useRewardPoints, setUseRewardPoints] = useState(false)
-  const [RewardPoints, setRewardPoints] = useState(0)
+  const [useRewardPoints, setUseRewardPoints] = useState(false);
+  const [RewardPoints, setRewardPoints] = useState(0);
   const afterDiscount = (e) => {
     e.preventDefault();
-    setTotalPrice(totalPriceBefore - RewardPoints * 1000)
-    setUseRewardPoints(false)
-
-  }
+    setTotalPrice(totalPriceBefore - RewardPoints * 1000);
+    setUseRewardPoints(false);
+  };
   const modalRewardPoints = () => {
     return (
       <>
-        <Modal show={useRewardPoints} onHide={() => (setUseRewardPoints(false))}>
+        <Modal show={useRewardPoints} onHide={() => setUseRewardPoints(false)}>
           <Modal.Header>
             <Modal.Title>Điểm tích lũy của bạn</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form style={{ height: '550px' }} className="confirm">
+            <Form style={{ height: "550px" }} className="confirm">
               <Input
                 Label="Tên khách hàng"
                 value={profile?.hoTen}
@@ -792,15 +811,19 @@ function BookingPage() {
               {/* {console.log('khách hàng', name)} */}
               <Input
                 Label="Điểm tích lũy"
-                value={profile?.diemThuong || '0'}
+                value={profile?.diemThuong || "0"}
                 type="text"
                 name="rewardPoints"
                 disabled="true"
               />
               <Input
                 Label="Chọn điểm thanh toán"
-                min='20'
-                max={profile?.diemThuong > totalPrice / 1000 ? totalPrice / 1000 : profile?.diemThuong}
+                min="20"
+                max={
+                  profile?.diemThuong > totalPrice / 1000
+                    ? totalPrice / 1000
+                    : profile?.diemThuong
+                }
                 value={RewardPoints}
                 type="number"
                 name="rewardPoints"
@@ -825,16 +848,11 @@ function BookingPage() {
               </Button> */}
             </Form>
           </Modal.Body>
-          <Modal.Footer>
-
-          </Modal.Footer>
+          <Modal.Footer></Modal.Footer>
         </Modal>
       </>
     );
   };
-
-
-
 
   const renderTable = () => {
     //chairArray = ["A2", "B2"]
