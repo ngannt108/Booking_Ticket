@@ -276,10 +276,10 @@ function AddShowTime() {
               onClick={() => handleTaoLichChieu()}
               fullWidth
               disabled={
-                biDanh !== "" &&
-                  maCumRap !== "" &&
-                  maRap !== "" &&
-                  ngayChieuPhim !== ""
+                biDanh !== undefined &&
+                  maCumRap !== undefined &&
+                  maRap !== undefined &&
+                  ngayChieuPhim !== undefined
                   ? false
                   : true
               }

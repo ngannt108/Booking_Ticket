@@ -48,8 +48,8 @@ class ShowTimeController {
       var count = 0;
       dupShowtime.forEach((st) => {
         if (
-          st.ngayChieu <= showtime.gioKetThuc &&
-          st.gioKetThuc >= showtime.gioKetThuc
+          st.ngayChieu <= showtime.ngayChieu &&
+          st.gioKetThuc >= showtime.ngayChieu
         ) {
           count++;
           console.log("đếm", count);

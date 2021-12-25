@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 
 const Movie = new Schema({
   //maPhim: { type: Number, maxlength: 255, unique: true, required: [true, 'Hãy nhập tên đăng nhập'] },
-  tenPhim: { type: String, trim: true, unique: true, maxlength: 600, required: [true, 'Bạn chưa nhập tên phim'] },
+  tenPhim: { type: String, trim: true, unique: true, maxlength: 600, uppercase: true, required: [true, 'Bạn chưa nhập tên phim'] },
   biDanh: { type: String, unique: true, slug: 'tenPhim', maxlength: 100 },
   hinhAnh: { type: String },
   moTa: { type: String },

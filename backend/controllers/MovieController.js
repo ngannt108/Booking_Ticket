@@ -215,15 +215,26 @@ class MovieController {
     console.log("ngày chiếu", ngaykhoichieu);
     movie.ngayKhoiChieu = ngaykhoichieu; //.toISOString()
     movie.ngayKetThuc = ngaykhoichieu.setMonth(ngaykhoichieu.getMonth() + 2)
-    movie
-      .save()
-      .then(() => res.status(200).json(movie))
-      .catch((err) => {
-        res.status(500).json({ message: "Thêm phim thất bại" });
-        // err = new Error('Việc thêm phim thất bại');
-        // err.statusCode = 404
-        // return next(err)
-      });
+    Movie.find({ tenPhim: req.body.tenPhim.toUpperCase() })
+      .then((data) => {
+        if (data.length > 0)
+          res.status(400).json({ error: "Tên phim đã được sử dụng" })
+        else {
+          movie
+            .save()
+            .then(() => res.status(200).json(movie))
+            .catch((err) => {
+              res.status(500).json({ message: "Thêm phim thất bại" });
+              // err = new Error('Việc thêm phim thất bại');
+              // err.statusCode = 404
+              // return next(err)
+            });
+        }
+      })
+      .catch(() => {
+
+      })
+
   }
   //[GET] topMoives
   top10Movies(req, res, next) {

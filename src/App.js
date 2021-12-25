@@ -16,7 +16,7 @@ import axios from "axios";
 // import { SendMail } from "./pages/booking/SendMail";
 function App() {
   useEffect(async () => {
-    const res = await axios({
+    const res = axios({
       url: `http://localhost:5000/user/reminderEmail`,
       method: "GET",
     });
