@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     backgroundColor: "white",
+    // paddingBottom: "225px",
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -153,7 +154,6 @@ export default function ProfilePage() {
               [classes.drawerClose]: !open,
             }),
           }}
-          style={{ background: "black" }}
         >
           <div className={classes.toolbar}>
             <IconButton onClick={handleDrawerClose}>

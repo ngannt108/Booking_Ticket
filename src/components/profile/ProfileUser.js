@@ -12,10 +12,12 @@ import {
   updateProfileUserAction,
   changePasswordAction,
 } from "../../store/actions/profileAction";
-import Avatar from "@material-ui/core/Avatar";
 import { deepOrange } from "@material-ui/core/colors";
 import { ModalBody } from "react-bootstrap";
 import Swal from "sweetalert2";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import { AccountCircle, CardGiftcard, Email, Phone } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -49,6 +51,54 @@ const useStyles = makeStyles((theme) => ({
   orange: {
     color: theme.palette.getContrastText(deepOrange[500]),
     backgroundColor: deepOrange[500],
+  },
+  greeting: {
+    textAlign: "center",
+    height: "200px",
+    width: "1200px",
+    backgroundColor: "#c1f7f7",
+  },
+  profileStyle: {
+    textAlign: "center",
+    // height: "200px",
+    width: "1200px",
+    backgroundColor: "#e0ffff",
+  },
+  imgAvatar: {
+    borderRadius: "50%",
+    width: "180px",
+    height: "180px",
+    marginTop: "115px",
+  },
+  profileInfoDetail: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    // width: "201px",
+    marginTop: "25px",
+    fontFamily: "light",
+  },
+  accountIcon: {
+    fontFamily: "light",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "50px",
+    height: "50px",
+    color: "red",
+  },
+  itemsIcon: {
+    fontFamily: "light",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "50px",
+    height: "50px",
+    borderRadius: "50%",
+    fontSize: "25px",
+    color: "white",
+    backgroundColor: "red",
+    border: "solid",
   },
 }));
 
@@ -85,40 +135,89 @@ function ProfileUser() {
     return (
       <div>
         <Container>
-          <Grid container>
+          <Grid>
             <Grid item md={9}>
-              {profileUser.length > 0 ? (
-                <>
-                  <h4>Tên tài khoản: {profileUser[0].tentaiKhoan}</h4>
-                  <h4>Họ và tên: {profileUser[0].hoTen}</h4>
-                  <h4>Email: {profileUser[0].email}</h4>
-                  <h4>Số điện thoại: {profileUser[0].SDT}</h4>
-                  <h4>Điểm thưởng: {profileUser[0].diemThuong}</h4>
-                </>
-              ) : (
-                ""
-              )}
-              <button
-                onClick={() => {
-                  changeUserDetail(
-                    // profileUser[0].tentaiKhoan,
-                    // profileUser[0].matKhau,
-                    profileUser[0].hoTen,
-                    profileUser[0].email,
-                    profileUser[0].SDT
-                  );
-                }}
-                className="btn btn-success"
-              >
-                Thay đổi thông tin tài khoản
-              </button>
-              <button onClick={changeUserPassword} className="btn btn-primary">
-                Đổi mật khẩu
-              </button>
+              <div className={classes.profileStyle}>
+                <div className={classes.greeting}>
+                  <img
+                    className={classes.imgAvatar}
+                    src={
+                      "https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-chat-lam-hinh-dai-dien.jpg"
+                    }
+                  />
+                </div>
+                {profileUser.length > 0 ? (
+                  <>
+                    <section style={{ marginTop: "120px" }}>
+                      <div className={classes.profileInfoDetail}>
+                        <ListItemIcon>
+                          <AccountCircle className={classes.accountIcon} />
+                        </ListItemIcon>
+                        &nbsp;&nbsp; Tài khoản:&nbsp;{" "}
+                        <b>{profileUser[0].tentaiKhoan}</b>
+                      </div>
+                      <div className={classes.profileInfoDetail}>
+                        <div
+                          style={{ textTransform: "uppercase" }}
+                          className={classes.itemsIcon}
+                        >
+                          {profileUser[0].hoTen[0]}
+                        </div>
+                        &nbsp;&nbsp; Họ và tên:&nbsp;{" "}
+                        <b>{profileUser[0].hoTen}</b>
+                      </div>
+                      <div className={classes.profileInfoDetail}>
+                        <ListItemIcon>
+                          <Email className={classes.accountIcon} />
+                        </ListItemIcon>
+                        &nbsp;&nbsp; Email:&nbsp; <b>{profileUser[0].email}</b>
+                      </div>
+                      <div className={classes.profileInfoDetail}>
+                        <ListItemIcon>
+                          <Phone className={classes.itemsIcon} />
+                        </ListItemIcon>
+                        &nbsp;&nbsp; Số điện thoại:&nbsp;{" "}
+                        <b>{profileUser[0].SDT}</b>
+                      </div>
+                      <div className={classes.profileInfoDetail}>
+                        <ListItemIcon>
+                          <CardGiftcard className={classes.itemsIcon} />
+                        </ListItemIcon>
+                        &nbsp;&nbsp; Điểm thưởng:&nbsp;{" "}
+                        <b>{profileUser[0].diemThuong}</b>
+                      </div>
+
+                      <div className={classes.profileInfoDetail}>
+                        <button
+                          onClick={() => {
+                            changeUserDetail(
+                              // profileUser[0].tentaiKhoan,
+                              // profileUser[0].matKhau,
+                              profileUser[0].hoTen,
+                              profileUser[0].email,
+                              profileUser[0].SDT
+                            );
+                          }}
+                          className="btn btn-danger"
+                          style={{ padding: "7px", margin: "10px" }}
+                        >
+                          Thay đổi thông tin tài khoản
+                        </button>
+                        <button
+                          onClick={changeUserPassword}
+                          className="btn btn-danger"
+                          style={{ padding: "7px" }}
+                        >
+                          Đổi mật khẩu
+                        </button>
+                      </div>
+                    </section>
+                  </>
+                ) : (
+                  ""
+                )}
+              </div>
             </Grid>
-            {/* <Grid item md={3} style={{ textAlign: "center" }}>
-              <Avatar src="/broken-image.jpg" />
-            </Grid> */}
           </Grid>
         </Container>
       </div>

@@ -52,7 +52,7 @@ function ProfileBookTickets() {
             }}
           >
             <p>Tên phim: {lichChieu.phim.tenPhim}</p>
-            <p>Giá vé: {lichChieu?.maLichChieu?.giaVe}</p>
+            <p>Thanh toán: {lichChieu?.tienThanhToan}</p>
             <p style={{ color: "red" }}>
               Ngày đặt:{" "}
               {format("MM/dd/yy - hh:mm", new Date(lichChieu.thoiGianDat))}
@@ -92,7 +92,7 @@ function ProfileBookTickets() {
                 new Date(chairBookedHistory?.maLichChieu?.ngayChieu)
               )}
             </p>
-            <p>Giá vé: {Format(chairBookedHistory?.maLichChieu?.giaVe)}</p>
+            <p>Thanh toán: {Format(chairBookedHistory?.tienThanhToan)}</p>
             {chairBookedHistory?.danhSachVe.map((tenGhe) => {
               return (
                 <p>
