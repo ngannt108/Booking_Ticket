@@ -40,7 +40,7 @@ const useStyles = makeStyles({
     backgroundColor: "rgb(78 5 114)",
   },
   tittle: {
-    padding: "30px 0 30px",
+    padding: "20px 0 20px",
   },
 });
 

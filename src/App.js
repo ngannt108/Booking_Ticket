@@ -1,4 +1,4 @@
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import HomePage from "./pages/home/HomePage";
 import SignInPage from "./pages/sign-in/SignInPage";
 import SignUpPage from "./pages/sign-up/SignUpPage";
@@ -26,8 +26,6 @@ function App() {
     <>
       <BrowserRouter>
         <Switch>
-
-
           <Route path="/:biDanh/booking/:showTimeCode" exact={true}>
             <GuardBooking>
               <BookingPage />
