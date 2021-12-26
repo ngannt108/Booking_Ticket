@@ -17,7 +17,13 @@ import { ModalBody } from "react-bootstrap";
 import Swal from "sweetalert2";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import { AccountCircle, CardGiftcard, Email, Phone } from "@material-ui/icons";
+import {
+  AccountCircle,
+  CardGiftcard,
+  Email,
+  EmojiEmotions,
+  Phone,
+} from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -157,12 +163,9 @@ function ProfileUser() {
                         <b>{profileUser[0].tentaiKhoan}</b>
                       </div>
                       <div className={classes.profileInfoDetail}>
-                        <div
-                          style={{ textTransform: "uppercase" }}
-                          className={classes.itemsIcon}
-                        >
-                          {profileUser[0].hoTen[0]}
-                        </div>
+                        <ListItemIcon>
+                          <EmojiEmotions className={classes.accountIcon} />
+                        </ListItemIcon>
                         &nbsp;&nbsp; Họ và tên:&nbsp;{" "}
                         <b>{profileUser[0].hoTen}</b>
                       </div>
@@ -236,12 +239,6 @@ function ProfileUser() {
     hoTen: "",
   });
 
-  // const [user, setUserChangePassword] = useState({
-  //   matKhau: "",
-  //   matKhauMoi: "",
-  //   nhapLaiMatKhau
-  // });
-
   const changeUserDetail = (hoTen, email, SDT) => {
     setOpen(true);
     // console.log(taiKhoan, matKhau, hoTen, email, soDT);
@@ -263,21 +260,13 @@ function ProfileUser() {
     setOpenChangePassword(true);
     console.log("Thông tin user lúc đầu: ", profileUser[0]);
     setUser({
-      // taiKhoan: profileUser[0].tentaiKhoan,
       matKhau: profileUser[0].matKhau,
-      // hoTen: profileUser[0].hoTen,
-      // email: profileUser[0].email,
-      // SDT: profileUser[0].SDT,
-      // maLoaiNguoiDung: "1",
     });
     console.log("Thông tin user sau khi đổi mật khẩu 1: ", user);
   };
 
   const [openChangePassword, setOpenChangePassword] = useState(false);
   const [open, setOpen] = useState(false);
-  // const [matKhau, setMatKhau] = useState('')
-  // const [matKhauMoi, setMatKhauMoi] = useState('')
-  // const [nhapLaiMatKhau, setNhapLaiMatKhau] = useState('')
   const handleClose = () => {
     setOpen(false);
     setOpenChangePassword(false);
@@ -306,18 +295,6 @@ function ProfileUser() {
 
     console.log("Thông tin user sau khi đổi mật khẩu 2: ", user);
     dispatch(changePasswordAction(user));
-    // if (
-    //   user.matKhau === profileUser[0].matKhau &&
-    //   user.matKhauMoi === user.nhapLaiMatKhau
-    // ) {
-    //   console.log("Đổi mật khẩu", user);
-    //   setOpenChangePassword(false);
-    //   dispatch(changePasswordAction(user));
-    // // } else if (user.matKhau !== profileUser[0].matKhau) {
-    // //   Swal.fire("Thông báo", "Mật khẩu của bạn không đúng", "error");
-    // // } else if (user.matKhauMoi !== user.nhapLaiMatKhau) {
-    // //   Swal.fire("Thông báo", "Mật khẩu không trùng khớp", "error");
-    // // }
   };
   console.log("profileUser", profileUser);
   const renderModal = () => {

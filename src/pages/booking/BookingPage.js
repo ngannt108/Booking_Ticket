@@ -6,7 +6,6 @@ import Loading from "../../components/loading-status/Loading";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   bookingTicketAction,
-  choiceChairAction,
   getTicketListAction,
 } from "../../store/actions/bookingAction";
 import { getMovieDetailAction } from "../../store/actions/movieAction";

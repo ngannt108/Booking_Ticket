@@ -45,9 +45,10 @@ class UserController {
           res.status(200).json("Bạn đã chỉnh sửa được thông tin!");
         })
         .catch((err) => {
+          res.status(400).json("Bạn đã chỉnh sửa thông tin thất bại!");
           //err = new Error('Chỉnh sửa thất bại, không tìm thấy người dùng');
-          err.statusCode = 404;
-          return next(err);
+          // err.statusCode = 404;
+          // return next(err);
         });
     } else {
       res.status(404).json({ error: "Bạn vẫn còn thiếu thông tin" });
@@ -109,10 +110,7 @@ class UserController {
       })
       .then((data) => {
         console.log(data);
-        if (data)
-          res
-            .status(200)
-            .json(data);
+        if (data) res.status(200).json(data);
         else {
           res.status(404).json({ error: "Vui lòng thử lại" });
           // const err = new Error('Vui lòng thử lại');
@@ -159,7 +157,6 @@ class UserController {
               .then((updateinfo) => res.status(200).json(updateinfo))
               .catch((err) => {
                 res.status(500).json({ error: "Cập nhật thất bại" });
-
               });
           } else {
             res.status(500).json({ error: "Mật khẩu chưa đồng nhất" });
@@ -176,7 +173,6 @@ class UserController {
       })
       .catch((err) => {
         res.status(500).json({ error: "Vui lòng thử lại" });
-
       });
   }
 

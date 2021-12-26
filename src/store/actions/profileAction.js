@@ -75,6 +75,7 @@ export const updateProfileUserAction = (user) => {
       alert("cập nhật tài khoản thành công");
     } catch (error) {
       alert("cập nhật tài khoản thất bại");
+      dispatch(getProfileAction());
       console.log(error);
     }
   };

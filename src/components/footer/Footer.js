@@ -171,7 +171,7 @@ function Footer() {
                 Số Điện Thoại (Hotline): 1900 545 436 <br />
                 Email:{" "}
                 <a style={{ color: "#FB4226", textDecoration: "none" }} href="">
-                  support@tix.vn
+                  support@gmail.vn
                 </a>
               </span>
             </div>
