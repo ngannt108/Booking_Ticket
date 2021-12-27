@@ -10,7 +10,7 @@ export const signInAction = (auth, history) => {
         url: "http://localhost:5000/account/signin",
         data: auth,
       });
-      const { token, data /*taiKhoan, maLoaiNguoiDung, ...authSignIn*/ } =
+      const { token, data, expiresIn /*taiKhoan, maLoaiNguoiDung, ...authSignIn*/ } =
         res.data;
       // set localStorage
       //const maLichChieu = JSON.parse(localStorage.getItem("maLichChieu"));
@@ -21,6 +21,7 @@ export const signInAction = (auth, history) => {
         JSON.stringify(data.maLoaiNguoiDung)
       );
       localStorage.setItem("taiKhoan", JSON.stringify(data.tentaiKhoan));
+      localStorage.setItem("thoiHan", JSON.stringify(expiresIn));
       const maLichChieu = JSON.parse(localStorage.getItem("maLichChieu"));
       const biDanh = JSON.parse(localStorage.getItem("biDanh"));
 
@@ -32,6 +33,15 @@ export const signInAction = (auth, history) => {
       } else {
         history.push("/");
       }
+      setTimeout(() => {
+        localStorage.clear()
+        Swal.fire(
+          "Thông Báo",
+          "Phiên dùng đã hết hạn, hãy đăng nhập lại",//, tổng tiền đã là: " + Format(res.data.tongTien),
+          "error"
+        );
+        setTimeout(() => { window.location.reload() }, 2000)
+      }, expiresIn * 1000)
       dispatch({
         type: SIGN_IN,
         payload: res.data, //authSignIn,

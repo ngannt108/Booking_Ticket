@@ -27,7 +27,7 @@ function ProfileBookTickets() {
   console.log("chairbooked: ", chairBooked);
 
   const [chairBookedHistory, setChairBookedHistory] = useState();
-
+  const [price, setPrice] = useState();
   // ------------------------------   COL-1   --------------------
   const layChiTietVe = (id) => {
     chairBooked.map((lichChieu, index) => {
@@ -52,7 +52,7 @@ function ProfileBookTickets() {
             }}
           >
             <p>Tên phim: {lichChieu.phim.tenPhim}</p>
-            <p>Thanh toán: {lichChieu?.tienThanhToan}</p>
+            <p>Thanh toán: {Format(lichChieu?.tienThanhToan)}</p>
             <p style={{ color: "red" }}>
               Ngày đặt:{" "}
               {format("MM/dd/yy - hh:mm", new Date(lichChieu.thoiGianDat))}
@@ -78,6 +78,9 @@ function ProfileBookTickets() {
   console.log("chair", chairBookedHistory);
   const renderGheDaDat = () => {
     if (chairBookedHistory !== undefined) {
+      let tongTien = 0
+      chairBookedHistory.danhSachVe.map((chair) => (tongTien += chair.giaGhe))
+      console.log('chairBookedHistory', chairBookedHistory.danhSachVe.map((chair) => (chair.giaGhe)))
       return (
         <TableRow>
           <TableCell>
@@ -92,7 +95,9 @@ function ProfileBookTickets() {
                 new Date(chairBookedHistory?.maLichChieu?.ngayChieu)
               )}
             </p>
-            <p>Thanh toán: {Format(chairBookedHistory?.tienThanhToan)}</p>
+
+            <p>Tổng tiền gốc: {Format(tongTien)}</p>
+            {/* <p>Thanh toán: {Format(chairBookedHistory?.tienThanhToan)}</p> */}
             {chairBookedHistory?.danhSachVe.map((tenGhe) => {
               return (
                 <p>

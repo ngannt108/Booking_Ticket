@@ -33,7 +33,7 @@ export const adminReducer = (state = initialState, { type, payload }) => {
       return { ...state };
     }
     case DELETE_MOVIE: {
-      const listMovieDelete = [...state.listMovie.items];
+      //const listMovieDelete = [...state.listMovie.items];
       // const index = listMovieDelete.findIndex(
       //   (movieDelete) => movieDelete.maPhim === payload
       // );

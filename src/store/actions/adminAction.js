@@ -72,7 +72,7 @@ export const deleteMovieAction = (
           Authorization: `Bearer ${token}`,
         },
       });
-      toast.success('Xóa thành công ', { autoClose: 2000 });
+
       console.log(res.data);
       setIsOpen(false)
       dispatch(
@@ -82,6 +82,7 @@ export const deleteMovieAction = (
         type: DELETE_MOVIE,
         payload: biDanh,
       });
+      toast.success('Xóa thành công ', { autoClose: 2000 });
     } catch (error) {
       toast.error('Vẫn đang có lịch chiếu ở thời điểm sắp tới, chưa thể xóa phim', { autoClose: 2000 });
       //alert(error.response.data);

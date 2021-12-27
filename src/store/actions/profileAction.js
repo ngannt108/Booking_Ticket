@@ -5,6 +5,7 @@ import {
   UPDATE_PROFILE,
   CHANGE_PASSWORD,
 } from "../const/profileConst";
+import { toast } from 'react-toastify';
 
 export const getProfileAction = () => {
   return async (dispatch) => {
@@ -72,9 +73,11 @@ export const updateProfileUserAction = (user) => {
         payload: res.data,
       });
       dispatch(getProfileAction());
-      alert("cập nhật tài khoản thành công");
+      toast.success("cập nhật tài khoản thành công", { autoClose: 2000 });
+      //alert("cập nhật tài khoản thành công");
     } catch (error) {
-      alert("cập nhật tài khoản thất bại");
+      toast.success("cập nhật tài khoản thất bại", { autoClose: 2000 });
+      //alert("cập nhật tài khoản thất bại");
       dispatch(getProfileAction());
       console.log(error);
     }

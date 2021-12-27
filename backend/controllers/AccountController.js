@@ -11,7 +11,7 @@ class AccountController {
             //.select('-matKhau')
             .then(data => {
                 if (bcrypt.compareSync(form.matKhau, data.matKhau)) {
-                    var token = jwt.sign({ _id: data._id, maLoaiNguoiDung: data.maLoaiNguoiDung }, 'user');
+                    var token = jwt.sign({ _id: data._id, maLoaiNguoiDung: data.maLoaiNguoiDung }, 'user', { expiresIn: '1h' });
                     // data = {
                     //     ...data,
                     //     token: token
@@ -22,7 +22,8 @@ class AccountController {
                             maLoaiNguoiDung: data.maLoaiNguoiDung,
                             tentaiKhoan: data.tentaiKhoan
                         },
-                        token: token
+                        token: token,
+                        expiresIn: 3600 //đơn vị là giây
                     });
                 }
                 else {

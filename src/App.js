@@ -15,12 +15,15 @@ import { useEffect } from "react";
 import axios from "axios";
 // import { SendMail } from "./pages/booking/SendMail";
 function App() {
+  let date = new Date()
+  let getDay = date.getDay()
   useEffect(async () => {
+
     const res = axios({
       url: `http://localhost:5000/user/reminderEmail`,
       method: "GET",
     });
-  }, []);
+  }, [getDay]);
 
   return (
     <>

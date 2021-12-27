@@ -165,6 +165,7 @@ export const Movie = () => {
     setThoiLuong("");
     setMoTa("");
     setIsAdd(false);
+    setIsEdit(false)
     setError("");
     setXemAnh("");
   };
@@ -360,7 +361,7 @@ export const Movie = () => {
         </Modal.Footer>
       </Modal>
       {/* CHỈNH SỬA THÔNG TIN PHIM  () => setIsEdit(false)*/}
-      <Modal show={isEdit} onHide={setInitialData}>
+      <Modal show={isEdit} onHide={() => setIsEdit(false)}>
         <Modal.Header>
           <Modal.Title>Chỉnh sửa thông tin phim</Modal.Title>
         </Modal.Header>
@@ -399,14 +400,14 @@ export const Movie = () => {
             Label="Hình ảnh"
             name="file" //"file"
             onChange={uploadImage}
-            // onChange={(event) => {
+          // onChange={(event) => {
 
-            // console.log("file  hình:", event.target.files);
-            // //setHinhAnh(event.target.files[0].name);
-            // setFileHinhAnh(event.target.files[0]);
-            // console.log("file  hình2 :", filehinhAnh);
-            // setHinhAnh(Date.now() + "_" + event.target.files[0].name);
-            // }}
+          // console.log("file  hình:", event.target.files);
+          // //setHinhAnh(event.target.files[0].name);
+          // setFileHinhAnh(event.target.files[0]);
+          // console.log("file  hình2 :", filehinhAnh);
+          // setHinhAnh(Date.now() + "_" + event.target.files[0].name);
+          // }}
           />
           <Image
             className="preview-img"
