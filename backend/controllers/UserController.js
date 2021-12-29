@@ -175,6 +175,76 @@ class UserController {
         res.status(500).json({ error: "Vui lòng thử lại" });
       });
   }
+  getHistoryTicketById(req, res) {
+    TicketBooking.findOne({ _id: req.params.IDticket })//
+      .populate("maLichChieu")
+      .populate("tentaiKhoan")
+      .then((data) => {
+        if (data) {
+          res.status(200).json(data)
+        }
+        else res.status(404).json({ error: 'Không lấy được thông tin vé' })
+
+      })
+      .catch(err => res.status(500).json({ error: 'Đã xảy ra lỗi' }))
+  }
+
+  changeTicketBooking(req, res) {
+    TicketBooking.findOne({ _id: req.params.IDTicket })
+      .populate("maLichChieu")
+      .then((data) => {
+        if (data) {
+          let showtimeID;
+          const time = new Date(data.maLichChieu.ngayChieu);
+          const now = new Date();
+          const n = now.setHours(now.getHours() + 1);
+          const minute = now.setMinutes(now.getMinutes() + 30);
+          // console.log('hiện tại', now.getHours(), now.getMinutes())
+          // console.log('hiện tại sau khi cộng 1 tiếng', now.toTimeString())
+          //console.log('lịch chiếu', data.maLichChieu)
+          if (time >= now) {
+            showtimeID = data.maLichChieu._id;
+            data.danhSachGheDoi = req.body.danhSachGheMoi
+            data.daDoi = true;
+            let listChair = [];
+            let listNewChair = req.body.danhSachGheMoi
+            data.danhSachVe.map((ghe) => {
+              listChair.push(ghe.maGhe);
+            });
+            console.log("danh sach ghe", listChair);
+            data
+              .save()
+              .then(() => {
+                console.log("ID", showtimeID);
+                Showtime.findOne({ _id: showtimeID })
+                  .then(async (showtime) => {
+                    if (showtime) {
+                      await listChair.map((ghe) => {
+                        const index = showtime.gheDaChon.indexOf(ghe);
+                        if (index > -1) {
+                          showtime.gheDaChon.splice(index, 1);
+                        }
+                      });
+                      listNewChair.map((ghe) => {
+                        showtime.gheDaChon.push(ghe)
+                      })
+                      showtime
+                        .save()
+                        .then(() => res.status(200).json("Đổi vé thành công"))
+                        .catch((err) => res.status(400).json());
+                    }
+                  })
+                  .catch((err) => res.status(400).json());
+              })
+              .catch((err) => res.status(400).json());
+          } else
+            res
+              .status(400)
+              .json({ error: "Không thể đổi vé gần sát giờ chiếu" });
+        }
+      });
+  }
+
 
   cancelBooking(req, res) {
     TicketBooking.findOne({ _id: req.params.IDTicket })

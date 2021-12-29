@@ -183,29 +183,6 @@ class MovieController {
         } else res.status(400).json({ message: "Xóa không thành công" });
       });
 
-    // Movie.findOneAndDelete({ biDanh: req.params.bidanh })
-    //     .then(data => {
-    //         if (data) {
-    //             ShowTime.findOneAndDelete({ biDanh: req.params.bidanh })
-    //                 .then(() => res.status(200).json('Xóa thành công'))
-    //                 .catch(er => {
-    //                     const err = new Error('Xóa thất bại');
-    //                     err.statusCode = 404
-    //                     return next(err)
-    //                 })
-    //             //CHƯA XÓA LỊCH CHIẾU LIÊN QUAN TỚI PHIM
-    //         }
-    //         else {
-    //             const err = new Error('Không tìm thấy thông tin phim');
-    //             err.statusCode = 404
-    //             return next(err)
-    //         }
-    //     })
-    //     .catch(err => {
-    //         err = new Error('Hệ thống đang xử lý, vui lòng chờ');
-    //         err.statusCode = 500
-    //         return next(err)
-    //     })
   }
 
   //[POST] /movie

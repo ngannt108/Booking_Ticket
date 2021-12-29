@@ -24,6 +24,7 @@ import { getProfileAction } from "../../store/actions/profileAction";
 import QRCode from "qrcode";
 // import Paypal from "./Paypal";
 import axios from "axios";
+import { toast } from 'react-toastify';
 // import { SendMail } from "./SendMail"
 
 const useStyles = makeStyles((theme) => ({
@@ -60,25 +61,43 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function BookingPage() {
+function ChangeTicketBookingPage() {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
-  const { biDanh, showTimeCode } = useParams();
+  const { biDanh, showTimeCode, IDticket } = useParams();
   const [movie, setMovie] = useState("");
   const [chairArray, setArray] = useState([]);
+  const [oldChairArray, setOldChairArray] = useState([]);
   const [ischange, setChange] = useState(false);
   // console.log(showTimeCode);
   useEffect(
-    () => {
+    async () => {
       dispatch(getTicketListAction(biDanh, showTimeCode));
       dispatch(getMovieDetailAction(biDanh, setMovie));
       dispatch(getProfileAction());
+      const token = JSON.parse(localStorage.getItem("token"));
+      const res = await axios({
+        url: `http://localhost:5000/user/history/${IDticket}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('DỮ LIỆU', res.data)
+      let listOldChairs = []
+      res.data.danhSachVe.map((ghe) => {
+        listOldChairs.push(ghe.maGhe)
+      })
+      setOldChairArray(listOldChairs)
     },
     [
       /*dispatch, biDanh*/
     ]
   );
+
+  console.log('DỮ LIỆU oldChairArray', oldChairArray)
+
   useEffect(() => { }, [ischange /*dispatch, biDanh*/]);
 
   const formatDate = (date) => {
@@ -128,13 +147,22 @@ function BookingPage() {
   // console.log('ghế đã chọn trong rạp', listChairBooked)
   // debugger;
 
-  for (var i = 0; i < listChairBooked.length; i++) {
+  for (var i = 0; i < oldChairArray.length; i++) {
     for (var j = 0; j < listChair.length; j++) {
-      if (listChairBooked[i] === listChair[j]) {
-        listChair[j] = "X";
+      if (oldChairArray[i] === listChair[j]) {
+        listChair[j] = 'O';
       }
     }
   }
+  for (var i = 0; i < listChairBooked.length; i++) {
+    for (var j = 0; j < listChair.length; j++) {
+      if (listChairBooked[i] === listChair[j]) {
+        listChair[j] = 'X';
+      }
+    }
+  }
+
+
 
   const [isValid, setIsValid] = useState(false);
 
@@ -195,7 +223,7 @@ function BookingPage() {
             borderRadius: "5px",
             border: "none",
             color: "white", //`${chair.loaiGhe === "Thuong" ? "white" : "yellow"}`,
-            backgroundColor: `${chair == "X" ? "#01d101" : "rgb(116,112,112)"}`,
+            backgroundColor: `${chair == "X" || chair == "O" ? "#01d101" : "rgb(116,112,112)"}`,
           }}
           onClick={(e) => {
             setChange(!ischange);
@@ -206,7 +234,7 @@ function BookingPage() {
                 chairArray.splice(index, 1);
               }
             } else {
-              if (chairArray.length < 8) {
+              if (chairArray.length < oldChairArray.length) {
                 e.target.classList.add(classes.choiceChair);
                 chairArray.push(chair);
               }
@@ -237,7 +265,7 @@ function BookingPage() {
             borderRadius: "5px",
             border: "none",
             color: "white",
-            backgroundColor: `${chair == "X" ? "#01d101" : "rgb(116,112,112)"}`,
+            backgroundColor: `${chair == "X" || chair == "O" ? "#01d101" : "rgb(116,112,112)"}`,
           }}
           onClick={(e) => {
             setChange(!ischange);
@@ -248,7 +276,7 @@ function BookingPage() {
                 chairArray.splice(index, 1);
               }
             } else {
-              if (chairArray.length < 8) {
+              if (chairArray.length < oldChairArray.length) {
                 e.target.classList.add(classes.choiceChair);
                 chairArray.push(chair);
               }
@@ -277,7 +305,7 @@ function BookingPage() {
             borderRadius: "5px",
             border: "none",
             color: "white",
-            backgroundColor: `${chair == "X" ? "#01d101" : "rgb(116,112,112)"}`,
+            backgroundColor: `${chair == "X" || chair == "O" ? "#01d101" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
           onClick={(e) => {
@@ -289,7 +317,7 @@ function BookingPage() {
                 chairArray.splice(index, 1);
               }
             } else {
-              if (chairArray.length < 8) {
+              if (chairArray.length < oldChairArray.length) {
                 e.target.classList.add(classes.choiceChair);
                 chairArray.push(chair);
               }
@@ -318,7 +346,7 @@ function BookingPage() {
             borderRadius: "5px",
             border: "none",
             color: "white",
-            backgroundColor: `${chair == "X" ? "#01d101" : "rgb(116,112,112)"}`,
+            backgroundColor: `${chair == "X" || chair == "O" ? "#01d101" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
           onClick={(e) => {
@@ -330,7 +358,7 @@ function BookingPage() {
                 chairArray.splice(index, 1);
               }
             } else {
-              if (chairArray.length < 8) {
+              if (chairArray.length < oldChairArray.length) {
                 e.target.classList.add(classes.choiceChair);
                 chairArray.push(chair);
               }
@@ -359,7 +387,7 @@ function BookingPage() {
             borderRadius: "5px",
             border: "none",
             color: "white",
-            backgroundColor: `${chair == "X" ? "#01d101" : "rgb(116,112,112)"}`,
+            backgroundColor: `${chair == "X" || chair == "O" ? "#01d101" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
           onClick={(e) => {
@@ -371,7 +399,7 @@ function BookingPage() {
                 chairArray.splice(index, 1);
               }
             } else {
-              if (chairArray.length < 8) {
+              if (chairArray.length < oldChairArray.length) {
                 e.target.classList.add(classes.choiceChair);
                 chairArray.push(chair);
               }
@@ -400,7 +428,7 @@ function BookingPage() {
             borderRadius: "5px",
             border: "none",
             color: "white",
-            backgroundColor: `${chair == "X" ? "#01d101" : "rgb(116,112,112)"}`,
+            backgroundColor: `${chair == "X" || chair == "O" ? "#01d101" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
           onClick={(e) => {
@@ -412,7 +440,7 @@ function BookingPage() {
                 chairArray.splice(index, 1);
               }
             } else {
-              if (chairArray.length < 8) {
+              if (chairArray.length < oldChairArray.length) {
                 e.target.classList.add(classes.choiceChair);
                 chairArray.push(chair);
               }
@@ -441,7 +469,7 @@ function BookingPage() {
             borderRadius: "5px",
             border: "none",
             color: "white",
-            backgroundColor: `${chair == "X" ? "#01d101" : "rgb(116,112,112)"}`,
+            backgroundColor: `${chair == "X" || chair == "O" ? "#01d101" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
           onClick={(e) => {
@@ -453,7 +481,7 @@ function BookingPage() {
                 chairArray.splice(index, 1);
               }
             } else {
-              if (chairArray.length < 8) {
+              if (chairArray.length < oldChairArray.length) {
                 e.target.classList.add(classes.choiceChair);
                 chairArray.push(chair);
               }
@@ -483,7 +511,7 @@ function BookingPage() {
             borderRadius: "5px",
             border: "none",
             color: "white",
-            backgroundColor: `${chair == "X" ? "#01d101" : "rgb(116,112,112)"}`,
+            backgroundColor: `${chair == "X" || chair == "O" ? "#01d101" : "rgb(116,112,112)"}`,
           }}
           className={chair.dangChon ? classes.choiceChair : ""}
           onClick={(e) => {
@@ -495,7 +523,7 @@ function BookingPage() {
                 chairArray.splice(index, 1);
               }
             } else {
-              if (chairArray.length < 8) {
+              if (chairArray.length < oldChairArray.length) {
                 e.target.classList.add(classes.choiceChair);
                 chairArray.push(chair);
               }
@@ -513,80 +541,59 @@ function BookingPage() {
 
   let flag = true;
 
-  // BOOKING
   const [QR, setQR] = useState("");
   const [imgQR, setImgQR] = useState("");
   let Total = 0;
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalPriceBefore, setTotalPriceBefore] = useState(0);
   const [isSuccessPaypal, setIsSuccessPaypal] = useState(false);
-  // useEffect(async () => {
-  //   const qr = await QRCode.toDataURL('test thử').then(setQR);
-  //   if (qr) {
-  //     var image = document.createElement('image')
-  //     image.setAttribute("src", qr)
-  //     console.log(image, "HÌNH ẢNH")
-  //     setImgQR(image) //<Image src={QR} />
-  //   }
 
-  // }, [])
-
-  const handleBooking = () => {
-    if (chairArray) {
-      chairArray.forEach((chair) => {
-        Total += thongTinPhim?.giaVe;
-      });
-      setTotalPrice(Total);
-      setTotalPriceBefore(Total);
-    }
+  const handleChangeBooking = () => {
     setConfirm(true);
-
-    //style={{ width: '40px', height: '40px' }}
-    // dispatch(
-    //   bookingTicketAction(showTimeCode, biDanh, { danhSachGhe: chairArray })
-    // );
   };
 
-  console.log("đường dẫn", QR);
-  const renderQR = () => {
-    return (
-      <div>
-        <Image src={QR} />
-      </div>
-    );
-  };
 
   const [isConfirm, setConfirm] = useState(false);
   const profile = useSelector((state) => state.profile.profileUser[0]);
 
-  let imageQRcode;
-  useEffect(async () => {
-    let dataBooking;
-    const qr = await QRCode.toDataURL(
-      `Họ tên: ${profile?.hoTen}, suất phim: ${movie?.tenPhim
-      }, chiếu lúc ${formatDate(
-        thongTinPhim?.ngayChieu
-      ).toString()}, Ghế:${chairArray}, Cụm rạp: ${thongTinPhim?.tenCumRap?.tenCumRap
-      }, ${thongTinPhim?.tenRap?.tenRap}`
-    ).then(); //setQR
-    if (qr !== false) {
-      dataBooking = {
-        name: profile?.hoTen,
-        movieName: movie?.tenPhim,
-        showtimeDate: formatDate(thongTinPhim?.ngayChieu).toString(),
-        showtimeTime: formatTime(thongTinPhim?.ngayChieu).toString(),
-        cinemaClusterName: thongTinPhim?.tenCumRap?.tenCumRap,
-        QRCode: qr,
-      };
-      if (isSuccessPaypal == true) {
-        console.log("Reward point", RewardPoints);
-        const success = await dispatch(
-          bookingTicketAction(showTimeCode, biDanh, chairArray, RewardPoints) //{ danhSachGhe:
-        );
-        if (success != false) {
-          const token = JSON.parse(localStorage.getItem("token"));
+
+  const confirmChangeBooking = async () => {
+    const token = JSON.parse(localStorage.getItem("token"));
+    try {
+      const res = await axios({
+        url: `http://localhost:5000/user/changeTicketBooking/${IDticket}`,
+        method: "POST",
+        data: { danhSachGheMoi: chairArray },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.status == 200) {
+        toast.success('Bạn đã đổi vé thành công', { autoClose: 2000 });
+        setConfirm(false);
+        setTimeout(() => {
+          history.push('/profile');
+        }, 1000);
+
+        let dataBooking;
+        const qr = await QRCode.toDataURL(
+          `Họ tên: ${profile?.hoTen}, suất phim: ${movie?.tenPhim
+          }, chiếu lúc ${formatDate(
+            thongTinPhim?.ngayChieu
+          ).toString()}, Cụm rạp: ${thongTinPhim?.tenCumRap?.tenCumRap
+          }, ${thongTinPhim?.tenRap?.tenRap}, Ghế cũ: ${oldChairArray}, Ghế mới: ${chairArray} `
+        ).then(); //setQR
+        if (qr !== false) {
+          dataBooking = {
+            name: profile?.hoTen,
+            movieName: movie?.tenPhim,
+            showtimeDate: formatDate(thongTinPhim?.ngayChieu).toString(),
+            showtimeTime: formatTime(thongTinPhim?.ngayChieu).toString(),
+            cinemaClusterName: thongTinPhim?.tenCumRap?.tenCumRap,
+            QRCode: qr,
+          };
           const res = await axios({
-            url: `http://localhost:5000/user/sendEmailBooking`,
+            url: `http://localhost:5000/user/sendchangeTicketMail`,
             method: "POST",
             data: dataBooking,
             headers: {
@@ -594,81 +601,14 @@ function BookingPage() {
             },
           });
         }
-        setConfirm(false); //đóng modal
-        setIsSuccessPaypal(false);
       }
     }
-
-    // console.log('kết quả', result)
-    // QRCode.toDataURL('test').then(setQR);
-    // if (result)
-    {
-      // if (qr) {
-      //   console.log('QR', qr)
-      //   imageQRcode = document.createElement('image')
-      //   imageQRcode.setAttribute("src", QR)
-      //   console.log(imageQRcode, "HÌNH ẢNH")
-      //setImgQR(imageQRcode) //<Image src={QR} />
-      //}
-      // emailjs.send('service_zbo2i1v', 'template_u22c938',
-      //   {
-      //     name: profile?.hoTen,
-      //     movieName: movie?.tenPhim,
-      //     showtimeDate: formatDate(thongTinPhim?.ngayChieu).toString(),
-      //     showtimeTime: formatTime(thongTinPhim?.ngayChieu).toString(),
-      //     cinemaClusterName: thongTinPhim?.tenCumRap?.tenCumRap,
-      //     QRCode: 'imageQRcode'
-      //   },
-      //   'user_fHd8DhFxCFsbFXqbnCExx')
-      //   .then((res) => console.log('thành công', res))
-      //   .catch(err => console.log('thất bại', err))
+    catch (err) {
+      toast.error(err.response.data.error, { autoClose: 2000 });
     }
-  }, [isSuccessPaypal]);
 
-  //PAYPAL
-  const Paypal = ({ total }) => {
-    const paypal = useRef();
-    //const [isSuccess, setIsSucess] = useState(false)
-    console.log("tổng tiền", total);
-    // const totalBill = useSelector(state => state.user.totalCurrentBill)
-    // const [bill, setBill] = useState('')
-    // console.log(totalBill)
-    useEffect(async () => {
-      window.paypal
-        .Buttons({
-          createOrder: (data, actions, err) => {
-            return actions.order.create({
-              intent: "CAPTURE",
-              purchase_units: [
-                {
-                  description: "Thanh toán vé phim",
-                  amount: {
-                    currency_code: "CAD",
-                    value: (total / 23000).toFixed(2), //Math.round
-                  },
-                },
-              ],
-            });
-          },
-          onApprove: async (data, actions) => {
-            const order = await actions.order.capture();
-            console.log(order);
-            setIsSuccessPaypal(true);
-            //dispatch(bookingTicketAction(showTimeCode, biDanh, { danhSachGhe: chairArray }));
-          },
-          onError: (err) => {
-            console.log(err);
-          },
-        })
-        .render(paypal.current);
-    }, []);
 
-    return (
-      <div>
-        <div ref={paypal}></div>
-      </div>
-    );
-  };
+  }
 
   const Format = (x) => {
     return x.toLocaleString("it-IT", {
@@ -676,22 +616,13 @@ function BookingPage() {
       currency: "VND",
     });
   };
-  const handleFormRewardPoints = (e) => {
-    e.preventDefault();
-    setUseRewardPoints(true);
-    setRewardPoints(
-      profile?.diemThuong > totalPrice / 1000
-        ? totalPrice / 1000
-        : profile?.diemThuong
-    );
-    // setUseRewardPoints(e.target.value)
-  };
+
   const modalConfirm = () => {
     return (
       <>
         <Modal show={isConfirm} onHide={() => setConfirm(false)}>
           <Modal.Header>
-            <Modal.Title>Xác nhận mua vé</Modal.Title>
+            <Modal.Title>Xác nhận đổi vé</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form className="confirm">
@@ -731,43 +662,27 @@ function BookingPage() {
                 name="cinemaClusterName"
                 disabled="true"
               />
+              <Input
+                Label="Ghế ngồi cũ"
+                value={oldChairArray}
+                type="text"
+                name="cinemaClusterName"
+                disabled="true"
+              />
+              <Input
+                Label="Ghế ngồi mới"
+                value={chairArray}
+                type="text"
+                name="cinemaClusterName"
+                disabled="true"
+              />
 
-              <h6>Điểm tích lũy hiện tại {profile?.diemThuong}</h6>
-              <button
-                className="btn btn-success"
-                onClick={(e) => handleFormRewardPoints(e)}
-                disabled={profile?.diemThuong >= 20 ? false : true}
-              >
-                Thanh toán bằng điểm thưởng (Điểm tích lũy lớn hơn 20)
-              </button>
-              {RewardPoints >= 20 ? (
-                <h6>Bạn đã sử dụng {RewardPoints} điểm để thanh toán</h6>
-              ) : (
-                ""
-              )}
-              <h6>Tổng tiền cần thanh toán {Format(totalPrice)}</h6>
-              {totalPrice == 0 ? (
-                <>
-                  <button
-                    className="btn btn-success"
-                    onClick={() => setIsSuccessPaypal(true)}
-                  >
-                    Xác nhận mua vé
-                  </button>
-                </>
-              ) : (
-                <Paypal total={totalPrice} />
-              )}
-              {/* variant="primary" */}
-              {/* <Button className="btn btn-success" type="submit">
-                Xác nhận
-              </Button> */}
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            {/* <button className="btn btn-success" onClick={send}>
-             Xác nhận
-           </button> */}
+            <button className="btn btn-success" onClick={confirmChangeBooking}>
+              Xác nhận
+            </button>
             <button
               className="btn btn-danger"
               onClick={() => setConfirm(false)}
@@ -779,74 +694,7 @@ function BookingPage() {
       </>
     );
   };
-  const [useRewardPoints, setUseRewardPoints] = useState(false);
-  const [RewardPoints, setRewardPoints] = useState(0);
-  const afterDiscount = (e) => {
-    e.preventDefault();
-    setTotalPrice(totalPriceBefore - RewardPoints * 1000);
-    setUseRewardPoints(false);
-  };
-  const modalRewardPoints = () => {
-    return (
-      <>
-        <Modal show={useRewardPoints} onHide={() => setUseRewardPoints(false)}>
-          <Modal.Header>
-            <Modal.Title>Điểm tích lũy của bạn</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form style={{ height: "550px" }} className="confirm">
-              <Input
-                Label="Tên khách hàng"
-                value={profile?.hoTen}
-                type="text"
-                name="name"
-                disabled="true"
-              />
-              {/* {console.log('khách hàng', name)} */}
-              <Input
-                Label="Điểm tích lũy"
-                value={profile?.diemThuong || "0"}
-                type="text"
-                name="rewardPoints"
-                disabled="true"
-              />
-              <Input
-                Label="Chọn điểm thanh toán"
-                min="20"
-                max={
-                  profile?.diemThuong > totalPrice / 1000
-                    ? totalPrice / 1000
-                    : profile?.diemThuong
-                }
-                value={RewardPoints}
-                type="number"
-                name="rewardPoints"
-                disabled={profile?.diemThuong >= 2 ? false : true}
-                onChange={(e) => setRewardPoints(e.target.value)}
-              />
-              <button
-                className="btn btn-success"
-                onClick={(e) => afterDiscount(e)}
-              >
-                Xác nhận
-              </button>
-              <button
-                className="btn btn-danger"
-                onClick={() => (setUseRewardPoints(false), setRewardPoints(0))}
-              >
-                Hủy
-              </button>
-              {/* variant="primary" */}
-              {/* <Button className="btn btn-success" type="submit">
-                Xác nhận
-              </Button> */}
-            </Form>
-          </Modal.Body>
-          <Modal.Footer></Modal.Footer>
-        </Modal>
-      </>
-    );
-  };
+
 
   const renderTable = () => {
     //chairArray = ["A2", "B2"]
@@ -854,10 +702,11 @@ function BookingPage() {
       //listChair
       if (chair) {
         console.log("chairArray", chair);
+        // console.log("oldChairArray[index]", oldChairArray);
         return (
           <TableRow key={index}>
             <TableCell>{chair}</TableCell>
-            <TableCell>{thongTinPhim?.giaVe}</TableCell>
+            <TableCell>{oldChairArray[index]}</TableCell>
           </TableRow>
         );
       }
@@ -931,6 +780,8 @@ function BookingPage() {
                     Ngày chiếu: {formatDate(thongTinPhim?.ngayChieu)} - Giờ
                     chiếu: {formatTime(thongTinPhim?.ngayChieu)}
                   </p>
+                  <p className={classes.textColor}>O: Ghế cũ bạn đã chọn </p>
+                  <p className={classes.textColor}>X:Ghế đã có người đặt</p>
                   <br />
                   <hr />
                   <br />
@@ -942,44 +793,60 @@ function BookingPage() {
                       >
                         <TableHead>
                           <TableRow>
-                            <TableCell>Ghế</TableCell>
+                            <TableCell>Ghế mới</TableCell>
                             <TableCell>
-                              Giá vé {console.log(chairArray.length, "số vé")}
+                              Ghế cũ
                             </TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
                           {renderTable()}
                           <TableRow>
-                            <TableCell>Tổng tiền: </TableCell>
+                            <TableCell>Số vé muốn đổi: </TableCell>
                             <TableCell>
-                              {chairArray.reduce(
-                                (tongTien, chair) =>
-                                  (tongTien += thongTinPhim?.giaVe),
-                                0
-                              )}
+                              {oldChairArray.length}
                             </TableCell>
                           </TableRow>
                         </TableBody>
                       </Table>
                     </TableContainer>
                   </div>
-                  <div style={{ textAlign: "center", margin: "30px" }}>
+                  <div style={{ textAlign: "left", margin: "10px" }}>
                     <Button
-                      disabled={chairArray.length > 0 ? false : true}
-                      onClick={handleBooking}
+                      onClick={() => history.push('/profile')}
                       variant="contained"
                       color="primary"
                       size="large"
                     >
-                      Đặt vé
+                      Trở về
+                    </Button>
+
+                    <Button
+                      disabled={chairArray.length == oldChairArray.length ? false : true}
+                      onClick={handleChangeBooking}
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                      style={{ margin: "30px" }}
+                    >
+                      Đổi vé
                     </Button>
                   </div>
+                  {/* <div style={{ textAlign: "right", margin: "30px" }}>
+                    <Button
+                      disabled={chairArray.length > 0 ? false : true}
+                      onClick={handleChangeBooking}
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                    >
+                      Đổi vé
+                    </Button>
+                  </div> */}
                 </Grid>
               </Grid>
             </Container>
             {isConfirm == true ? modalConfirm() : ""}
-            {useRewardPoints == true ? modalRewardPoints() : ""}
             {/* {isConfirm == true
               ? renderQR()
               : ""} */}
@@ -988,6 +855,6 @@ function BookingPage() {
       )}
     </>
   );
-}
 
-export default BookingPage;
+}
+export default ChangeTicketBookingPage;

@@ -13,12 +13,15 @@ import BookingPage from "./pages/booking/BookingPage";
 import NotFound from "./components/404NotFound";
 import { useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
+import ChangeTicketBookingPage from "./pages/booking/ChangeTicketBookingPage";
 // import { SendMail } from "./pages/booking/SendMail";
 function App() {
   let date = new Date()
   let getDay = date.getDay()
-  useEffect(async () => {
 
+  useEffect(async () => {
     const res = axios({
       url: `http://localhost:5000/user/reminderEmail`,
       method: "GET",
@@ -34,7 +37,11 @@ function App() {
               <BookingPage />
             </GuardBooking>
           </Route>
-
+          <Route path="/:biDanh/changeBooking/:IDticket/:showTimeCode" exact={true}>
+            <GuardBooking>
+              <ChangeTicketBookingPage />
+            </GuardBooking>
+          </Route>
           <Route path="/sign-in" exact={true}>
             <SignInPage />
           </Route>
@@ -44,7 +51,9 @@ function App() {
           </Route>
 
           <Route path="/profile" exact={true}>
-            <ProfilePage />
+            <GuardBooking>
+              <ProfilePage />
+            </GuardBooking>
           </Route>
 
           <Route path="/forgot-password" exact={true}>
