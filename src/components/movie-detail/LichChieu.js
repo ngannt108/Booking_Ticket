@@ -143,8 +143,9 @@ function LichChieu(props) {
       const faded = selectedCol2Index != index;
       console.log("lịch chiếu", lichChieu);
       console.log("tên rạp", tenCumRapChieu);
+      const date = new Date()
       lichChieu.push(cumRap);
-      if (tenCumRapChieu.indexOf(cumRap.tenCumRap.tenCumRap) === -1) {
+      if (tenCumRapChieu.indexOf(cumRap.tenCumRap.tenCumRap) === -1 && new Date(cumRap.ngayChieu) >= Date.now()) {
         tenCumRapChieu.push(cumRap.tenCumRap.tenCumRap);
         return (
           <TableRow key={index} style={faded ? fadeAwayStyle : null}>

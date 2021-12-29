@@ -98,7 +98,7 @@ class emailService {
         // dateReminder.setHours(12)
         // dateReminder.setMinutes(53)
         // console.log('thời gian hiện tại', dateReminder)
-        cron.schedule("13 19 * * *", () => {
+        cron.schedule("0 8 * * *", () => {
 
             //
             ticketToday.forEach(async (ticket) => {

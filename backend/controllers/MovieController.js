@@ -45,7 +45,7 @@ class MovieController {
             const dateNow = new Date()
             // // console.log(formatDate.getDate(), formatDate.getMonth() + 3, dateNow.getMonth() + 1, dateNow.getDate())
             // if (formatDate.getMonth() + 2 >= dateNow.getMonth() && formatDate.getDate() >= dateNow.getDate())
-            if (movie.ngayKetThuc > dateNow)
+            if (movie.ngayKetThuc > dateNow && movie.ngayKhoiChieu < dateNow)
               movieShowing.push(movie)
           })
           res.status(200).json(movieShowing);
