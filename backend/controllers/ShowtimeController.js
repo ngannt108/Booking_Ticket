@@ -9,6 +9,24 @@ const emailServices = require("../services/emailServices");
 const User = require("../models/User");
 
 class ShowTimeController {
+  formatDate = (date) => {
+    if (date) {
+      const d = new Date(date); //d.toLocaleString("en-AU")//
+      return `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
+    }
+    return "";
+  };
+  formatTime = (date) => {
+    if (date) {
+      const d = new Date(date); //d.toLocaleString("en-AU")//
+      const time = d.toLocaleString("en-AU", {
+        hour: "numeric",
+        minute: "numeric",
+      });
+      return time;
+    }
+    return "";
+  };
   //[POST] /movie/:bidanh/showtime
   async add(req, res, next) {
     //req.body.ngayChieu = req.body.ngayChieu.toLocaleString("en-AU")
@@ -20,9 +38,9 @@ class ShowTimeController {
       gioKetThuc: new Date(req.body.ngayChieu),
     });
     // let ngaychieu = new Date(req.body.ngayChieu) //= new Date
-    const movie = await Movie.findOne({ biDanh: req.params.bidanh }); //
+    const movie = await Movie.findOne({ biDanh: req.params.bidanh }).populate('lichChieu'); //
 
-    // console.log('ngày chiếu từ form', req.body.ngayChieu)
+    // console.log('PHIM:', movie)
     // console.log('ngày chiếu ', new Date(req.body.ngayChieu))
     if (movie) {
       const hour = ngaychieu.getHours() + movie.thoiLuong / 60; //
@@ -35,18 +53,25 @@ class ShowTimeController {
         .status(400)
         .json({ error: "Không thể tạo ngày chiếu sớm hơn ngày khởi chiếu" });
     else {
-      const dupShowtime = await ShowTime.find({
+      const availableShowtime = await ShowTime.find({
         tenRap: showtime.tenRap,
         tenCumRap: showtime.tenCumRap,
       });
-      const same = await ShowTime.find({
-        ngayChieu: showtime.ngayChieu,
-        tenCumRap: showtime.tenCumRap,
-      });
-      if (same.length > 0)
-        return res.status(400).json({ error: "Một rạp khác trong hệ thống rạp có phim trùng giờ chiếu, vui lòng chọn thời gian khác" });
+      // const sameShowtimeCluster = await ShowTime.find({
+      //   ngayChieu: showtime.ngayChieu,
+      //   tenCumRap: showtime.tenCumRap,
+      // });
+      await movie.lichChieu.forEach(async (st) => {
+        if (st.ngayChieu.toLocaleString("en-AU") == showtime.ngayChieu.toLocaleString("en-AU") && st.tenCumRap === showtime.tenCumRap) {
+          console.log('id rạp trùng', st.tenCumRap, showtime.tenCumRap)
+          console.log('giờ chiếu trùng', st.ngayChieu, showtime.ngayChieu)
+          return res.status(400).json({ error: "Một rạp khác trong cụm rạp có phim trùng giờ chiếu, vui lòng chọn thời gian khác" });
+        }
+      })
+      if (new Date(showtime.ngayChieu) < Date.now())
+        return res.status(400).json({ error: "Giờ tạo lịch chiếu phải lớn hơn thời gian hiện tại" });
       var count = 0;
-      dupShowtime.forEach((st) => {
+      availableShowtime.forEach((st) => {
         if (
           st.ngayChieu <= showtime.ngayChieu &&
           st.gioKetThuc >= showtime.ngayChieu

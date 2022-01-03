@@ -44,7 +44,7 @@
   };
   fixoverflow {
     overflow: "auto";
-    height: "60vh";
+    height: "200px";
   };
   table {
     minWidth: 650;

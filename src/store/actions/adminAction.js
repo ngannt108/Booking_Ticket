@@ -248,7 +248,7 @@ export const getCumRapChieuAction = () => {
 };
 
 
-export const taoLichChieuAction = (lichChieu, biDanh) => {
+export const taoLichChieuAction = (lichChieu, biDanh, setMovieDetail) => {
   return async (dispatch) => {
     try {
       const token = JSON.parse(localStorage.getItem("token"));
@@ -269,8 +269,13 @@ export const taoLichChieuAction = (lichChieu, biDanh) => {
           payload: res.data,
         });
         dispatch(getCumRapChieuAction())
-        var setMovieDetail
+        // var setMovieDetail
         dispatch(getMovieDetailAction(biDanh, setMovieDetail))
+        // const detail = await axios({
+        //   url: `http://localhost:5000/movie/${biDanh}`,
+        //   method: "GET",
+        // });
+        // setMovieDetail(detail)
       }
 
       // dispatch(await getRapChieuAdminAction(maPhim));

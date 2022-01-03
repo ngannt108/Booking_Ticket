@@ -22,7 +22,7 @@ class Auth {
                 //     return next(err)
             }
 
-        } catch (err) { res.status(500).json({ error: 'Vui lòng thử lại' }) };
+        } catch (err) { res.status(500).json({ error: 'Vui lòng thực hiện đăng nhập' }) };
 
 
     }

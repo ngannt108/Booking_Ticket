@@ -30,6 +30,7 @@ import {
   taoLichChieuAction,
 } from "../../store/actions/adminAction";
 import { getMovieDetailAction } from "../../store/actions/movieAction";
+import axios from "axios";
 // import { getMovieDetailAction } from "../../store/actions/movieAction";
 
 function AddShowTime() {
@@ -48,7 +49,7 @@ function AddShowTime() {
   }, []); //dispatch
   useEffect(() => {
     if (biDanh) dispatch(getMovieDetailAction(biDanh, setMovieDetail));
-  }, [movieDetail]); //dispatch
+  }, [dispatch]); //dispatch
 
   const movieList = useSelector((state) => state.admin.listMovie);
 
@@ -138,7 +139,7 @@ function AddShowTime() {
     console.log("tên  rap", maRap);
     console.log("ngày chiếu phim", ngayChieuPhim);
     console.log("bí danh", biDanh);
-    dispatch(taoLichChieuAction(lichChieuCuaPhim, biDanh));
+    dispatch(taoLichChieuAction(lichChieuCuaPhim, biDanh, setMovieDetail));
 
     //dispatch(getMovieDetailAction(biDanh, setMovieDetail))
   };
@@ -235,6 +236,7 @@ function AddShowTime() {
                   labelId="phim-select-label"
                   disableUnderline
                   onChange={handleChangeMaRap}
+
                 >
                   {renderRapChieu()}
                   {/* {renderDanhSachRap()} */}
@@ -276,10 +278,10 @@ function AddShowTime() {
               onClick={() => handleTaoLichChieu()}
               fullWidth
               disabled={
-                biDanh !== undefined &&
+                biDanh !== "" &&
                   maCumRap !== undefined &&
                   maRap !== undefined &&
-                  ngayChieuPhim !== undefined
+                  ngayChieuPhim !== ""
                   ? false
                   : true
               }
@@ -294,7 +296,7 @@ function AddShowTime() {
           Ngày chiếu khởi {formatDate(movieDetail.ngayKhoiChieu)}
         </h5>
         <Grid item md={8}>
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} style={{ overflow: "auto", height: "250px" }}>
             <Table className="table" aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -337,7 +339,7 @@ function AddShowTime() {
                     </>
                   </TableBody>
                 ))
-                : []}
+                : ""}
             </Table>
           </TableContainer>
         </Grid>
