@@ -1,27 +1,46 @@
 # Booking_Ticket
 Để có thể chạy được ứng dụng, máy tính phải có các yêu cầu sau:
--	Phải cài đặt npm.
--	Phải cài đặt NodeJS.
--	Phải cài đặt ReactJS.
--	Phải có Windows Terminal hoặc Command Prompt.
+- Cài đặt npm.
+- Cài đặt NodeJS phiên bản 14.
+- Cài đặt ReactJS phiên bản 17.
+- Có Windows Terminal hoặc Command Prompt.
 
 Các bước để tiến hành cài đặt:
 
-*Bước 1: Clone hoặc download project từ link githut
-(Link github: https://github.com/ngannt108/Booking_Ticket)
+***Bước 1***: Clone hoặc download project từ link github ([Link github](https://github.com/ngannt108/Booking_Ticket))
 
-*Bước 2: Khởi chạy back-end.
+***Bước 2***: Khởi chạy back-end.
 
-Sau khi clone project về máy, chuột phải vào thư mục backend và chọn “Open in Windows Terminal”.
+Sau khi clone project về máy, mở command line (terminal) tại thư mục và thực hiện lệnh:
 
-Sau khi Windows Terminal hiện ra, chạy lệnh “npm i” để cập nhật các thư viện và package cần thiết để project hoạt động.
+`cd backend`
 
-Tiếp tục chạy lệnh “npm start” trên Windows Terminal để bắt đầu chạy back-end.
+Tạo file .env trong thư mục backend:
 
-*Bước 3: Khởi chạy front-end (admin và user)
+- Chuẩn bị các biến môi trường như sau: 
 
-Chọn “Terminal” và nhấn “New Terminal”
+| Tên biến | Mô tả |
+| --- | --- |
+| EMAIL_ACCOUNT | Địa chỉ thực hiện việc gửi mail |
+| EMAIL_PASSWORD | Mật khẩu của địa chỉ gửi mail |
+| SEND_TO | Địa chỉ sẽ nhận mail |
 
-Sau khi Windows Terminal hiện ra, chạy lệnh “npm i” để cập nhật các thư viện và package cần thiết để project hoạt động.
+Tiếp theo thực hiện các lệnh:
 
-Tiếp tục chạy lệnh “npm start” trên Windows Terminal để bắt đầu chạy front-end.
+`npm install`
+
+`npm start`
+
+***Bước 3***: Khởi chạy front-end (admin và user)
+
+Nếu bạn đang đứng trong thư mục ***Booking_Ticket\backend***, cần di chuyển về thư mục ***Booking_Ticket*** bằng cách thực hiện câu lệnh sau:
+
+`cd ..`
+
+Tiếp theo thực hiện các lệnh:
+
+`npm install`
+
+`npm start`
+
+
