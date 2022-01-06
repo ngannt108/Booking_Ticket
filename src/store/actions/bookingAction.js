@@ -26,6 +26,7 @@ export const setBtnLoadingAction = (data) => {
 
 export const getTicketListAction = (biDanh, showTimeCode) => {
   //XONG
+
   let isLoading = true;
   return async (dispatch) => {
     dispatch(setLoadingAction(isLoading));
@@ -54,6 +55,7 @@ export const getTicketListAction = (biDanh, showTimeCode) => {
         type: GET_INFO_MOVIE,
         payload: rap, //res.data
       });
+
     } catch (error) {
       console.log(error);
       isLoading = false;
@@ -109,6 +111,11 @@ export const bookingTicketAction = (IDshowtime, biDanh, danhSachGhe, diemThuong)
       console.log(res);
     } catch (error) {
       console.log(error);
+      Swal.fire(
+        "Thông Báo",
+        "Bạn đã đặt vé thất bại",
+        "error"
+      );
       isLoading = false;
       dispatch(setBtnLoadingAction(isLoading));
     }

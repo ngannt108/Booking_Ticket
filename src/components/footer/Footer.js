@@ -153,11 +153,11 @@ function Footer() {
           <Grid item md={8} sm={9}>
             <div className="footerText">
               <span style={{ color: "#fff" }}>
-                TIX – SẢN PHẨM CỦA CÔNG TY CỔ PHẦN ZION
+                CGV - Hệ thống rạp chiếu phim khu vực TPHCM
               </span>{" "}
               <br />
               <span>
-                Địa chỉ: Z06 Đường số 13, Phường Tân Thuận Đông, Quận 7, Tp. Hồ
+                Địa chỉ: số 1 Võ Văn Ngân, thành phố Thủ Đức, Tp. Hồ
                 Chí Minh, Việt Nam.
               </span>{" "}
               <br />

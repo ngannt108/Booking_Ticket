@@ -125,6 +125,9 @@ export default function Header() {
             onClick={() => {
               history.push("/");
               scroll.scrollToTop();
+
+              window.location.reload();
+
             }}
           >
             CGV
@@ -210,7 +213,9 @@ export default function Header() {
                   component="button"
                   underline="none"
                   className={classes.menuItem}
-                  onClick={() => history.push("/rap-chieu-mobile")}
+                  onClick={() => {
+                    history.push("/rap-chieu-mobile")
+                  }}
                 >
                   Cụm Rạp
                 </MenuItem>

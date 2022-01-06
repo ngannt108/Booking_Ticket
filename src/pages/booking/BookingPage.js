@@ -71,6 +71,7 @@ function BookingPage() {
   // console.log(showTimeCode);
   useEffect(
     () => {
+
       dispatch(getTicketListAction(biDanh, showTimeCode));
       dispatch(getMovieDetailAction(biDanh, setMovie));
       dispatch(getProfileAction());
